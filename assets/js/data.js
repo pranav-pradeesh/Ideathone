@@ -15,6 +15,10 @@ window.IDEATHON = (function () {
     hostGroup: 'Nehru Group of Institutions',
     date: 'Monday, 14 September 2026',
     dateShort: 'Mon 14 Sep 2026',
+    /* Registration is collected by a Google Form. Empty this string to fall
+       back to the built-in form at register.html. */
+    registrationUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeY4YYJUSAiQGr3_nyuRsarTzhUD1V4W2BIgDprQHytgmF_pg/viewform',
+
     startsAt: '14:30',      // 24-hour; the wall clock shown on the timeline
     endsAt: '16:00',
     timeRange: '2:30 – 4:00 pm',

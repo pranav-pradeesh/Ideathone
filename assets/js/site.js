@@ -287,6 +287,22 @@
     update();
   }
 
+  /* ---- registration link -------------------------------------------------- */
+
+  /* Every "Register" link on the site points at register.html in the markup.
+     When a registration URL is configured, rewrite them all in one place
+     rather than editing five pages — and keep register.html as a redirect so
+     any link already shared still lands in the right place. */
+  function applyRegistrationUrl() {
+    var url = cfg.registrationUrl;
+    if (!url) return;
+    all('a[href="register.html"], a[href="register"], a[href="./register.html"]')
+      .forEach(function (a) {
+        a.href = url;
+        a.rel = 'noopener';
+      });
+  }
+
   /* ---- mobile menu -------------------------------------------------------- */
 
   function initNav() {
@@ -396,6 +412,7 @@
     var rt = document.querySelector('[data-render="role-table"]');
     if (rt) renderRoleTable(rt);
 
+    applyRegistrationUrl();
     initNav();
     initPlanner();
     markScrollables();

@@ -270,6 +270,35 @@ Two things to know:
 
 ---
 
+## Matching the Google Form to the rule book
+
+Registration is collected by a Google Form, so **the form is the gate, not this site**. The
+validation in this repository never sees a response. Every rule the rule book states has to
+be built into the form, or it is decorative.
+
+What the rule book currently promises, and what the form needs to do about it:
+
+| Rule | What the form must do |
+| --- | --- |
+| Team of 3 or 4 | Ask for exactly 3 required member blocks and 1 optional one. A Google Form cannot make "member 4" conditionally required, so mark those questions optional and check on import |
+| Every member has a role, from five | Five-option dropdown per member, required |
+| A team must include a Team Lead, a Presentation Maker and a Researcher | **Google Forms cannot express this.** Either fix the roles by position (member 1 = Team Lead, 2 = Presentation Maker, 3 = Researcher, member 4 free) or check it in the responses sheet |
+| Every member has a branch, from seven | Seven-option dropdown per member, required |
+| Every member has a 10-digit mobile number | Short answer with a regex response validation of `^[0-9]{10}$` |
+| One entry per team | Turn off "Allow response editing"; deduplicate team names in the sheet |
+
+Two settings worth checking before you share the link:
+
+- **Do not require sign-in** unless every participant has a college Google account, or
+  students will hit a login wall.
+- **Link the form to a responses spreadsheet** (Responses → link to Sheets) so you have the
+  data somewhere other than the form UI.
+
+Fixing the roles by position is the simplest way to guarantee the three compulsory roles,
+and it costs the teams nothing — they already have to nominate the same three people.
+
+---
+
 ## Troubleshooting
 
 | Symptom | Cause | Fix |

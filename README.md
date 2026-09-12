@@ -40,7 +40,26 @@ dependency in the whole project is the Postgres driver used by the API.
 | `api/_lib/rate.js` | Rate limiting, stored in the database so it survives cold starts |
 | `assets/js/site.js` | Renders the schedule, role cards, rule book, pod planner |
 
-## What registration collects
+## Where registration goes
+
+`config.registrationUrl` in `data.js` holds a Google Form URL, and every "Register" link on
+the site points there. `register.html` is a redirect to the same place, so any link already
+shared keeps working — including with JavaScript off, via a meta refresh.
+
+**This turns the built-in pipeline off.** The API, the database, `/admin` and `/organiser`
+all still work, but nothing writes to them any more: responses land in the Google Form's own
+spreadsheet instead, and `/admin` will sit at zero teams. That is the intended state while a
+form URL is set.
+
+To switch back, empty `config.registrationUrl`. Links revert to the built-in form, which is
+still present at `register-form.html`.
+
+**The Google Form has to enforce its own rules.** None of the validation below applies to
+it — the form is Google's, and the server-side checks in this repo never see a response.
+Whatever the rule book promises, the form must ask for and restrict, or the rules are
+decorative. See [DEPLOY.md](DEPLOY.md#matching-the-google-form-to-the-rule-book).
+
+## What the built-in form collects
 
 1. **Team name**
 2. **Number of team members** — 3 or 4 (the fourth is optional)
