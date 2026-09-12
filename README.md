@@ -159,8 +159,11 @@ themselves — navy `#202080`, cyan `#00a0e0`, gold `#c0a060`.
 
 Of those, only the navy passes WCAG AA as text, so it carries the buttons, links and
 accents; the cyan and gold appear as fills, markers and the hairline under the header, never
-as small type. Dark mode swaps the navy for the cyan, which navy cannot do on a dark ground.
-Host names live in `config` in `data.js`.
+as small type. Host names live in `config` in `data.js`.
+
+The site is **light only**. `color-scheme: light` on `:root` keeps native controls — select
+menus, scrollbars, autofill — light for a visitor whose phone is set to dark mode; without
+it those controls render dark against the light page.
 
 ## Responsive and accessible
 
@@ -192,3 +195,5 @@ is what was run against this code:
 | Menu | The mobile menu: open, close, second tap, Escape with focus return, tap-outside, link navigation, the 720px boundary, and that widening the window does not leave it open |
 | Responsive | Five pages × six viewport widths, plus tap-target heights |
 | Contrast | Every text/background pair on every page against WCAG AA, compositing translucent panels, plus a 12px floor on text size |
+| Type | The heading scale stays strictly descending, and no heading, legend, tagline or lede overflows its box, across five pages at five widths |
+| Light-only | With the browser emulating a dark-mode system, every page still renders dark text on a light ground and reports `color-scheme: light` |

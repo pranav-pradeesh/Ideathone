@@ -1,14 +1,18 @@
 /* Ideathon 60 — site styles.
  *
- * Light by default, dark when the viewer's system asks for it. Every
- * foreground/background pair in the palette is checked against WCAG AA, and no
- * text is set below 12px.
+ * Light only. Every foreground/background pair in the palette is checked
+ * against WCAG AA, and no text is set below 12px.
  */
 
 :root {
+  color-scheme: light;
+
   /* Nehru Group / NCERC brand: navy #202080, cyan #00a0e0, gold #c0a060.
      Only the navy passes AA as text, so cyan and gold are used as fills and
-     decoration and never carry small type. */
+     decoration and never carry small type.
+
+     Light only: color-scheme above keeps native controls light even when the
+     viewer's system is set to dark. */
   --bg: #fbfbf9;
   --surface: #ffffff;
   --surface-2: #f1f2f6;
@@ -36,30 +40,6 @@
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0e1016;
-    --surface: #161923;
-    --surface-2: #1c2030;
-    --ink: #f2f3f7;
-    --ink-dim: #b4b8c8;
-    --ink-faint: #8f94a8;
-    --line: #262b3a;
-    --line-strong: #384054;
-    /* Navy disappears on a dark ground, so the cyan carries the accent here. */
-    --accent: #3aa9e8;
-    --on-accent: #08131c;
-    --accent-text: #5cbcf2;
-    --accent-wash: #12243a;
-    --brand-cyan: #3aa9e8;
-    --brand-gold: #d4b878;
-    --on-brand: #08131c;
-    --ok: #4ade80;
-    --danger: #ff6b6b;
-    --danger-wash: #2a1415;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
-  }
-}
 
 * { box-sizing: border-box; }
 
