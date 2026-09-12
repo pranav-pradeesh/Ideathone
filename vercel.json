@@ -3,7 +3,6 @@
   "framework": null,
   "cleanUrls": true,
   "trailingSlash": false,
-  "public": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -27,7 +26,20 @@
       ]
     },
     {
-      "source": "/admin(.html)?",
+      "source": "/admin",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/admin.html",
       "headers": [
         {
           "key": "X-Robots-Tag",
