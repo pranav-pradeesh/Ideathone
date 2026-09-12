@@ -317,7 +317,10 @@ window.Registry = (function () {
       return Promise.resolve(localOnly(entry));
     }
 
-    return fetch('api/register', {
+    /* Root-relative on purpose: a relative path would resolve against the
+       current directory and 404 on a trailing-slash URL, which this code
+       treats as "no API" and silently keeps on the device. */
+    return fetch('/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(entry)

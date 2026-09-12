@@ -73,7 +73,7 @@
       return;
     }
 
-    api('api/admin/login').then(function (r) {
+    api('/api/admin/login').then(function (r) {
       if (r.body && r.body.authed) {
         showAdmin();
         load();
@@ -103,7 +103,7 @@
     loginBtn.disabled = true;
     say(loginStatus, 'Checking…');
 
-    api('api/admin/login', {
+    api('/api/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password: pw })
@@ -124,7 +124,7 @@
   });
 
   logoutBtn.addEventListener('click', function () {
-    api('api/admin/logout', { method: 'POST' }).then(function () {
+    api('/api/admin/logout', { method: 'POST' }).then(function () {
       entries = [];
       showLogin('Signed out.');
     });
@@ -134,7 +134,7 @@
 
   function load() {
     say(adminStatus, 'Loading…');
-    api('api/admin/registrations').then(function (r) {
+    api('/api/admin/registrations').then(function (r) {
       if (r.status === 401) { showLogin('Your session expired. Sign in again.', true); return; }
       if (!r.ok || !r.body.ok) { say(adminStatus, r.body.error || 'Could not load.', true); return; }
       entries = r.body.entries || [];
