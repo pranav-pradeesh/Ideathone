@@ -30,8 +30,8 @@
       <span class="eyebrow">Registration</span>
       <h1>Register your team</h1>
       <p class="lede">
-        Four things: your branch, your team name, how many of you there are, and
-        their names. Maximum <span data-bind="max-team">3</span> members.
+        Your branch, your team name, and the name and mobile number of everyone on
+        the team. Maximum <span data-bind="max-team">3</span> members.
       </p>
     </div>
   </section>
@@ -41,11 +41,11 @@
 
       <div id="successPanel" class="success" hidden>
         <h2>Team registered</h2>
-        <p>Your entry has been saved and your spreadsheet has downloaded. Send that file to the organisers, and keep the reference below for check-in.</p>
+        <p id="successNote">Your entry has been saved.</p>
         <div class="code" id="refCode">—</div>
         <div id="successDetail"></div>
         <div class="btn-row">
-          <button class="btn btn-primary" type="button" id="xlsxBtn">Download again (Excel)</button>
+          <button class="btn btn-primary" type="button" id="xlsxBtn">Download your entry (Excel)</button>
           <button class="btn btn-ghost" type="button" id="csvBtn">Download as CSV</button>
           <button class="btn btn-ghost" type="button" id="anotherBtn">Register another team</button>
         </div>
@@ -74,9 +74,15 @@
         </div>
 
         <div class="field">
-          <span class="label">Member names <span class="req">*</span></span>
+          <span class="label">Members <span class="req">*</span></span>
+          <span class="hint hint-top">Full name and a 10-digit mobile number for each member. The first is the team lead.</span>
           <div id="memberNames"></div>
           <div class="error-text" id="err-members"></div>
+        </div>
+
+        <div class="hp-field" aria-hidden="true">
+          <label for="website">Leave this blank</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
         </div>
 
         <div class="form-footer">
@@ -85,10 +91,9 @@
         </div>
       </form>
 
-      <p class="fine-print">
-        Submitting saves your team to this device and downloads a spreadsheet of your entry.
-        Organisers collect those files and merge them on the
-        <a href="organiser.html">organiser page</a>.
+      <p class="fine-print" id="privacyNote">
+        We collect these names and numbers only to run this event, and to contact your team
+        about it. Nothing else.
       </p>
 
     </div>

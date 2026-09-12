@@ -43,6 +43,8 @@
 
   function clearErrors() {
     ['branch', 'teamName', 'members'].forEach(function (id) { setError(id, ''); });
+    Array.prototype.slice.call(namesHost.querySelectorAll('.member-error'))
+      .forEach(function (n) { n.textContent = ''; n.classList.remove('show'); });
     Array.prototype.slice.call(form.querySelectorAll('[aria-invalid="true"]'))
       .forEach(function (n) { n.setAttribute('aria-invalid', 'false'); });
     statusEl.textContent = '';
@@ -70,34 +72,71 @@
     countSel.value = String(MAX);
   }
 
-  /* Keep the name boxes in step with the chosen count, preserving what has
+  /* Keep the member blocks in step with the chosen count, preserving what has
      already been typed. */
   function syncNames() {
     var want = parseInt(countSel.value, 10) || MIN;
-    var boxes = namesHost.querySelectorAll('input');
 
-    for (var i = boxes.length; i < want; i++) {
-      var row = el('div', 'name-row');
-
-      var num = el('span', 'name-num', String(i + 1));
-      num.setAttribute('aria-hidden', 'true');
-      row.appendChild(num);
-
-      var input = document.createElement('input');
-      input.type = 'text';
-      input.id = 'member' + (i + 1);
-      input.maxLength = 60;
-      input.autocomplete = 'off';
-      input.placeholder = i === 0 ? 'Team lead — full name' : 'Full name';
-      input.setAttribute('aria-label', 'Member ' + (i + 1) + ' full name');
-      row.appendChild(input);
-
-      namesHost.appendChild(row);
+    for (var i = namesHost.children.length; i < want; i++) {
+      namesHost.appendChild(memberBlock(i));
     }
-
     while (namesHost.children.length > want) {
       namesHost.removeChild(namesHost.lastChild);
     }
+  }
+
+  function memberBlock(i) {
+    var n = i + 1;
+    var block = el('div', 'member-block');
+
+    var head = el('div', 'member-block-head');
+    head.appendChild(el('span', 'name-num', String(n)));
+    head.appendChild(el('span', 'member-block-title', i === 0 ? 'Team lead' : 'Member ' + n));
+    block.appendChild(head);
+
+    var grid = el('div', 'member-grid');
+    grid.appendChild(memberInput({
+      id: 'member' + n + 'Name',
+      type: 'text',
+      max: 60,
+      label: 'Member ' + n + ' full name',
+      placeholder: 'Full name',
+      autocomplete: 'off'
+    }));
+    grid.appendChild(memberInput({
+      id: 'member' + n + 'Phone',
+      type: 'tel',
+      max: 20,
+      label: 'Member ' + n + ' mobile number',
+      placeholder: 'Mobile number',
+      autocomplete: 'off',
+      inputmode: 'numeric'
+    }));
+    block.appendChild(grid);
+    block.appendChild(el('div', 'error-text member-error'));
+    return block;
+  }
+
+  function memberInput(opts) {
+    var input = document.createElement('input');
+    input.type = opts.type;
+    input.id = opts.id;
+    input.maxLength = opts.max;
+    input.placeholder = opts.placeholder;
+    input.autocomplete = opts.autocomplete;
+    if (opts.inputmode) input.inputMode = opts.inputmode;
+    input.setAttribute('aria-label', opts.label);
+    return input;
+  }
+
+  function blocks() {
+    return Array.prototype.slice.call(namesHost.children);
+  }
+
+  function blockError(block, msg) {
+    var n = block.querySelector('.member-error');
+    n.textContent = msg;
+    n.classList.add('show');
   }
 
   /* ---- validation -------------------------------------------------------- */
@@ -122,41 +161,48 @@
       bad.push(teamNameInput);
     }
 
-    var inputs = Array.prototype.slice.call(namesHost.querySelectorAll('input'));
-    var names = [];
-    var seen = {};
-    var blank = false;
-    var dupe = false;
+    var members = [];
+    var seenName = {};
+    var seenPhone = {};
 
-    inputs.forEach(function (input) {
-      var v = input.value.trim();
-      if (!v) {
-        blank = true;
-        input.setAttribute('aria-invalid', 'true');
-        bad.push(input);
-        return;
+    blocks().forEach(function (block, i) {
+      var nameInput = block.querySelector('input[type="text"]');
+      var phoneInput = block.querySelector('input[type="tel"]');
+      var name = nameInput.value.trim().replace(/\s+/g, ' ');
+      var phone = R.normalisePhone(phoneInput.value);
+      var problem = '';
+
+      if (!name) {
+        problem = 'Name required.';
+        nameInput.setAttribute('aria-invalid', 'true');
+        bad.push(nameInput);
+      } else if (seenName[name.toLowerCase()]) {
+        problem = 'Member ' + seenName[name.toLowerCase()] + ' has the same name.';
+        nameInput.setAttribute('aria-invalid', 'true');
+        bad.push(nameInput);
+      } else {
+        seenName[name.toLowerCase()] = i + 1;
       }
-      var key = v.toLowerCase();
-      if (seen[key]) {
-        dupe = true;
-        input.setAttribute('aria-invalid', 'true');
-        bad.push(input);
-        return;
+
+      var phoneProblem = R.phoneProblem(phoneInput.value);
+      if (phoneProblem) {
+        problem = problem ? problem + ' ' + phoneProblem : phoneProblem;
+        phoneInput.setAttribute('aria-invalid', 'true');
+        bad.push(phoneInput);
+      } else if (seenPhone[phone]) {
+        problem = 'Member ' + seenPhone[phone] + ' already uses this number.';
+        phoneInput.setAttribute('aria-invalid', 'true');
+        bad.push(phoneInput);
+      } else {
+        seenPhone[phone] = i + 1;
       }
-      seen[key] = true;
-      names.push(v);
+
+      if (problem) {
+        blockError(block, problem);
+      } else {
+        members.push({ name: name, phone: phone });
+      }
     });
-
-    if (blank) {
-      setError('members', 'Fill in a name for every member, or lower the member count.');
-    } else if (dupe) {
-      setError('members', 'Two members have the same name — check the spelling.');
-    }
-
-    if (names.length > MAX) {
-      setError('members', 'Teams are capped at ' + MAX + ' members.');
-      bad.push(countSel);
-    }
 
     return {
       bad: bad,
@@ -165,7 +211,8 @@
         registeredAt: R.stamp(),
         branch: branchSel.value,
         teamName: teamName,
-        members: names
+        members: members,
+        website: document.getElementById('website') ? document.getElementById('website').value : ''
       }
     };
   }
@@ -186,20 +233,30 @@
     }
 
     var entry = result.entry;
-    if (!R.add(entry)) {
-      statusEl.textContent = 'This browser refused to save the entry. Try a normal (non-private) window.';
-      statusEl.classList.add('error');
-      return;
-    }
-
-    lastEntry = entry;
     submitBtn.disabled = true;
-    downloadXlsx();
-    showSuccess(entry);
+    statusEl.textContent = 'Registering…';
+
+    R.submit(entry).then(function (res) {
+      entry.ref = res.ref || entry.ref;
+      lastEntry = entry;
+      statusEl.textContent = '';
+      showSuccess(entry, res.mode);
+    }).catch(function (err) {
+      submitBtn.disabled = false;
+      statusEl.textContent = err.message || 'Could not register. Try again.';
+      statusEl.classList.add('error');
+
+      if (err.field === 'teamName') {
+        setError('teamName', err.message);
+        teamNameInput.setAttribute('aria-invalid', 'true');
+        teamNameInput.focus();
+        teamNameInput.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+    });
   }
 
   function fileBase() {
-    return 'ideathon-' + R.safeName(lastEntry.teamName);
+    return 'ideathon-' + R.safeName((lastEntry || {}).teamName || 'team');
   }
 
   function downloadXlsx() {
@@ -210,7 +267,7 @@
     if (lastEntry) R.downloadCsv([lastEntry], fileBase() + '.csv');
   }
 
-  function showSuccess(entry) {
+  function showSuccess(entry, mode) {
     form.hidden = true;
     successPanel.hidden = false;
     document.getElementById('refCode').textContent = entry.ref;
@@ -221,9 +278,21 @@
 
     var ul = el('ul', 'ticks');
     entry.members.forEach(function (m, i) {
-      ul.appendChild(el('li', null, m + (i === 0 && entry.members.length > 1 ? ' (team lead)' : '')));
+      ul.appendChild(el('li', null,
+        m.name + ' — ' + m.phone + (i === 0 && entry.members.length > 1 ? ' (team lead)' : '')));
     });
     detail.appendChild(ul);
+
+    var note = document.getElementById('successNote');
+    if (mode === 'server') {
+      note.textContent = 'The organisers have your registration. Keep the reference below ' +
+        'for check-in — you do not need to send anything.';
+    } else {
+      note.textContent = 'Saved on this device only — the organisers do not have it yet. ' +
+        'Download your entry below and send the file to them.';
+      note.classList.add('warn-text');
+      R.downloadXlsx([entry], fileBase() + '.xlsx');
+    }
 
     successPanel.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }

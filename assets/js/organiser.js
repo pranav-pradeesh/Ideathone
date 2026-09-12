@@ -75,6 +75,8 @@
       });
       bBody.appendChild(tr);
     });
+
+    if (window.IdeathonSite) window.IdeathonSite.markScrollables();
   }
 
   function importFiles(fileList) {

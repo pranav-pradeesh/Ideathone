@@ -33,6 +33,7 @@
     });
     all('[data-bind="footer-contact"]').forEach(function (n) {
       n.textContent = '';
+      /* Deliberately no link to admin.html from any public page. */
       if (cfg.contactEmail) {
         var a = el('a', null, cfg.contactEmail);
         a.href = 'mailto:' + cfg.contactEmail;
@@ -40,10 +41,6 @@
       } else {
         n.appendChild(document.createTextNode('Questions? Ask an organiser.'));
       }
-      n.appendChild(document.createTextNode(' · '));
-      var org = el('a', null, 'Organiser');
-      org.href = 'organiser.html';
-      n.appendChild(org);
     });
 
     document.title = document.title.replace(/^Ideathon 60/, cfg.name);
@@ -208,6 +205,18 @@
     update();
   }
 
+  /* ---- wide tables -------------------------------------------------------- */
+
+  /* Mark the containers that actually overflow, so the "scrolls sideways" hint
+     only appears when it is true. */
+  function markScrollables() {
+    all('.table-scroll').forEach(function (box) {
+      box.classList.toggle('is-scrollable', box.scrollWidth > box.clientWidth + 1);
+    });
+  }
+
+  window.IdeathonSite = { markScrollables: markScrollables };
+
   /* ---- boot -------------------------------------------------------------- */
 
   function boot() {
@@ -235,6 +244,13 @@
     if (toc) renderRoleToc(toc);
 
     initPlanner();
+    markScrollables();
+
+    var pending;
+    window.addEventListener('resize', function () {
+      clearTimeout(pending);
+      pending = setTimeout(markScrollables, 120);
+    });
   }
 
   if (document.readyState === 'loading') {

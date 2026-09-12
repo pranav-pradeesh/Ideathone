@@ -13,26 +13,37 @@ window.Registry = (function () {
   var STORE_KEY = 'ideathon60.registrations';
   var SHEET_NAME = 'Registrations';
 
-  var COLUMNS = [
-    { key: 'ref', label: 'Reference', width: 16 },
-    { key: 'registeredAt', label: 'Registered at', width: 20 },
-    { key: 'branch', label: 'Branch of study', width: 24 },
-    { key: 'teamName', label: 'Team name', width: 26 },
-    { key: 'memberCount', label: 'Members', width: 10 },
-    { key: 'member1', label: 'Member 1', width: 24 },
-    { key: 'member2', label: 'Member 2', width: 24 },
-    { key: 'member3', label: 'Member 3', width: 24 }
-  ];
+  var MAX_MEMBERS = (I && I.config.maxTeamSize) || 3;
 
-  var MAX = (I && I.config.maxTeamSize) || 3;
+  var COLUMNS = (function () {
+    var cols = [
+      { key: 'ref', label: 'Reference', width: 16 },
+      { key: 'registeredAt', label: 'Registered at', width: 18 },
+      { key: 'branch', label: 'Branch of study', width: 24 },
+      { key: 'teamName', label: 'Team name', width: 24 },
+      { key: 'memberCount', label: 'Members', width: 9 }
+    ];
+    for (var n = 1; n <= MAX_MEMBERS; n++) {
+      cols.push({ key: 'member' + n + 'Name', label: 'Member ' + n + ' name', width: 22 });
+      cols.push({ key: 'member' + n + 'Phone', label: 'Member ' + n + ' phone', width: 15 });
+    }
+    return cols;
+  })();
+
+  var MAX = MAX_MEMBERS;
 
   /* ---- record shape ------------------------------------------------------ */
 
   function toRow(entry) {
+    var members = entry.members || [];
     return COLUMNS.map(function (c) {
-      if (c.key === 'memberCount') return entry.members.length;
-      if (/^member\d$/.test(c.key)) {
-        return entry.members[parseInt(c.key.slice(6), 10) - 1] || '';
+      if (c.key === 'memberCount') return members.length;
+      var m = /^member(\d+)(Name|Phone)$/.exec(c.key);
+      if (m) {
+        var member = members[parseInt(m[1], 10) - 1];
+        if (!member) return '';
+        /* A phone stays text: leading zeros and a + prefix must survive Excel. */
+        return (m[2] === 'Name' ? member.name : member.phone) || '';
       }
       return entry[c.key] == null ? '' : entry[c.key];
     });
@@ -51,8 +62,9 @@ window.Registry = (function () {
     }
     var members = [];
     for (var n = 1; n <= MAX; n++) {
-      var v = get('member' + n);
-      if (v) members.push(v);
+      var name = get('member' + n + 'Name');
+      var phone = get('member' + n + 'Phone');
+      if (name) members.push({ name: name, phone: phone });
     }
     if (!get('teamName') || !members.length) return null;
     return {
@@ -86,6 +98,26 @@ window.Registry = (function () {
     function p(n) { return (n < 10 ? '0' : '') + n; }
     return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) +
       ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  /* ---- phone numbers ------------------------------------------------------ */
+
+  /* Accepts what people actually type: spaces, dashes, brackets, a +91 or 0
+     prefix. Returns the bare 10 digits, or '' if it is not a usable number. */
+  function normalisePhone(raw) {
+    var d = String(raw == null ? '' : raw).replace(/\D/g, '');
+    if (d.length === 12 && d.slice(0, 2) === '91') d = d.slice(2);
+    else if (d.length === 11 && d[0] === '0') d = d.slice(1);
+    return d.length === 10 ? d : '';
+  }
+
+  function phoneProblem(raw) {
+    var d = String(raw == null ? '' : raw).replace(/\D/g, '');
+    if (!d) return 'Phone number required.';
+    if (!normalisePhone(raw)) {
+      return d.length < 10 ? 'Too short — we need 10 digits.' : 'That is not a 10-digit number.';
+    }
+    return '';
   }
 
   /* ---- local storage ------------------------------------------------------ */
@@ -276,8 +308,63 @@ window.Registry = (function () {
     return { added: added, skipped: skipped, total: list.length };
   }
 
+  /* ---- submission ---------------------------------------------------------- */
+
+  /* Send to the API when one is reachable, otherwise keep it on this device.
+     Resolves with the mode actually used so the page can say which happened. */
+  function submit(entry) {
+    if (typeof fetch !== 'function' || location.protocol === 'file:') {
+      return Promise.resolve(localOnly(entry));
+    }
+
+    return fetch('api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(entry)
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (body) {
+        if (res.ok && body.ok) {
+          add({ ref: body.ref || entry.ref, registeredAt: body.registeredAt || entry.registeredAt,
+                branch: entry.branch, teamName: entry.teamName, members: entry.members });
+          return { mode: 'server', ref: body.ref || entry.ref, entry: entry };
+        }
+        if (res.status === 409) {
+          var err = new Error(body.error || 'That team name is already registered.');
+          err.field = body.field || 'teamName';
+          throw err;
+        }
+        if (res.status === 400) {
+          var bad = new Error(body.error || 'The server rejected that entry.');
+          bad.field = body.field;
+          throw bad;
+        }
+        if (res.status === 429) {
+          throw new Error(body.error || 'Too many registrations from this connection. Wait a few minutes.');
+        }
+        /* 404 (no API deployed) or 503 (no database configured): fall back so a
+           registration desk still works rather than losing the entry. */
+        if (res.status === 404 || res.status === 503) return localOnly(entry);
+        throw new Error(body.error || ('The server replied ' + res.status + '.'));
+      });
+    }).catch(function (err) {
+      if (err && err.field) throw err;
+      if (err instanceof TypeError) return localOnly(entry);   // offline / no network
+      throw err;
+    });
+  }
+
+  function localOnly(entry) {
+    if (!add(entry)) {
+      throw new Error('This browser refused to save the entry. Try a normal (non-private) window.');
+    }
+    return { mode: 'local', ref: entry.ref, entry: entry };
+  }
+
   return {
     COLUMNS: COLUMNS,
+    normalisePhone: normalisePhone,
+    phoneProblem: phoneProblem,
+    submit: submit,
     MAX: MAX,
     header: header,
     toRow: toRow,

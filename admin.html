@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Ideathon 60</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d12'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ffb020' stroke-width='2.5'/%3E%3Cpath d='M16 10v6l4 2' stroke='%23ffb020' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span><span data-bind="event-name">Ideathon 60</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <span class="nav-tag">Admin</span>
+      <button class="btn btn-ghost btn-sm" type="button" id="logoutBtn" hidden>Sign out</button>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ---------- signed out ---------- -->
+  <section class="band band-last" id="loginView" hidden>
+    <div class="wrap wrap-narrow">
+      <div class="login-card">
+        <span class="eyebrow">Restricted</span>
+        <h1>Admin sign-in</h1>
+        <p class="lede lede-sm">
+          Every team that has registered, in one sheet. The password is checked on the
+          server &mdash; this page holds nothing until you are signed in.
+        </p>
+
+        <form id="loginForm" class="form-shell">
+          <div class="field">
+            <label for="password">Admin password</label>
+            <input type="password" id="password" autocomplete="current-password" autofocus>
+            <div class="error-text" id="err-password"></div>
+          </div>
+          <div class="form-footer">
+            <button class="btn btn-primary" type="submit" id="loginBtn">Sign in</button>
+            <span class="form-status" id="loginStatus" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+
+        <p class="fine-print" id="setupNote" hidden></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- signed in ---------- -->
+  <section class="band band-last" id="adminView" hidden>
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:24px">
+        <p class="kicker">Admin</p>
+        <h1>All registrations</h1>
+        <p>Live from the database. Every team that has registered anywhere, on any device.</p>
+      </div>
+
+      <dl class="facts facts-tight">
+        <div class="fact"><dt>Teams</dt><dd id="statTeams">—</dd></div>
+        <div class="fact"><dt>Participants</dt><dd id="statPeople">—</dd></div>
+        <div class="fact"><dt>Branches</dt><dd id="statBranches">—</dd></div>
+        <div class="fact"><dt>Pitch pods</dt><dd id="statPods">—</dd></div>
+      </dl>
+
+      <div class="callout">
+        <h3>Download the sheet</h3>
+        <p>One row per team, with every member's name and phone number.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" id="xlsxBtn">Download Excel (.xlsx)</button>
+          <button class="btn btn-ghost" type="button" id="csvBtn">Download CSV</button>
+          <button class="btn btn-ghost" type="button" id="refreshBtn">Refresh</button>
+        </div>
+        <p class="form-status" id="adminStatus" role="status" aria-live="polite"></p>
+      </div>
+
+      <div id="adminEmpty" class="callout warn" hidden>
+        <h3>No teams yet</h3>
+        <p style="margin-bottom:0">Nothing has been registered. Share the
+          <a href="register.html">registration link</a> and this fills up on its own.</p>
+      </div>
+
+      <div id="adminTables" hidden>
+        <h2 class="table-title">Teams</h2>
+        <div class="table-scroll">
+          <table id="teamsTable" class="stack-table">
+            <thead><tr id="tableHead"></tr></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <p class="table-hint">Scroll sideways for every column →</p>
+
+        <h2 class="table-title">By branch</h2>
+        <div class="table-scroll">
+          <table id="branchTable" class="stack-table">
+            <thead><tr><th>Branch of study</th><th>Teams</th><th>Participants</th></tr></thead>
+            <tbody id="branchBody"></tbody>
+          </table>
+        </div>
+        <p class="table-hint">Scroll sideways for every column →</p>
+      </div>
+
+      <p class="fine-print">
+        This page holds participants' names and phone numbers. Download what you need, and
+        sign out when you are done &mdash; the session expires on its own after eight hours.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span data-bind="footer-name">Ideathon 60</span>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/xlsx.js"></script>
+<script src="assets/js/registry.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>
