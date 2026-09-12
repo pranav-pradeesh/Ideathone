@@ -25,7 +25,9 @@
     all('[data-bind="host-short"]').forEach(function (n) { n.textContent = cfg.hostShort || ''; });
     all('[data-bind="host-full"]').forEach(function (n) { n.textContent = cfg.host || ''; });
     all('[data-bind="event-date"]').forEach(function (n) { n.textContent = cfg.date || 'TBA'; });
-    all('[data-bind="event-venue"]').forEach(function (n) { n.textContent = cfg.venue || 'TBA'; });
+    all('[data-bind="event-date-short"]').forEach(function (n) { n.textContent = cfg.dateShort || cfg.date || 'TBA'; });
+    all('[data-bind="event-full-name"]').forEach(function (n) { n.textContent = cfg.fullName || cfg.name; });
+    all('[data-bind="tagline"]').forEach(function (n) { n.textContent = cfg.tagline || ''; });
     all('[data-bind="max-team"]').forEach(function (n) { n.textContent = String(cfg.maxTeamSize); });
     all('[data-bind="pitch-capacity"]').forEach(function (n) { n.textContent = String(I.pitchCapacity()); });
     all('[data-bind="ai-disclosure"]').forEach(function (n) { n.textContent = I.aiPolicy.disclosure; });
@@ -181,6 +183,23 @@
     });
   }
 
+  /* ---- perks -------------------------------------------------------------- */
+
+  function renderPerks(host) {
+    host.textContent = '';
+    I.perks.forEach(function (perk) {
+      var li = el('li');
+      var icon = el('span', 'perk-icon', perk.icon);
+      icon.setAttribute('aria-hidden', 'true');
+      li.appendChild(icon);
+      var body = el('span', 'perk-body');
+      body.appendChild(el('strong', null, perk.title));
+      body.appendChild(el('small', null, perk.note));
+      li.appendChild(body);
+      host.appendChild(li);
+    });
+  }
+
   /* ---- rule book ---------------------------------------------------------- */
 
   function renderRules(host) {
@@ -260,6 +279,59 @@
     update();
   }
 
+  /* ---- mobile menu -------------------------------------------------------- */
+
+  function initNav() {
+    var toggle = document.getElementById('navToggle');
+    var nav = document.getElementById('siteNav');
+    if (!toggle || !nav) return;
+
+    function open() {
+      nav.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.addEventListener('keydown', onKey);
+      document.addEventListener('click', onOutside, true);
+    }
+
+    function close(refocus) {
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('click', onOutside, true);
+      if (refocus) toggle.focus();
+    }
+
+    function isOpen() { return toggle.getAttribute('aria-expanded') === 'true'; }
+
+    function onKey(e) {
+      if (e.key === 'Escape' || e.key === 'Esc') close(true);
+    }
+
+    function onOutside(e) {
+      if (!nav.contains(e.target) && !toggle.contains(e.target)) close(false);
+    }
+
+    toggle.addEventListener('click', function () {
+      if (isOpen()) close(false); else open();
+    });
+
+    /* Following a link should not leave the panel hanging open behind the
+       next page, and an in-page anchor does not reload at all. */
+    nav.addEventListener('click', function (e) {
+      if (e.target.closest('a')) close(false);
+    });
+
+    /* Dragging the window back to a wide layout must not leave the menu in
+       its open state, where it would sit over the page. */
+    var pending;
+    window.addEventListener('resize', function () {
+      clearTimeout(pending);
+      pending = setTimeout(function () {
+        if (window.innerWidth > 720 && isOpen()) close(false);
+      }, 120);
+    });
+  }
+
   /* ---- wide tables -------------------------------------------------------- */
 
   /* Mark the containers that actually overflow, so the "scrolls sideways" hint
@@ -298,6 +370,9 @@
     var toc = document.querySelector('[data-render="role-toc"]');
     if (toc) renderRoleToc(toc);
 
+    var perks = document.querySelector('[data-render="perks"]');
+    if (perks) renderPerks(perks);
+
     var rules = document.querySelector('[data-render="rules"]');
     if (rules) renderRules(rules);
 
@@ -307,6 +382,7 @@
     var rt = document.querySelector('[data-render="role-table"]');
     if (rt) renderRoleTable(rt);
 
+    initNav();
     initPlanner();
     markScrollables();
 

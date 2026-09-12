@@ -20,7 +20,12 @@
         <small data-bind="host-short">NCERC</small>
       </span>
     </a>
-    <nav class="site-nav" aria-label="Primary">
+      <button class="nav-toggle" type="button" id="navToggle"
+              aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
+        <span class="nav-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="nav-toggle-text">Menu</span>
+      </button>
+    <nav class="site-nav" id="siteNav" aria-label="Primary">
       <a href="#schedule">The 60 minutes</a>
       <a href="rulebook.html">Rule book</a>
       <a href="register.html" class="btn btn-primary btn-sm">Register</a>
@@ -36,24 +41,26 @@
         <img src="assets/img/ncerc.jpg" alt="" width="52" height="52">
         <span data-bind="host-full">Nehru College of Engineering and Research Centre</span>
       </div>
-      <span class="eyebrow">60 minutes · teams of 3 · AI allowed, with limits</span>
-      <h1><span data-bind="event-name">Ideathon 60</span></h1>
+      <span class="eyebrow" data-bind="event-date">Monday, 14 September 2026</span>
+      <h1><span data-bind="event-full-name">Engineering Day 2026 — Ideathon</span></h1>
+      <p class="tagline" data-bind="tagline">Think. Innovate. Solve. Pitch.</p>
       <p class="lede">
-        You get the problem at minute zero and pitch at minute forty-eight.
-        Teams of up to three.
+        Have an innovative solution to a real-world problem? The challenges are handed out
+        at the venue &mdash; pick one, build your idea, and pitch it, all inside one hour.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="register.html">Register your team</a>
         <a class="btn btn-ghost" href="rulebook.html">Read the rule book</a>
       </div>
 
+      <ul class="perks" data-render="perks"></ul>
+
       <dl class="facts">
+        <div class="fact"><dt>Date</dt><dd data-bind="event-date-short">Mon 14 Sep 2026</dd></div>
         <div class="fact"><dt>Duration</dt><dd>60 minutes</dd></div>
         <div class="fact"><dt>Team size</dt><dd>1&ndash;3 people</dd></div>
         <div class="fact"><dt>Deck</dt><dd>5 slides</dd></div>
         <div class="fact"><dt>Pitch</dt><dd>2 min + 1 Q&amp;A</dd></div>
-        <div class="fact"><dt>Date</dt><dd data-bind="event-date">TBA</dd></div>
-        <div class="fact"><dt>Venue</dt><dd data-bind="event-venue">TBA</dd></div>
       </dl>
     </div>
   </section>

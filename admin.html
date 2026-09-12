@@ -21,7 +21,12 @@
         <small data-bind="host-short">NCERC</small>
       </span>
     </a>
-    <nav class="site-nav" aria-label="Primary">
+      <button class="nav-toggle" type="button" id="navToggle"
+              aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
+        <span class="nav-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="nav-toggle-text">Menu</span>
+      </button>
+    <nav class="site-nav" id="siteNav" aria-label="Primary">
       <span class="nav-tag">Admin</span>
       <button class="btn btn-ghost btn-sm" type="button" id="logoutBtn" hidden>Sign out</button>
     </nav>

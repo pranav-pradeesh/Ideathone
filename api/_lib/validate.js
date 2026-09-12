@@ -10,6 +10,7 @@ export const BRANCHES = [
   'Mechanical Engineering',
   'CSE A',
   'CSE B',
+  'CSE AI/ML',
   'EEE',
   'ECE'
 ];

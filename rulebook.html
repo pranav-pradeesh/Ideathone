@@ -20,7 +20,12 @@
         <small data-bind="host-short">NCERC</small>
       </span>
     </a>
-    <nav class="site-nav" aria-label="Primary">
+      <button class="nav-toggle" type="button" id="navToggle"
+              aria-expanded="false" aria-controls="siteNav" aria-label="Menu">
+        <span class="nav-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="nav-toggle-text">Menu</span>
+      </button>
+    <nav class="site-nav" id="siteNav" aria-label="Primary">
       <a href="index.html#schedule">The 60 minutes</a>
       <a href="rulebook.html" aria-current="page">Rule book</a>
       <a href="register.html" class="btn btn-primary btn-sm">Register</a>

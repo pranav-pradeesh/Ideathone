@@ -7,13 +7,14 @@ window.IDEATHON = (function () {
   /* ---- organiser settings ------------------------------------------------ */
 
   var config = {
-    name: 'Ideathon 60',
-    tagline: 'One hour. One idea. Three people.',
+    name: 'Ideathon 2026',
+    fullName: 'Engineering Day 2026 — Ideathon',
+    tagline: 'Think. Innovate. Solve. Pitch.',
     host: 'Nehru College of Engineering and Research Centre',
     hostShort: 'NCERC',
     hostGroup: 'Nehru Group of Institutions',
-    date: 'TBA',            // e.g. '12 October 2026'
-    venue: 'TBA',           // e.g. 'Seminar Hall, Block C'
+    date: 'Monday, 14 September 2026',
+    dateShort: 'Mon 14 Sep 2026',
     contactEmail: '',       // shown in the footer when set
     maxTeamSize: 3,
     minTeamSize: 1,
@@ -34,7 +35,7 @@ window.IDEATHON = (function () {
     {
       start: 0, minutes: 5, name: 'Check-in & Brief',
       ai: 'n/a',
-      what: 'Problem statement revealed. The timer starts and does not stop.',
+      what: 'The challenges are revealed. Pick one. The timer starts and does not stop.',
       owner: 'Organisers'
     },
     {
@@ -199,6 +200,14 @@ window.IDEATHON = (function () {
     }
   ];
 
+  /* ---- what participants get --------------------------------------------- */
+
+  var perks = [
+    { icon: '🏆', title: 'Prizes for winners', note: 'Awarded on the day.' },
+    { icon: '📜', title: 'E-certificate', note: 'For every participant.' },
+    { icon: '🤝', title: 'Team participation', note: 'One to three per team.' }
+  ];
+
   /* ---- the rule book ----------------------------------------------------- */
   /* Numbered so an organiser can point at one during a dispute: "rule 5.2". */
 
@@ -229,7 +238,7 @@ window.IDEATHON = (function () {
       id: 'prep',
       title: 'Preparation',
       items: [
-        'The problem statement is revealed at minute zero. Nobody sees it in advance.',
+        'The challenges are revealed at minute zero and your team picks one. Nobody sees them in advance.',
         'No pre-built decks, no pre-chosen ideas, no work started before the timer. This is the one rule that removes a team rather than costing it marks.',
         'An empty slide template is fine. A template with your content already in it is not.',
         'You may use any tool you already have installed. Setting it up is your own time.'
@@ -318,6 +327,7 @@ window.IDEATHON = (function () {
     'Mechanical Engineering',
     'CSE A',
     'CSE B',
+    'CSE AI/ML',
     'EEE',
     'ECE'
   ];
@@ -338,6 +348,7 @@ window.IDEATHON = (function () {
     config: config,
     schedule: schedule,
     roles: roles,
+    perks: perks,
     rules: rules,
     teamShapes: teamShapes,
     aiPolicy: aiPolicy,

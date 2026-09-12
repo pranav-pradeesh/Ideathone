@@ -42,7 +42,7 @@ dependency in the whole project is the Postgres driver used by the API.
 
 ## What registration collects
 
-1. **Branch of study** — Mechatronics, Mechanical Engineering, CSE A, CSE B, EEE, ECE
+1. **Branch of study** — Mechatronics, Mechanical Engineering, CSE A, CSE B, CSE AI/ML, EEE, ECE
 2. **Team name**
 3. **Number of team members** — 1 to 3
 4. **Each member's full name and 10-digit mobile number** — boxes appear to match the count
@@ -114,11 +114,15 @@ Everything lives at the top of `assets/js/data.js`:
 ```js
 var config = { name, date, venue, contactEmail, maxTeamSize, minTeamSize, totalMinutes,
                pitchBlockMinutes, pitchMinutesPerTeam, qaMinutesPerTeam };
-var branches = ['Mechatronics', 'Mechanical Engineering', 'CSE A', 'CSE B', 'EEE', 'ECE'];
+var branches = ['Mechatronics', 'Mechanical Engineering', 'CSE A', 'CSE B', 'CSE AI/ML', 'EEE', 'ECE'];
 ```
 
 The schedule, roles, team-size fallbacks and AI policy text are plain arrays in the same
-file. Editing a branch name or adding one updates the form immediately.
+file. Editing a branch name or adding one updates the form immediately — **and must be
+mirrored in `BRANCHES` in `api/_lib/validate.js`**, which is what the server enforces. A
+test asserts the two lists are identical, because if they drift, that branch's
+registrations are rejected with "Unknown branch of study" and nobody notices until the
+day.
 
 Adding a column to the spreadsheet (a contact email, say) means adding one entry to
 `COLUMNS` in `registry.js` and one field in `register.html` — the CSV, the `.xlsx`, the
@@ -179,9 +183,12 @@ is what was run against this code:
 
 | Suite | Covers |
 | --- | --- |
+| Sync | The client and server branch lists are identical, the team caps match, the schedule is contiguous and sums to 60, and the judging marks sum to 100 |
 | Schema | The exact DDL and every query, executed on a real Postgres engine: idempotent DDL, the unique index rejecting `  night owls  ` against `Night Owls`, jsonb round-trip, rate-window arithmetic |
 | Auth | Password check, token signing and verification, tampered/expired/forged tokens, the guard's 401 and 503 paths, cookie flags, password rotation invalidating sessions, opaque client hashing |
 | API | The real handlers end to end: 201/400/409/429/405 paths, honeypot, server-side cap and branch enforcement, admin endpoints refusing forged cookies, login lockout, logout |
 | UI | The form against a live API, the admin sign-in boundary, the spreadsheet download, and the `hidden` attribute actually hiding things |
 | Offline | Registration, download, CSV/xlsx round-trip and organiser merge with no API at all |
+| Menu | The mobile menu: open, close, second tap, Escape with focus return, tap-outside, link navigation, the 720px boundary, and that widening the window does not leave it open |
 | Responsive | Five pages × six viewport widths, plus tap-target heights |
+| Contrast | Every text/background pair on every page against WCAG AA, compositing translucent panels, plus a 12px floor on text size |
