@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ideathon 60 — Registration</title>
+<meta name="description" content="Register your team for Ideathon 60: a one-hour ideathon. Teams of up to 3, a published role book, and a clear AI policy.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d12'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ffb020' stroke-width='2.5'/%3E%3Cpath d='M16 10v6l4 2' stroke='%23ffb020' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span><span data-bind="event-name">Ideathon 60</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#format">Format</a>
+      <a href="#schedule">The 60 minutes</a>
+      <a href="#roles">Roles</a>
+      <a href="#ai">AI policy</a>
+      <a href="rolebook.html">Role book</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">60 minutes · teams of 3 · AI allowed, with limits</span>
+      <h1><span data-bind="event-name">Ideathon 60</span></h1>
+      <p class="lede">
+        One hour, start to finish. Your team gets a problem statement at minute zero and
+        pitches a solution at minute forty-eight. Up to three people per team, one published
+        role each, and a schedule that tells you exactly what you should be doing at any
+        given minute.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="register.html">Register your team</a>
+        <a class="btn btn-ghost" href="rolebook.html">Read the role book</a>
+      </div>
+
+      <dl class="facts">
+        <div class="fact"><dt>Duration</dt><dd>60 minutes</dd></div>
+        <div class="fact"><dt>Team size</dt><dd>1&ndash;3 people</dd></div>
+        <div class="fact"><dt>Deck</dt><dd>5 slides</dd></div>
+        <div class="fact"><dt>Pitch</dt><dd>2 min + 1 Q&amp;A</dd></div>
+        <div class="fact"><dt>Date</dt><dd data-bind="event-date">TBA</dd></div>
+        <div class="fact"><dt>Venue</dt><dd data-bind="event-venue">TBA</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="band" id="format">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">How it works</p>
+        <h2>An hour is not a hackathon. It is a decision drill.</h2>
+        <p>
+          You will not build a product in sixty minutes, and you are not being asked to.
+          You are being judged on whether you can read a problem, choose one idea over
+          three others, and defend that choice under questioning. Everything in the format
+          below exists to protect those three things from the clock.
+        </p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>Maximum three members</h3>
+          <p>Three is the cap, and it is a hard one. Four people cannot reach agreement inside a five-minute decision block — the format breaks before the idea does. One and two-person teams are welcome and have their own role fallbacks.</p>
+        </div>
+        <div class="card">
+          <h3>Every member has one named role</h3>
+          <p>You pick your roles at registration, not on the day. Each role has its own minute-by-minute in the role book, so nobody spends the first ten minutes deciding who does what.</p>
+        </div>
+        <div class="card">
+          <h3>Five slides, hard cutoff</h3>
+          <p>Problem, Idea, How it works, Impact, Ask. Submission closes at minute 48 and late decks are not judged. The cutoff is enforced by a clock, not by a person you can negotiate with.</p>
+        </div>
+        <div class="card">
+          <h3>AI for research and slides</h3>
+          <p>Permitted, openly, in the phases where it saves real time. Closed in the two blocks that are actually being judged — the decision and the pitch. Full policy below.</p>
+        </div>
+        <div class="card">
+          <h3>Judged on four things</h3>
+          <p>Clarity of the problem, originality of the idea, feasibility of the how, and the quality of your answers under questioning. Slide polish is worth nothing on its own.</p>
+        </div>
+        <div class="card">
+          <h3>No prior preparation</h3>
+          <p>The problem statement is revealed at minute zero. Bringing a pre-built deck is the one thing that gets a team removed rather than marked down.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="schedule">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">Minute by minute</p>
+        <h2>Splitting the hour</h2>
+        <p>
+          Seven blocks, sixty minutes, no slack. The purple blocks are where AI tools are
+          permitted; the red blocks are where they are closed. Your team's timer starts at
+          the brief and does not stop.
+        </p>
+      </div>
+
+      <div class="timeline" id="timeline" data-render="timeline">
+        <noscript><p>Enable JavaScript to see the schedule, or read it in the <a href="rolebook.html">role book</a>.</p></noscript>
+      </div>
+
+      <div class="callout warn">
+        <h3>Organisers: the pitch block is the constraint</h3>
+        <p>
+          Twelve minutes of pitching at three minutes per team fits
+          <strong data-bind="pitch-capacity">4</strong> teams. That is the real capacity of a
+          single room &mdash; every team beyond that either overruns the hour or does not pitch.
+          Run parallel pods with a judge each, then a shortlist round afterwards if you need one.
+        </p>
+        <div class="planner">
+          <div>
+            <label for="teamCount">Teams registered</label>
+            <input type="number" id="teamCount" min="1" max="500" value="12" inputmode="numeric">
+          </div>
+        </div>
+        <div class="planner-out" id="plannerOut" aria-live="polite">
+          <div><span>Pods needed</span><strong id="podCount">3</strong></div>
+          <div><span>Judges needed</span><strong id="judgeCount">3</strong></div>
+          <div><span>Rooms / corners</span><strong id="roomCount">3</strong></div>
+          <div><span>Teams per pod</span><strong id="perPod">4</strong></div>
+        </div>
+        <p class="hint" style="color:var(--text-faint);font-size:.85rem;margin-bottom:0">
+          Each pod runs the same sixty-minute clock in parallel. Only the pitch block needs
+          separating &mdash; the first 48 minutes can happen in one hall.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="roles">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">The role book</p>
+        <h2>Three roles, chosen before you arrive</h2>
+        <p>
+          Each member claims exactly one role at registration, and no two members of a team
+          can hold the same one. Short-handed teams merge roles using the published
+          fallbacks &mdash; there is no improvising on the day.
+        </p>
+      </div>
+
+      <div class="grid grid-3" id="roleCards" data-render="role-cards"></div>
+
+      <div class="callout">
+        <h3>If you are not three</h3>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Team size</th><th>How the roles split</th></tr></thead>
+            <tbody data-render="team-shapes"></tbody>
+          </table>
+        </div>
+        <p style="margin-top:16px;margin-bottom:0">
+          <a href="rolebook.html">Open the full role book</a> for each role's minute-by-minute,
+          deliverables and failure modes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="ai">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="kicker">AI policy</p>
+        <h2>AI is a tool here, not a contestant</h2>
+        <p>
+          Use it for research and for making the presentation &mdash; that is what it is good at,
+          and pretending otherwise would just push it under the table. The two blocks that
+          decide the winner are AI-free, because those are the blocks that are actually you.
+        </p>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 style="color:var(--ok)">Permitted</h3>
+          <ul class="ticks yes" data-render="ai-allowed"></ul>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--danger)">Not permitted</h3>
+          <ul class="ticks no" data-render="ai-not-allowed"></ul>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <h3>Disclosure is mandatory</h3>
+        <p data-bind="ai-disclosure"></p>
+      </div>
+
+      <div class="callout">
+        <h3>Why the Decide block is AI-free</h3>
+        <p style="margin-bottom:0">
+          If a model picks the idea, the judges are marking the model. The five minutes
+          between 15:00 and 20:00 are the one part of the hour where the team has to back
+          its own judgement &mdash; so laptops close, the team argues out loud, and the Lead
+          writes one sentence down. Judges will ask in Q&amp;A why you chose this idea over
+          the alternatives. Answer that well and the rest of the pitch gets easier.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="border-bottom:none">
+    <div class="wrap" style="text-align:center">
+      <h2>Registration is open</h2>
+      <p style="color:var(--text-dim);max-width:52ch;margin:0 auto 26px">
+        Bring one to three people, pick your roles, name the AI tools you intend to use.
+        That is the whole entry requirement.
+      </p>
+      <a class="btn btn-primary" href="register.html">Register your team</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span data-bind="footer-name">Ideathon 60</span>
+    <span data-bind="footer-contact"></span>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>

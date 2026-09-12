@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Register — Ideathon 60</title>
+<meta name="description" content="Register a team of up to three for Ideathon 60. Pick a role for each member and declare the AI tools you intend to use.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d12'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ffb020' stroke-width='2.5'/%3E%3Cpath d='M16 10v6l4 2' stroke='%23ffb020' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span><span data-bind="event-name">Ideathon 60</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html#schedule">The 60 minutes</a>
+      <a href="index.html#ai">AI policy</a>
+      <a href="rolebook.html">Role book</a>
+      <a href="register.html" aria-current="page">Register</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" style="padding-bottom:36px">
+    <div class="wrap">
+      <span class="eyebrow">Registration</span>
+      <h1>Register your team</h1>
+      <p class="lede">
+        One to <span data-bind="max-team">3</span> members, one role each, no duplicates.
+        The first member listed is the team lead and the only contact we will write to.
+        Read the <a href="rolebook.html">role book</a> before you choose roles &mdash; you cannot
+        swap them on the day.
+      </p>
+    </div>
+  </section>
+
+  <section class="band" style="border-bottom:none">
+    <div class="wrap" style="max-width:800px">
+
+      <div id="successPanel" class="success" hidden>
+        <h2>Team registered</h2>
+        <p>Keep this reference &mdash; you will be asked for it at check-in.</p>
+        <div class="code" id="refCode">—</div>
+        <div id="successDetail"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
+          <button class="btn btn-ghost" type="button" id="downloadBtn">Download your entry (JSON)</button>
+          <button class="btn btn-ghost" type="button" id="anotherBtn">Register another team</button>
+          <a class="btn btn-ghost" href="rolebook.html">Read your role</a>
+        </div>
+      </div>
+
+      <form class="form-shell" id="regForm" novalidate>
+
+        <fieldset>
+          <legend>The team</legend>
+          <p class="legend-note">One entry per team. Do not submit twice &mdash; duplicate team names are rejected at check-in.</p>
+
+          <div class="field">
+            <label for="teamName">Team name <span class="req">*</span></label>
+            <input type="text" id="teamName" name="teamName" maxlength="60" autocomplete="off" placeholder="Something we can shout across a hall">
+            <div class="error-text" id="err-teamName"></div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="institution">College / organisation <span class="req">*</span></label>
+              <input type="text" id="institution" name="institution" maxlength="100" autocomplete="organization">
+              <div class="error-text" id="err-institution"></div>
+            </div>
+            <div class="field">
+              <label for="theme">Preferred theme <span class="req">*</span></label>
+              <select id="theme" name="theme">
+                <option value="">Choose a theme…</option>
+              </select>
+              <span class="hint">A preference, not a guarantee &mdash; the problem statement is revealed at minute zero.</span>
+              <div class="error-text" id="err-theme"></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Members <span class="member-count" id="memberCount">1 of 3</span></legend>
+          <p class="legend-note">
+            Maximum <span data-bind="max-team">3</span> members. Each member takes a different role.
+            Member 1 is the team lead and primary contact.
+          </p>
+
+          <div id="members"></div>
+
+          <button type="button" class="btn btn-ghost btn-sm" id="addMember">+ Add member</button>
+          <div class="error-text" id="err-members"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>AI declaration</legend>
+          <p class="legend-note">
+            AI is permitted for research and for making your presentation. It is closed during
+            the Decide block and the pitch. Tick everything you expect to use &mdash; declaring a
+            tool you end up not using costs you nothing.
+          </p>
+
+          <div class="field">
+            <span class="label">Tools you intend to use</span>
+            <div class="check-grid" id="aiTools"></div>
+          </div>
+
+          <div class="field">
+            <label for="aiOther">Anything else</label>
+            <input type="text" id="aiOther" name="aiOther" maxlength="120" placeholder="Other tools, comma separated">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Agreements</legend>
+          <p class="legend-note">All four are required.</p>
+
+          <label class="check">
+            <input type="checkbox" id="agreeSize">
+            <span><b>Team size.</b> We are <span data-bind="max-team">3</span> members or fewer, and every member holds a different role from the role book.</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="agreeClock">
+            <span><b>The clock.</b> We understand submission closes at minute 48 and that a late deck is not judged.</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="agreeAI">
+            <span><b>AI policy.</b> We will use AI only in the permitted phases, disclose every tool on our final slide, and verify anything we put on a slide.</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="agreeOriginal">
+            <span><b>No prior preparation.</b> We are bringing no pre-built deck or pre-chosen idea, and the work will be produced inside the hour.</span>
+          </label>
+          <div class="error-text" id="err-agree"></div>
+        </fieldset>
+
+        <div class="form-footer">
+          <button type="submit" class="btn btn-primary" id="submitBtn">Submit registration</button>
+          <span class="form-status" id="formStatus"></span>
+        </div>
+      </form>
+
+      <p style="color:var(--text-faint);font-size:.84rem;margin-top:20px" id="storageNote"></p>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span data-bind="footer-name">Ideathon 60</span>
+    <span data-bind="footer-contact"></span>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+<script src="assets/js/register.js"></script>
+</body>
+</html>
