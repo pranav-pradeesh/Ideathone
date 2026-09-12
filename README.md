@@ -209,6 +209,7 @@ is what was run against this code:
 | Offline | Registration, download, CSV/xlsx round-trip and organiser merge with no API at all |
 | Menu | The mobile menu: open, close, second tap, Escape with focus return, tap-outside, link navigation, the 720px boundary, and that widening the window does not leave it open |
 | Responsive | Five pages × six viewport widths, plus tap-target heights |
+| Device rules | A laptop and a phone are both permitted, a phone alone is still sufficient, and the AI-free Decide block closes both — a rule naming only phones would leave a laptop open |
 | Contrast | Every text/background pair on every page against WCAG AA, compositing translucent panels, plus a 12px floor on text size |
 | Type | The heading scale stays strictly descending, and no heading, legend, tagline or lede overflows its box, across five pages at five widths |
 | Light-only | With the browser emulating a dark-mode system, every page still renders dark text on a light ground and reports `color-scheme: light` |
