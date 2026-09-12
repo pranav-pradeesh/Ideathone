@@ -72,7 +72,7 @@ window.IDEATHON = (function () {
     }
   ];
 
-  /* ---- the role book ----------------------------------------------------- */
+  /* ---- team roles (rule 1.5) --------------------------------------------- */
 
   var roles = [
     {
@@ -182,7 +182,7 @@ window.IDEATHON = (function () {
     {
       size: 3,
       label: 'Three members (recommended)',
-      how: 'One person per role, exactly as written in the role book.'
+      how: 'One person per role, exactly as written in rule 1.5.'
     },
     {
       size: 2,
@@ -193,6 +193,99 @@ window.IDEATHON = (function () {
       size: 1,
       label: 'Solo',
       how: 'You are the Lead. Run the same clock, but cut Design to five minutes and build three slides — Problem, Idea, Impact. Prioritise a clean pitch over a full deck.'
+    }
+  ];
+
+  /* ---- the rule book ----------------------------------------------------- */
+  /* Numbered so an organiser can point at one during a dispute: "rule 5.2". */
+
+  var rules = [
+    {
+      id: 'teams',
+      title: 'Teams and entry',
+      items: [
+        'A team is one to three people. Three is the maximum and it is not negotiable.',
+        'One person belongs to exactly one team. You cannot move between teams once registered.',
+        'Register before the deadline. Walk-ins are admitted only if slots remain.',
+        'Bring at least one working laptop per team, charged. There is no guarantee of a power socket.',
+        'Every member takes one of the three roles below, and no two members of a team take the same one.'
+      ]
+    },
+    {
+      id: 'clock',
+      title: 'The clock',
+      items: [
+        'The hour starts when the problem statement is read out and does not stop for anything.',
+        'The seven phases are fixed. You may work ahead inside your own team, but no phase is extended.',
+        'Submission closes at minute 48. A deck that arrives at 48:01 is not judged.',
+        'The pitch is 2 minutes with a hard stop, followed by 1 minute of questions.',
+        'If your team is not present when called to pitch, your slot is forfeited.'
+      ]
+    },
+    {
+      id: 'prep',
+      title: 'Preparation',
+      items: [
+        'The problem statement is revealed at minute zero. Nobody sees it in advance.',
+        'No pre-built decks, no pre-chosen ideas, no work started before the timer. This is the one rule that removes a team rather than costing it marks.',
+        'An empty slide template is fine. A template with your content already in it is not.',
+        'You may use any tool you already have installed. Setting it up is your own time.'
+      ]
+    },
+    {
+      id: 'ai',
+      title: 'Using AI',
+      items: [
+        'AI is permitted in Discover (05–15), Design (20–30) and Deck (30–45): research, background, slide copy, layout and imagery.',
+        'AI is closed during Decide (15–20). Laptops down — the idea has to be the team\'s own choice.',
+        'AI is closed during the pitch and Q&A (48–60). No live prompting, no reading generated answers, no earpieces.',
+        'Name every AI tool you used on your final slide. Disclosure costs nothing; an undisclosed tool found in Q&A disqualifies the pitch.',
+        'Verify anything you put on a slide. A fabricated statistic ends the pitch at the moment it is caught.',
+        'AI output presented as a working prototype or as your own original research is treated as cheating, not as a shortcut.'
+      ]
+    },
+    {
+      id: 'submission',
+      title: 'Submission',
+      items: [
+        'Exactly five slides: Problem · Idea · How it works · Impact · Ask. A sixth slide is not read.',
+        'Submit as PDF or PPTX, named with your team name.',
+        'One submission per team. If you upload twice, the last file before the cutoff is the one judged.',
+        'Check your upload went through before you sit down. "It did not upload" is not an appeal.'
+      ]
+    },
+    {
+      id: 'judging',
+      title: 'Judging',
+      items: [
+        'Problem clarity — 20 marks. Do you understand who hurts, and how much?',
+        'Originality — 25 marks. Is this more than the first idea anyone would have?',
+        'Feasibility — 25 marks. Could this actually be built, by someone, for a plausible cost?',
+        'Pitch and Q&A — 30 marks. Can you explain it and defend it under questioning?',
+        'Slide design earns nothing on its own. An unreadable slide loses marks under clarity.',
+        'Ties are broken by the Pitch and Q&A score. The judges\' decision is final.'
+      ]
+    },
+    {
+      id: 'conduct',
+      title: 'Conduct',
+      items: [
+        'Nobody outside your team contributes to your work — not a friend, not a senior, not a mentor.',
+        'Do not disrupt another team. Curiosity is fine; leaning over their screen is not.',
+        'Leave the room as you found it.',
+        'Organisers may adjust timings for a genuine technical failure. That decision is theirs and applies to the whole room.'
+      ]
+    },
+    {
+      id: 'disqualification',
+      title: 'What gets a team removed',
+      items: [
+        'Work prepared before the event.',
+        'An AI tool used and not disclosed.',
+        'Help from anyone outside the team.',
+        'Presenting fabricated data or a fake prototype as real.',
+        'Abusive or discriminatory content in a deck or a pitch.'
+      ]
     }
   ];
 
@@ -242,6 +335,7 @@ window.IDEATHON = (function () {
     config: config,
     schedule: schedule,
     roles: roles,
+    rules: rules,
     teamShapes: teamShapes,
     aiPolicy: aiPolicy,
     branches: branches,

@@ -1,4 +1,4 @@
-/* Ideathon 60 — shared rendering for the home page, role book and footer. */
+/* Ideathon 60 — shared rendering for the home page, rule book and footer. */
 
 (function () {
   'use strict';
@@ -84,8 +84,8 @@
       var ul = el('ul', 'ticks');
       r.owns.slice(0, 3).forEach(function (o) { ul.appendChild(el('li', null, o)); });
       c.appendChild(ul);
-      var a = el('a', null, 'Full brief →');
-      a.href = 'rolebook.html#' + r.id;
+      var a = el('a', null, 'See the rules →');
+      a.href = 'rulebook.html#roles';
       c.appendChild(a);
       host.appendChild(c);
     });
@@ -113,7 +113,7 @@
     items.forEach(function (t) { host.appendChild(el('li', null, t)); });
   }
 
-  /* ---- role book --------------------------------------------------------- */
+  /* ---- role detail blocks ------------------------------------------------ */
 
   function renderRoleBook(host) {
     host.textContent = '';
@@ -175,6 +175,58 @@
       var a = el('a', null, r.name);
       a.href = '#' + r.id;
       host.appendChild(a);
+    });
+  }
+
+  /* ---- rule book ---------------------------------------------------------- */
+
+  function renderRules(host) {
+    host.textContent = '';
+    I.rules.forEach(function (section, si) {
+      var block = el('section', 'rule-section');
+      block.id = section.id;
+
+      var head = el('header', 'rule-head');
+      head.appendChild(el('span', 'rule-no', String(si + 1)));
+      head.appendChild(el('h2', null, section.title));
+      block.appendChild(head);
+
+      var ol = el('ol', 'rule-list');
+      section.items.forEach(function (text, ii) {
+        var li = el('li');
+        li.appendChild(el('span', 'rule-ref', (si + 1) + '.' + (ii + 1)));
+        li.appendChild(el('span', 'rule-text', text));
+        ol.appendChild(li);
+      });
+      block.appendChild(ol);
+      host.appendChild(block);
+    });
+  }
+
+  function renderRuleToc(host) {
+    host.textContent = '';
+    I.rules.forEach(function (section, i) {
+      var a = el('a', null, (i + 1) + '. ' + section.title);
+      a.href = '#' + section.id;
+      host.appendChild(a);
+    });
+  }
+
+  function renderRoleTable(host) {
+    host.textContent = '';
+    I.roles.forEach(function (r) {
+      var tr = el('tr');
+      var td1 = el('td');
+      td1.setAttribute('data-label', 'Role');
+      td1.appendChild(el('span', 'role-name', r.name));
+      tr.appendChild(td1);
+      var td2 = el('td', null, r.short);
+      td2.setAttribute('data-label', 'Owns');
+      tr.appendChild(td2);
+      var td3 = el('td', null, r.delivers.join(' · '));
+      td3.setAttribute('data-label', 'Delivers');
+      tr.appendChild(td3);
+      host.appendChild(tr);
     });
   }
 
@@ -242,6 +294,15 @@
 
     var toc = document.querySelector('[data-render="role-toc"]');
     if (toc) renderRoleToc(toc);
+
+    var rules = document.querySelector('[data-render="rules"]');
+    if (rules) renderRules(rules);
+
+    var rtoc = document.querySelector('[data-render="rule-toc"]');
+    if (rtoc) renderRuleToc(rtoc);
+
+    var rt = document.querySelector('[data-render="role-table"]');
+    if (rt) renderRoleTable(rt);
 
     initPlanner();
     markScrollables();

@@ -1,7 +1,7 @@
 # Ideathon 60 — registration site
 
 A site for running a **one-hour ideathon**: team registration that collects into one
-spreadsheet, a password-protected admin page, a published role book, the minute-by-minute
+spreadsheet, a password-protected admin page, a published rule book, the minute-by-minute
 split of the hour, and an AI policy that says exactly which phases AI tools are allowed in.
 
 The front end is plain HTML, CSS and ES5 — no build step, no framework, no CDN. The only
@@ -14,7 +14,7 @@ dependency in the whole project is the Postgres driver used by the API.
 | File | What it is |
 | --- | --- |
 | `index.html` | Format, the seven-block schedule, role summary, AI policy, pod planner |
-| `rolebook.html` | The role book: per role — owns, delivers, failure modes, minute-by-minute. Print-friendly |
+| `rulebook.html` | The rule book: per role — owns, delivers, failure modes, minute-by-minute. Print-friendly |
 | `register.html` | Registration: branch, team name, member count, each member's name and phone |
 | `admin.html` | **Password-protected.** Every team from the database, Excel + CSV export |
 | `organiser.html` | Offline fallback: teams held on this device, import/merge, export |
@@ -38,7 +38,7 @@ dependency in the whole project is the Postgres driver used by the API.
 | `api/_lib/db.js` | Postgres connection, schema, row mapping |
 | `api/_lib/validate.js` | Server-side validation — the rules that actually hold |
 | `api/_lib/rate.js` | Rate limiting, stored in the database so it survives cold starts |
-| `assets/js/site.js` | Renders the schedule, role cards, role book, pod planner |
+| `assets/js/site.js` | Renders the schedule, role cards, rule book, pod planner |
 
 ## What registration collects
 

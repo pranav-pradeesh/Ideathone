@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rule book — Ideathon 60</title>
+<meta name="description" content="The rules of Ideathon 60: teams, the clock, preparation, AI use, submission, judging, conduct and disqualification.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d12'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ffb020' stroke-width='2.5'/%3E%3Cpath d='M16 10v6l4 2' stroke='%23ffb020' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span><span data-bind="event-name">Ideathon 60</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html#schedule">The 60 minutes</a>
+      <a href="rulebook.html" aria-current="page">Rule book</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero hero-tight">
+    <div class="wrap wrap-reading">
+      <span class="eyebrow">Rule book</span>
+      <h1>The rules</h1>
+      <p class="lede">
+        Eight sections, numbered so anyone can point at one. Read it before you
+        register &mdash; entering means you accept it. Anything not covered here is the
+        organisers' call on the day.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="register.html">Register your team</a>
+        <button class="btn btn-ghost" type="button" onclick="window.print()">Print</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band-last">
+    <div class="wrap wrap-reading">
+
+      <nav class="toc" data-render="rule-toc" aria-label="Rule sections"></nav>
+
+      <div data-render="rules">
+        <noscript><p>Enable JavaScript to read the rule book.</p></noscript>
+      </div>
+
+      <div class="callout" id="roles">
+        <h3>The three roles (rule 1.5)</h3>
+        <p>Every member takes one, and no two members of a team take the same one. Agree them before you arrive.</p>
+        <div class="table-scroll">
+          <table class="stack-table">
+            <thead><tr><th>Role</th><th>Owns</th><th>Delivers</th></tr></thead>
+            <tbody data-render="role-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout">
+        <h3>Teams smaller than three</h3>
+        <div class="table-scroll">
+          <table class="stack-table">
+            <thead><tr><th>Team size</th><th>How the roles split</th></tr></thead>
+            <tbody data-render="team-shapes"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <h3>If you remember only three things</h3>
+        <ul class="ticks" style="margin-bottom:0">
+          <li><strong>Nothing prepared in advance.</strong> It is the one thing that removes a team rather than costing it marks.</li>
+          <li><strong>Submission closes at minute 48.</strong> The clock is the clock.</li>
+          <li><strong>Declare your AI tools on the last slide.</strong> Using them is fine. Hiding them is not.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span data-bind="footer-name">Ideathon 60</span>
+    <span data-bind="footer-contact"></span>
+  </div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/site.js"></script>
+</body>
+</html>
