@@ -92,9 +92,9 @@ h1, h2, h3, h4 {
   font-weight: 700;
   letter-spacing: -.021em;
 }
-h1 { font-size: clamp(2rem, 5.2vw, 3.1rem); }
-h2 { font-size: clamp(1.45rem, 3.4vw, 1.95rem); }
-h3 { font-size: 1.08rem; }
+h1 { font-size: clamp(2.35rem, 6.2vw, 4rem); }
+h2 { font-size: clamp(1.65rem, 4.1vw, 2.5rem); }
+h3 { font-size: 1.25rem; }
 p { margin: 0 0 1rem; }
 strong { font-weight: 650; }
 
@@ -203,7 +203,7 @@ strong { font-weight: 650; }
   margin-bottom: 18px;
 }
 .lede {
-  font-size: clamp(1.02rem, 2vw, 1.18rem);
+  font-size: clamp(1.08rem, 2.2vw, 1.3rem);
   color: var(--ink-dim);
   max-width: 56ch;
   margin-bottom: 24px;
@@ -231,13 +231,14 @@ strong { font-weight: 650; }
   color: var(--ink-faint);
   margin-bottom: 5px;
 }
-.fact dd { margin: 0; font-size: 1.22rem; font-weight: 700; letter-spacing: -.02em; }
+.fact dd { margin: 0; font-size: 1.35rem; font-weight: 700; letter-spacing: -.02em; }
 
 /* ---------- sections ---------- */
 
 section.band { padding: clamp(38px, 5.5vw, 62px) 0; border-bottom: 1px solid var(--line); }
 .band-last { border-bottom: none; }
-.section-head { max-width: 58ch; margin-bottom: 28px; }
+.section-head { max-width: 62ch; margin-bottom: 28px; }
+.section-head h2 { max-width: 26ch; }
 .section-head p { color: var(--ink-dim); margin-bottom: 0; }
 .kicker {
   font-family: var(--mono);
@@ -265,7 +266,7 @@ section.band { padding: clamp(38px, 5.5vw, 62px) 0; border-bottom: 1px solid var
 .phase[data-ai="no"] { border-left-color: var(--danger); }
 .phase .clock { font-family: var(--mono); font-size: .89rem; font-weight: 600; color: var(--ink); }
 .phase .dur { display: block; font-size: .75rem; color: var(--ink-faint); margin-top: 3px; font-weight: 400; }
-.phase h3 { margin: 0 0 3px; font-size: 1rem; }
+.phase h3 { margin: 0 0 3px; font-size: 1.12rem; }
 .phase p { margin: 0; color: var(--ink-dim); font-size: .92rem; }
 .phase .owner { margin-top: 6px; font-size: .78rem; color: var(--ink-faint); font-family: var(--mono); }
 
@@ -318,7 +319,7 @@ section.band { padding: clamp(38px, 5.5vw, 62px) 0; border-bottom: 1px solid var
   color: var(--ink-faint);
   margin-bottom: 3px;
 }
-.planner-out strong { font-size: 1.28rem; letter-spacing: -.02em; }
+.planner-out strong { font-size: 1.45rem; letter-spacing: -.02em; }
 
 /* ---------- cards ---------- */
 
@@ -378,7 +379,7 @@ ul.ticks strong { color: var(--ink); }
   box-shadow: var(--shadow);
 }
 fieldset { border: none; padding: 0; margin: 0 0 22px; }
-legend { float: left; width: 100%; padding: 0; font-weight: 700; font-size: 1.02rem; margin-bottom: 3px; }
+legend { float: left; width: 100%; padding: 0; font-weight: 700; font-size: 1.18rem; margin-bottom: 3px; }
 legend + * { clear: both; }
 .legend-note { color: var(--ink-dim); font-size: .88rem; margin: 0 0 16px; }
 
@@ -506,7 +507,7 @@ label.btn:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; 
 .success h2 { margin-top: 0; }
 .success .code {
   font-family: var(--mono);
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   font-weight: 600;
   letter-spacing: .05em;
   color: var(--ink);
@@ -543,7 +544,7 @@ tbody td { color: var(--ink-dim); }
 tbody tr:last-child td { border-bottom: none; }
 td .role-name { font-weight: 650; color: var(--ink); }
 
-.table-title { font-size: 1.02rem; margin: 26px 0 10px; }
+.table-title { font-size: 1.2rem; margin: 28px 0 11px; }
 .table-hint {
   display: none;
   font-family: var(--mono);
@@ -589,15 +590,15 @@ td .role-name { font-weight: 650; color: var(--ink); }
 .rule-section { border-top: 1px solid var(--line); padding-top: 22px; margin-bottom: 28px; }
 .rule-section:first-child { border-top: none; padding-top: 0; }
 .rule-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.rule-head h2 { margin: 0; font-size: clamp(1.15rem, 2.6vw, 1.4rem); }
+.rule-head h2 { margin: 0; font-size: clamp(1.3rem, 3vw, 1.7rem); }
 .rule-no {
   font-family: var(--mono);
-  font-size: .88rem;
+  font-size: .95rem;
   font-weight: 700;
   color: var(--on-accent);
   background: var(--accent);
   border-radius: 6px;
-  width: 26px; min-width: 26px; height: 26px;
+  width: 30px; min-width: 30px; height: 30px;
   display: inline-flex; align-items: center; justify-content: center;
 }
 .rule-list { list-style: none; margin: 0; padding: 0; }
@@ -639,6 +640,8 @@ td .role-name { font-weight: 650; color: var(--ink); }
   padding: 3px 10px;
 }
 .login-card { max-width: 440px; margin: 0 auto; }
+/* the page h1 scale is built for a hero, not for a 440px card */
+.login-card h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); }
 .login-card .form-shell { margin-top: 20px; }
 
 /* ---------- misc ---------- */
@@ -862,7 +865,7 @@ code {
 /* ---------- hero additions ---------- */
 
 .tagline {
-  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  font-size: clamp(1.2rem, 2.9vw, 1.55rem);
   font-weight: 650;
   color: var(--accent-text);
   letter-spacing: -.01em;
