@@ -219,7 +219,7 @@ window.IDEATHON = (function () {
         'A team is one to three people. Three is the maximum and it is not negotiable.',
         'One person belongs to exactly one team. You cannot move between teams once registered.',
         'Register before the deadline. Walk-ins are admitted only if slots remain.',
-        'A charged mobile phone is all you need — one per member ideally, one per team at minimum. No laptop required. There is no guarantee of a power socket, so arrive at full battery.',
+        'A charged mobile phone is all you need — one per member ideally, one per team at minimum. There is no guarantee of a power socket, so arrive at full battery.',
         'Every member takes one of the three roles below, and no two members of a team take the same one.'
       ]
     },
@@ -241,7 +241,7 @@ window.IDEATHON = (function () {
         'The challenges are revealed at minute zero and your team picks one. Nobody sees them in advance.',
         'No pre-built decks, no pre-chosen ideas, no work started before the timer. This is the one rule that removes a team rather than costing it marks.',
         'An empty slide template is fine. A template with your content already in it is not.',
-        'Everything is done on your phone. Laptops are not needed and are not part of the format.',
+        'Everything is done on your phone — research, slides and submission. Nothing else is needed.',
         'Install and sign in to the apps you plan to use before you arrive — AI tools, slide apps, whatever you like. Downloading and logging in on the day comes out of your hour.'
       ]
     },
