@@ -68,7 +68,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 76px;
+  scroll-padding-top: 92px;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -116,15 +116,15 @@ strong { font-weight: 650; }
   display: flex;
   align-items: center;
   gap: 14px;
-  min-height: 60px;
+  min-height: 76px;
   flex-wrap: wrap;
 }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 11px;
   font-weight: 750;
-  font-size: 1.02rem;
+  font-size: 1.2rem;
   letter-spacing: -.03em;
   color: var(--ink);
   text-decoration: none;
@@ -136,9 +136,9 @@ strong { font-weight: 650; }
 .site-nav { margin-left: auto; display: flex; gap: 2px; flex-wrap: wrap; align-items: center; }
 .site-nav a {
   color: var(--ink-dim);
-  font-size: .9rem;
+  font-size: .95rem;
   font-weight: 500;
-  padding: 7px 11px;
+  padding: 9px 13px;
   border-radius: var(--radius-sm);
   text-decoration: none;
 }
@@ -177,7 +177,7 @@ strong { font-weight: 650; }
 .btn-primary:hover { background: color-mix(in srgb, var(--accent) 88%, black); }
 .btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--line-strong); }
 .btn-ghost:hover { background: var(--surface-2); }
-.btn-sm { min-height: 36px; padding: 7px 13px; font-size: .86rem; }
+.btn-sm { min-height: 40px; padding: 9px 16px; font-size: .9rem; }
 .btn:disabled { opacity: .5; cursor: not-allowed; }
 .btn:disabled:active { transform: none; }
 
@@ -720,9 +720,9 @@ code {
 
 .brand { gap: 10px; }
 .brand .mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   object-fit: contain;
   background: #fff;
   flex-shrink: 0;
@@ -732,7 +732,7 @@ code {
 .brand-text small {
   font-family: var(--mono);
   font-size: .78rem;
-  letter-spacing: .07em;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--ink-faint);
   font-weight: 500;
@@ -774,6 +774,8 @@ code {
 }
 
 @media (max-width: 420px) {
+  .brand { font-size: 1.02rem; gap: 9px; }
+  .brand .mark { width: 34px; height: 34px; }
   .brand-text small { display: none; }
   .host-line img { width: 44px; height: 44px; }
 }
@@ -823,7 +825,9 @@ code {
 @media (max-width: 720px) {
   .nav-toggle { display: inline-flex; }
 
-  .site-header .wrap { flex-wrap: nowrap; gap: 10px; }
+  .site-header .wrap { flex-wrap: nowrap; gap: 10px; min-height: 66px; }
+  .brand { font-size: 1.1rem; }
+  .brand .mark { width: 38px; height: 38px; }
 
   .site-nav {
     position: absolute;
