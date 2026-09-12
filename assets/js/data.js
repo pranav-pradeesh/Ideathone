@@ -47,7 +47,7 @@ window.IDEATHON = (function () {
     {
       start: 15, minutes: 5, name: 'Decide',
       ai: 'no',
-      what: 'Laptops down. Pick one idea out loud and write it as a single sentence.',
+      what: 'Phones down. Pick one idea out loud and write it as a single sentence.',
       owner: 'Whole team · Lead writes the sentence'
     },
     {
@@ -219,7 +219,7 @@ window.IDEATHON = (function () {
         'A team is one to three people. Three is the maximum and it is not negotiable.',
         'One person belongs to exactly one team. You cannot move between teams once registered.',
         'Register before the deadline. Walk-ins are admitted only if slots remain.',
-        'Bring at least one working laptop per team, charged. There is no guarantee of a power socket.',
+        'A charged mobile phone is all you need — one per member ideally, one per team at minimum. No laptop required. There is no guarantee of a power socket, so arrive at full battery.',
         'Every member takes one of the three roles below, and no two members of a team take the same one.'
       ]
     },
@@ -248,8 +248,8 @@ window.IDEATHON = (function () {
       id: 'ai',
       title: 'Using AI',
       items: [
-        'AI is permitted in Discover (05–15), Design (20–30) and Deck (30–45): research, background, slide copy, layout and imagery.',
-        'AI is closed during Decide (15–20). Laptops down — the idea has to be the team\'s own choice.',
+        'Any AI app you like, in Discover (05–15), Design (20–30) and Deck (30–45): research, background, slide copy, layout and imagery. Build the deck on your phone.',
+        'AI is closed during Decide (15–20). Phones down — the idea has to be the team\'s own choice.',
         'AI is closed during the pitch and Q&A (48–60). No live prompting, no reading generated answers, no earpieces.',
         'Name every AI tool you used on your final slide. Disclosure costs nothing; an undisclosed tool found in Q&A disqualifies the pitch.',
         'Verify anything you put on a slide. A fabricated statistic ends the pitch at the moment it is caught.',
@@ -261,7 +261,7 @@ window.IDEATHON = (function () {
       title: 'Submission',
       items: [
         'Exactly five slides: Problem · Idea · How it works · Impact · Ask. A sixth slide is not read.',
-        'Submit as PDF or PPTX, named with your team name.',
+        'Submit as PDF or PPTX from your phone, named with your team name.',
         'One submission per team. If you upload twice, the last file before the cutoff is the one judged.',
         'Check your upload went through before you sit down. "It did not upload" is not an appeal.'
       ]
@@ -305,12 +305,12 @@ window.IDEATHON = (function () {
 
   var aiPolicy = {
     allowed: [
-      'Research during Discover and Design — background, prior art, summarising sources.',
-      'Presentation-making during Deck — slide copy, layout, imagery.',
+      'Research during Discover and Design — any AI app, for background, prior art and summarising sources.',
+      'Presentation-making during Deck — any AI slide tool, for copy, layout and imagery.',
       'Spelling, grammar and translation, any working phase.'
     ],
     notAllowed: [
-      'Decide (15–20). Laptops down — choosing the idea is judged as your own work.',
+      'Decide (15–20). Phones face down — choosing the idea is judged as your own work.',
       'Pitch and Q&A (48–60). No live prompting, no generated answers, no earpieces.',
       'Any fact, figure or quote nobody on the team has verified.',
       'AI output presented as a working prototype or original research.'
