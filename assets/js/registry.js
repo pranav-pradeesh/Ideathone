@@ -25,6 +25,7 @@ window.Registry = (function () {
     ];
     for (var n = 1; n <= MAX_MEMBERS; n++) {
       cols.push({ key: 'member' + n + 'Name', label: 'Member ' + n + ' name', width: 22 });
+      cols.push({ key: 'member' + n + 'Role', label: 'Member ' + n + ' role', width: 20 });
       cols.push({ key: 'member' + n + 'Branch', label: 'Member ' + n + ' branch', width: 22 });
       cols.push({ key: 'member' + n + 'Phone', label: 'Member ' + n + ' phone', width: 15 });
     }
@@ -39,12 +40,13 @@ window.Registry = (function () {
     var members = entry.members || [];
     return COLUMNS.map(function (c) {
       if (c.key === 'memberCount') return members.length;
-      var m = /^member(\d+)(Name|Branch|Phone)$/.exec(c.key);
+      var m = /^member(\d+)(Name|Role|Branch|Phone)$/.exec(c.key);
       if (m) {
         var member = members[parseInt(m[1], 10) - 1];
         if (!member) return '';
         /* A phone stays text: leading zeros and a + prefix must survive Excel. */
         if (m[2] === 'Name') return member.name || '';
+        if (m[2] === 'Role') return member.role || '';
         if (m[2] === 'Branch') return member.branch || '';
         return member.phone || '';
       }
@@ -69,6 +71,7 @@ window.Registry = (function () {
       if (name) {
         members.push({
           name: name,
+          role: get('member' + n + 'Role'),
           branch: get('member' + n + 'Branch'),
           phone: get('member' + n + 'Phone')
         });

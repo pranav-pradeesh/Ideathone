@@ -59,7 +59,7 @@
         <div class="fact"><dt>Date</dt><dd data-bind="event-date-short">Mon 14 Sep 2026</dd></div>
         <div class="fact"><dt>Time</dt><dd data-bind="event-time">2:30 – 4:00 pm</dd></div>
         <div class="fact"><dt>Duration</dt><dd>90 minutes</dd></div>
-        <div class="fact"><dt>Team size</dt><dd>1&ndash;3 people</dd></div>
+        <div class="fact"><dt>Team size</dt><dd>3&ndash;4 people</dd></div>
         <div class="fact"><dt>Deck</dt><dd>5 slides</dd></div>
         <div class="fact"><dt>Pitch</dt><dd>2 min + 1 Q&amp;A</dd></div>
         <div class="fact"><dt>Bring</dt><dd>A charged phone</dd></div>
@@ -80,12 +80,12 @@
 
       <div class="grid grid-2">
         <div class="card">
-          <h3>Three people, maximum</h3>
-          <p>Four cannot agree inside a five-minute decision block.</p>
+          <h3>Three or four people</h3>
+          <p>Three is the minimum, four the maximum. The fourth member is optional.</p>
         </div>
         <div class="card">
-          <h3>One role each</h3>
-          <p>Agreed before you arrive, so nobody spends the first ten minutes deciding who does what.</p>
+          <h3>One role each, five to choose from</h3>
+          <p>Every team needs a Team Lead, a Presentation Maker and a Researcher. Named at registration.</p>
         </div>
         <div class="card">
           <h3>Five slides, cutoff at 3:36 pm</h3>
@@ -148,11 +148,18 @@
     <div class="wrap">
       <div class="section-head">
         <p class="kicker">Rule 1.5</p>
-        <h2>Three roles, chosen before you arrive</h2>
-        <p>One role each, no duplicates, settled before you arrive.</p>
+        <h2>Five roles, three of them compulsory</h2>
+        <p>
+          Every member takes one role, named at registration. A team must cover Team Lead,
+          Presentation Maker and Researcher; the rest is up to you.
+        </p>
       </div>
 
-      <div class="grid grid-3" id="roleCards" data-render="role-cards"></div>
+      <h3 class="role-group-title">Every team must have these three</h3>
+      <div class="grid grid-3" data-render="role-cards-required"></div>
+
+      <h3 class="role-group-title">And may add one of these</h3>
+      <div class="grid grid-2" data-render="role-cards-optional"></div>
 
       <div class="callout">
         <h3>If you are not three</h3>
@@ -203,7 +210,7 @@
     <div class="wrap" style="text-align:center">
       <h2>Registration is open</h2>
       <p class="lede" style="margin:0 auto 22px">
-        Your branch, a team name, and who is on the team. Under a minute.
+        A team name, then each member's name, role, branch and number. Under two minutes.
       </p>
       <a class="btn btn-primary" href="register.html">Register your team</a>
     </div>

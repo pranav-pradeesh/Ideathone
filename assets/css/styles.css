@@ -309,7 +309,9 @@ section.band { padding: clamp(38px, 5.5vw, 62px) 0; border-bottom: 1px solid var
   /* exactly two columns, so four cards make a 2x2 block rather than 3 + 1 */
   .grid-2 { grid-template-columns: 1fr 1fr; }
 }
-.grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+/* Three cards: 3-up on desktop, single column below — 2 + 1 always leaves an
+   orphan, and these three are a set. */
+.grid-3 { grid-template-columns: 1fr; }
 
 .card {
   background: var(--surface);
@@ -881,3 +883,42 @@ code {
 
 /* per-member branch picker, under the name/phone row */
 .member-branch { margin-top: 9px; }
+
+/* role and branch pickers sit side by side under the name/phone row */
+.member-picks { margin-top: 9px; grid-template-columns: 1fr 1fr; }
+.member-picks select { margin-top: 0; }
+@media (max-width: 560px) {
+  .member-picks { grid-template-columns: 1fr; }
+}
+
+.role-flag {
+  display: inline-block;
+  margin-left: 8px;
+  font-family: var(--mono);
+  font-size: .78rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 1px 7px;
+  vertical-align: middle;
+}
+.role-flag.is-required {
+  color: var(--accent-text);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: var(--accent-wash);
+}
+
+.role-group-title {
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--ink-dim);
+  margin: 24px 0 10px;
+}
+.role-group-title:first-of-type { margin-top: 0; }
+
+@media (min-width: 900px) {
+  /* five role cards split 3 + 2 by requirement, never 4 + 1 */
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+}

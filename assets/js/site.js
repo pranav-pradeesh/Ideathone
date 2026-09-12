@@ -83,11 +83,13 @@
 
   /* ---- role cards -------------------------------------------------------- */
 
-  function renderRoleCards(host) {
+  function renderRoleCards(host, only) {
     host.textContent = '';
-    I.roles.forEach(function (r, i) {
+    I.roles.filter(function (r) {
+      return only === undefined || Boolean(r.required) === only;
+    }).forEach(function (r, i) {
       var c = el('div', 'card');
-      c.appendChild(el('div', 'role-no', 'Role ' + (i + 1)));
+      c.appendChild(el('div', 'role-no', r.required ? 'Required' : 'Optional'));
       c.appendChild(el('h3', null, r.name));
       c.appendChild(el('p', null, r.short));
       var ul = el('ul', 'ticks');
@@ -245,6 +247,8 @@
       var td1 = el('td');
       td1.setAttribute('data-label', 'Role');
       td1.appendChild(el('span', 'role-name', r.name));
+      td1.appendChild(el('span', 'role-flag' + (r.required ? ' is-required' : ''),
+        r.required ? 'Required' : 'Optional'));
       tr.appendChild(td1);
       var td2 = el('td', null, r.short);
       td2.setAttribute('data-label', 'Owns');
@@ -358,6 +362,12 @@
 
     var rc = document.querySelector('[data-render="role-cards"]');
     if (rc) renderRoleCards(rc);
+
+    var rcReq = document.querySelector('[data-render="role-cards-required"]');
+    if (rcReq) renderRoleCards(rcReq, true);
+
+    var rcOpt = document.querySelector('[data-render="role-cards-optional"]');
+    if (rcOpt) renderRoleCards(rcOpt, false);
 
     var ts = document.querySelector('[data-render="team-shapes"]');
     if (ts) renderTeamShapes(ts);

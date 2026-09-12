@@ -4,7 +4,19 @@
  * can POST to this endpoint. These limits are the ones that actually hold.
  */
 
-export const MAX_MEMBERS = 3;
+export const MAX_MEMBERS = 4;
+export const MIN_MEMBERS = 3;
+
+/* Five roles. Every member takes one; a team must cover the three required
+   ones. Two members may share a role. */
+export const ROLES = [
+  'Team Lead',
+  'Presentation Maker',
+  'Researcher',
+  'Innovation Lead',
+  'Problem Analyst'
+];
+export const REQUIRED_ROLES = ['Team Lead', 'Presentation Maker', 'Researcher'];
 export const BRANCHES = [
   'Mechatronics',
   'Mechanical Engineering',
@@ -47,7 +59,9 @@ export function validate(body) {
   }
 
   const raw = Array.isArray(body.members) ? body.members : [];
-  if (!raw.length) return { error: 'Add at least one member.', field: 'members' };
+  if (raw.length < MIN_MEMBERS) {
+    return { error: `A team needs at least ${MIN_MEMBERS} members.`, field: 'members' };
+  }
   if (raw.length > MAX_MEMBERS) {
     return { error: `Teams are capped at ${MAX_MEMBERS} members.`, field: 'members' };
   }
@@ -75,6 +89,12 @@ export function validate(body) {
       return { error: `Member ${i + 1}'s branch is not on the list.`, field: `member${i + 1}Branch` };
     }
 
+    const role = text(raw[i] && raw[i].role);
+    if (!role) return { error: `Member ${i + 1} needs a role.`, field: `member${i + 1}Role` };
+    if (!ROLES.includes(role)) {
+      return { error: `Member ${i + 1}'s role is not on the list.`, field: `member${i + 1}Role` };
+    }
+
     const phone = normalisePhone(raw[i] && raw[i].phone);
     if (!phone) {
       return { error: `Member ${i + 1} needs a valid 10-digit phone number.`, field: `member${i + 1}Phone` };
@@ -84,7 +104,19 @@ export function validate(body) {
     }
     seenPhone.add(phone);
 
-    members.push({ name, branch, phone });
+    members.push({ name, branch, role, phone });
+  }
+
+  /* The three required roles must all be present. Duplicates are fine. */
+  const filled = new Set(members.map((m) => m.role));
+  const missing = REQUIRED_ROLES.filter((r) => !filled.has(r));
+  if (missing.length) {
+    return {
+      error: missing.length === 1
+        ? `Your team has no ${missing[0]}. Every team needs one.`
+        : `Your team still needs: ${missing.join(', ')}.`,
+      field: 'members'
+    };
   }
 
   return { entry: { ref: makeRef(teamName), teamName, members } };

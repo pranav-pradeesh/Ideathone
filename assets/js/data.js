@@ -19,8 +19,8 @@ window.IDEATHON = (function () {
     endsAt: '16:00',
     timeRange: '2:30 – 4:00 pm',
     contactEmail: '',       // shown in the footer when set
-    maxTeamSize: 3,
-    minTeamSize: 1,
+    maxTeamSize: 4,
+    minTeamSize: 3,
     totalMinutes: 90,
 
     // Pitch block maths — used by the pod planner on the schedule.
@@ -57,40 +57,44 @@ window.IDEATHON = (function () {
       start: 28, minutes: 15, name: 'Design',
       ai: 'yes',
       what: 'How it works, who pays, why it is feasible. Sketch the one diagram the deck needs.',
-      owner: 'Researcher + Lead'
+      owner: 'Researcher · Problem Analyst · Lead'
     },
     {
       start: 43, minutes: 20, name: 'Deck',
       ai: 'yes',
       what: 'Five slides: Problem · Idea · How it works · Impact · Ask. The Lead rehearses out loud.',
-      owner: 'Storyteller owns the file'
+      owner: 'Presentation Maker owns the file'
     },
     {
       start: 63, minutes: 3, name: 'Submit',
       ai: 'n/a',
       what: 'Hard cutoff. Upload the deck. Late files are not judged.',
-      owner: 'Storyteller submits · Lead confirms'
+      owner: 'Presentation Maker submits · Lead confirms'
     },
     {
       start: 66, minutes: 24, name: 'Pitch & Q&A',
       ai: 'no',
       what: '2 minutes to pitch, 1 minute of questions. Notes off.',
-      owner: 'Lead pitches · all three take questions'
+      owner: 'Lead pitches · the whole team takes questions'
     }
   ];
 
   /* ---- team roles (rule 1.5) --------------------------------------------- */
 
+  /* Five roles. Every member takes exactly one; a team must cover Team Lead,
+     Presentation Maker and Researcher. Two members may share a role. */
+
   var roles = [
     {
       id: 'lead',
-      name: 'Team Lead & Pitcher',
-      short: 'Owns the clock and the last 3 minutes.',
+      name: 'Team Lead',
+      required: true,
+      short: 'Owns the clock and the pitch.',
       summary:
-        'The Lead makes sure the team ships something. They keep every phase inside its box, force the decision at minute 20, and deliver the pitch at the end. This is the role that fails the team most easily, because a team that overruns Discover has already lost.',
+        'The Lead makes sure the team ships something. They keep every phase inside its box, force the decision at minute 20, and deliver the pitch at the end. This is the role that fails a team most easily, because a team that overruns Discover has already lost.',
       owns: [
         'The running clock — calls each phase change out loud',
-        'The one-sentence idea statement written by minute 28',
+        'The one-sentence idea statement',
         'The 2-minute pitch and the first answer in Q&A',
         'The final call when the team is split'
       ],
@@ -103,7 +107,7 @@ window.IDEATHON = (function () {
         { t: '00–05', do: 'Confirm roles aloud. Set a visible timer for all seven phases.' },
         { t: '05–20', do: 'Keep Discover on the problem, not on solutions. Call time at 19:00.' },
         { t: '20–28', do: 'Run the decision. Take one vote, break ties yourself, write the sentence.' },
-        { t: '28–43', do: 'Pressure-test feasibility with the Researcher. Kill anything unbuildable.' },
+        { t: '28–43', do: 'Pressure-test feasibility. Kill anything unbuildable.' },
         { t: '43–63', do: 'Rehearse out loud twice while the deck is built. Do not touch the file.' },
         { t: '63–66', do: 'Confirm the submission actually went through before you sit down.' },
         { t: '66–90', do: 'Pitch. Answer first, then hand technical questions to the Researcher.' }
@@ -116,44 +120,12 @@ window.IDEATHON = (function () {
       ]
     },
     {
-      id: 'researcher',
-      name: 'Researcher & Solution Architect',
-      short: 'Owns the facts and the "how".',
-      summary:
-        'The Researcher supplies the evidence that makes the idea credible and the architecture that makes it buildable. They are the team\'s AI power user during the permitted phases — and the person accountable for every number that ends up on a slide.',
-      owns: [
-        'Problem evidence: who is affected, how many, what it costs today',
-        'Existing solutions and why they fall short',
-        'The how-it-works explanation and the one diagram',
-        'Feasibility: tech, cost and time honesty'
-      ],
-      delivers: [
-        'Three to five hard facts with sources named',
-        'The "how it works" flow for slide 3',
-        'A one-line answer to "why has nobody done this?"'
-      ],
-      minutes: [
-        { t: '00–05', do: 'Open your research tools. Have them ready before the timer starts.' },
-        { t: '05–20', do: 'Hunt facts and prior art. Timebox each search to 2 minutes. Note sources as you go.' },
-        { t: '20–28', do: 'Tools closed. Argue for the strongest idea, then commit to the team\'s choice.' },
-        { t: '28–43', do: 'Draw the flow. Name the tech. Be honest about what would take longer than a week.' },
-        { t: '43–63', do: 'Hand facts and the diagram to the Storyteller. Verify every number that goes on a slide.' },
-        { t: '63–66', do: 'Check the deck states sources correctly.' },
-        { t: '66–90', do: 'Take the feasibility and technical questions in Q&A.' }
-      ],
-      ai: 'AI is permitted for research in Discover and Design. Verify anything you put on a slide against a real source — a fabricated statistic in Q&A ends the pitch. Record which tools you used for the disclosure.',
-      avoid: [
-        'Pasting AI output onto a slide unread',
-        'Quoting a number you cannot name a source for',
-        'Still researching at minute 50'
-      ]
-    },
-    {
-      id: 'storyteller',
-      name: 'Storyteller & Deck Builder',
+      id: 'presenter',
+      name: 'Presentation Maker',
+      required: true,
       short: 'Owns the five slides and the submission.',
       summary:
-        'The Storyteller turns a decided idea into five slides that a judge can read from the back row. They are the only person with the file open after minute 30, and they are the one who presses submit before the cutoff at 48.',
+        'The Presentation Maker turns a decided idea into five slides a judge can read from the back row. They are the only person with the file open after minute 43, and the one who presses submit before the cutoff at 3:36 pm.',
       owns: [
         'The deck file and its structure',
         'Visual clarity: one message per slide, readable from 6 metres',
@@ -162,44 +134,143 @@ window.IDEATHON = (function () {
       ],
       delivers: [
         'Five slides: Problem · Idea · How it works · Impact · Ask',
-        'The deck submitted before 48:00',
+        'The deck submitted before 66:00',
         'A disclosure line naming every AI tool the team used'
       ],
       minutes: [
         { t: '00–05', do: 'Open a blank five-slide skeleton before the brief ends. Title the slides now.' },
         { t: '05–20', do: 'Listen and capture. Drop raw notes straight into speaker notes.' },
-        { t: '20–28', do: 'Tools closed. Take part in the decision — you have to be able to tell the story.' },
-        { t: '28–43', do: 'Draft slide 1 and 2 while Design is still running. Do not wait for a finished idea.' },
+        { t: '20–28', do: 'Phone down. Take part in the decision — you have to be able to tell the story.' },
+        { t: '28–43', do: 'Draft slides 1 and 2 while Design is still running. Do not wait for a finished idea.' },
         { t: '43–63', do: 'Build. AI is permitted for layout, wording and imagery. Stop building at 61:00.' },
         { t: '63–66', do: 'Submit. Then confirm the upload with the Lead.' },
         { t: '66–90', do: 'Drive the slides during the pitch. Take design and impact questions.' }
       ],
-      ai: 'AI is permitted for presentation-making: drafting slide copy, layout, summarising notes and generating imagery. Everything on the slide must be checked by you — and every tool used goes in the disclosure line.',
+      ai: 'AI is permitted for presentation-making: slide copy, layout, summarising notes and generating imagery — any app you like, on your phone. Everything on the slide must be checked by you, and every tool used goes in the disclosure line.',
       avoid: [
         'More than five slides, or a wall of text on any of them',
         'Restyling the deck after 61:00 instead of submitting',
         'Using an image you cannot explain the origin of'
+      ]
+    },
+    {
+      id: 'researcher',
+      name: 'Researcher',
+      required: true,
+      short: 'Owns the facts and the sources.',
+      summary:
+        'The Researcher supplies the evidence that makes the idea credible. They are the team\'s AI power user during the permitted phases — and the person accountable for every number that ends up on a slide.',
+      owns: [
+        'Evidence: who is affected, how many, what it costs today',
+        'Existing solutions and why they fall short',
+        'Feasibility: tech, cost and time honesty',
+        'Sources for everything quoted'
+      ],
+      delivers: [
+        'Three to five hard facts with sources named',
+        'A one-line answer to "why has nobody done this?"',
+        'Verification of every number on the deck'
+      ],
+      minutes: [
+        { t: '00–05', do: 'Open your research apps and sign in. Have them ready before the timer starts.' },
+        { t: '05–20', do: 'Hunt facts and prior art. Timebox each search to 2 minutes. Note sources as you go.' },
+        { t: '20–28', do: 'Apps closed. Argue for the strongest idea, then commit to the team\'s choice.' },
+        { t: '28–43', do: 'Name the tech. Be honest about what would take longer than a week.' },
+        { t: '43–63', do: 'Hand facts to the Presentation Maker. Verify every number that goes on a slide.' },
+        { t: '63–66', do: 'Check the deck states sources correctly.' },
+        { t: '66–90', do: 'Take the feasibility and technical questions in Q&A.' }
+      ],
+      ai: 'AI is permitted for research in Discover and Design. Verify anything you put on a slide against a real source — a fabricated statistic in Q&A ends the pitch. Record which apps you used for the disclosure.',
+      avoid: [
+        'Pasting AI output onto a slide unread',
+        'Quoting a number you cannot name a source for',
+        'Still researching at minute 50'
+      ]
+    },
+    {
+      id: 'innovation',
+      name: 'Innovation Lead',
+      required: false,
+      short: 'Pushes the team past its first idea.',
+      summary:
+        'The first idea a team has is usually the obvious one, and obvious ideas score badly on originality — a quarter of the marks. The Innovation Lead generates alternatives on purpose, argues for the uncomfortable one, and owns the answer to "why is this different from what already exists?"',
+      owns: [
+        'Generating at least three distinct options before the team decides',
+        'The case against the obvious first idea',
+        'Originality: what makes this different from existing solutions',
+        'The "what would make this fail?" question during Design'
+      ],
+      delivers: [
+        'Three or more real alternatives on the table by minute 20',
+        'A one-line answer to "why is this different?"',
+        'One deliberate stress-test of the chosen idea'
+      ],
+      minutes: [
+        { t: '00–05', do: 'Read the challenges for angles nobody else will take.' },
+        { t: '05–20', do: 'Generate options while the Researcher gathers evidence. Quantity first.' },
+        { t: '20–28', do: 'Put the alternatives up. Argue hardest for the least obvious one, then back the team\'s call.' },
+        { t: '28–43', do: 'Attack your own idea. Find the failure mode before a judge does.' },
+        { t: '43–63', do: 'Write the originality line for the deck. Help the Lead rehearse the hard questions.' },
+        { t: '63–66', do: 'Quiet. The deck is the Presentation Maker\'s to submit.' },
+        { t: '66–90', do: 'Take "why not just use X?" questions in Q&A.' }
+      ],
+      ai: 'AI is useful in Discover for surveying what already exists, so you know what "different" means. It is closed during Decide — that block is exactly the one you are here to run well, and it has to be the team\'s own thinking.',
+      avoid: [
+        'Falling in love with your own alternative after the team has decided',
+        'Being different for its own sake — originality without feasibility scores nothing',
+        'Reopening the decision after minute 28'
+      ]
+    },
+    {
+      id: 'analyst',
+      name: 'Problem Analyst',
+      required: false,
+      short: 'Owns who hurts, and how much.',
+      summary:
+        'Problem clarity is twenty marks, and most teams lose them by describing a solution before they have described a problem. The Problem Analyst keeps the team honest about who is actually affected, how badly, and what the root cause is rather than the symptom.',
+      owns: [
+        'Who is affected, and how badly',
+        'Root cause versus symptom',
+        'Scoping: what this idea deliberately does not solve',
+        'The impact claim on slide 4'
+      ],
+      delivers: [
+        'A one-sentence problem statement naming a specific person or group',
+        'The root cause, stated separately from the symptom',
+        'An impact number the team can defend'
+      ],
+      minutes: [
+        { t: '00–05', do: 'Write down the challenge in your own words before anyone proposes a solution.' },
+        { t: '05–20', do: 'Work with the Researcher: who is affected, how many, how badly.' },
+        { t: '20–28', do: 'Hold the team to the problem. Reject ideas that solve a symptom.' },
+        { t: '28–43', do: 'Define what is in scope and what is not. Shape the impact claim.' },
+        { t: '43–63', do: 'Own slides 1 and 4 with the Presentation Maker. Keep the impact number defensible.' },
+        { t: '63–66', do: 'Last read of the problem slide. Would a stranger understand it?' },
+        { t: '66–90', do: 'Take "how big is this problem really?" questions in Q&A.' }
+      ],
+      ai: 'AI is permitted in Discover and Design for framing and for finding who is affected. Any figure it gives you is unverified until the Researcher has a source for it.',
+      avoid: [
+        'A problem statement that could describe any college in the country',
+        'An impact number nobody can explain the arithmetic behind',
+        'Letting the team jump to a solution in the first five minutes'
       ]
     }
   ];
 
   /* ---- fallbacks for short teams ----------------------------------------- */
 
+  /* ---- fallbacks for short teams ----------------------------------------- */
+
   var teamShapes = [
     {
       size: 3,
-      label: 'Three members (recommended)',
-      how: 'One person per role.'
+      label: 'Three members (minimum)',
+      how: 'One Team Lead, one Presentation Maker, one Researcher. All three must be filled.'
     },
     {
-      size: 2,
-      label: 'Two members',
-      how: 'Lead and Storyteller. Split the Researcher\'s job between you: Lead takes the evidence, Storyteller takes the how.'
-    },
-    {
-      size: 1,
-      label: 'Solo',
-      how: 'Run the same clock. Cut Design to eight minutes and build three slides: Problem, Idea, Impact.'
+      size: 4,
+      label: 'Four members (maximum)',
+      how: 'The same three, plus an Innovation Lead or a Problem Analyst — or a second person in any role you want doubled.'
     }
   ];
 
@@ -219,11 +290,11 @@ window.IDEATHON = (function () {
       id: 'teams',
       title: 'Teams and entry',
       items: [
-        'A team is one to three people. Three is the maximum and it is not negotiable.',
+        'A team is three or four people. Three is the minimum, four the maximum; the fourth member is optional.',
         'One person belongs to exactly one team. You cannot move between teams once registered.',
         'Register before the deadline. Walk-ins are admitted only if slots remain.',
         'A charged mobile phone is all you need — one per member ideally, one per team at minimum. There is no guarantee of a power socket, so arrive at full battery.',
-        'Every member takes one of the three roles below, and no two members of a team take the same one.'
+        'Every member takes one of the five roles below, named at registration. A team must include a Team Lead, a Presentation Maker and a Researcher; beyond that choose freely, and two members may share a role.'
       ]
     },
     {

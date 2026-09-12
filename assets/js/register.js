@@ -81,7 +81,8 @@
 
     var head = el('div', 'member-block-head');
     head.appendChild(el('span', 'name-num', String(n)));
-    head.appendChild(el('span', 'member-block-title', i === 0 ? 'Team lead' : 'Member ' + n));
+    head.appendChild(el('span', 'member-block-title',
+      i >= (I.config.minTeamSize || 3) ? 'Member ' + n + ' (optional)' : 'Member ' + n));
     block.appendChild(head);
 
     var grid = el('div', 'member-grid');
@@ -104,24 +105,43 @@
     }));
     block.appendChild(grid);
 
-    /* Each member carries their own branch — a team may mix them. */
-    var sel = document.createElement('select');
-    sel.id = 'member' + n + 'Branch';
-    sel.className = 'member-branch';
-    sel.setAttribute('aria-label', 'Member ' + n + ' branch of study');
-    var blank = document.createElement('option');
-    blank.value = '';
-    blank.textContent = 'Branch of study…';
-    sel.appendChild(blank);
-    I.branches.forEach(function (b) {
-      var o = document.createElement('option');
-      o.value = b;
-      o.textContent = b;
-      sel.appendChild(o);
-    });
-    block.appendChild(sel);
+    /* Each member carries their own role and branch — a team may mix both. */
+    var picks = el('div', 'member-grid member-picks');
+    picks.appendChild(picker({
+      id: 'member' + n + 'Role',
+      cls: 'member-role',
+      label: 'Member ' + n + ' role',
+      blank: 'Role…',
+      options: I.roles.map(function (r) { return r.name; })
+    }));
+    picks.appendChild(picker({
+      id: 'member' + n + 'Branch',
+      cls: 'member-branch',
+      label: 'Member ' + n + ' branch of study',
+      blank: 'Branch of study…',
+      options: I.branches
+    }));
+    block.appendChild(picks);
     block.appendChild(el('div', 'error-text member-error'));
     return block;
+  }
+
+  function picker(opts) {
+    var sel = document.createElement('select');
+    sel.id = opts.id;
+    sel.className = opts.cls;
+    sel.setAttribute('aria-label', opts.label);
+    var blank = document.createElement('option');
+    blank.value = '';
+    blank.textContent = opts.blank;
+    sel.appendChild(blank);
+    opts.options.forEach(function (v) {
+      var o = document.createElement('option');
+      o.value = v;
+      o.textContent = v;
+      sel.appendChild(o);
+    });
+    return sel;
   }
 
   function memberInput(opts) {
@@ -170,6 +190,7 @@
       var nameInput = block.querySelector('input[type="text"]');
       var phoneInput = block.querySelector('input[type="tel"]');
       var branchSel = block.querySelector('select.member-branch');
+      var roleSel = block.querySelector('select.member-role');
       var name = nameInput.value.trim().replace(/\s+/g, ' ');
       var phone = R.normalisePhone(phoneInput.value);
       var problem = '';
@@ -199,6 +220,12 @@
         seenPhone[phone] = i + 1;
       }
 
+      if (!roleSel.value) {
+        problem = problem ? problem + ' Role required.' : 'Choose a role.';
+        roleSel.setAttribute('aria-invalid', 'true');
+        bad.push(roleSel);
+      }
+
       if (!branchSel.value) {
         problem = problem ? problem + ' Branch required.' : 'Choose a branch of study.';
         branchSel.setAttribute('aria-invalid', 'true');
@@ -208,9 +235,28 @@
       if (problem) {
         blockError(block, problem);
       } else {
-        members.push({ name: name, branch: branchSel.value, phone: phone });
+        members.push({
+          name: name,
+          role: roleSel.value,
+          branch: branchSel.value,
+          phone: phone
+        });
       }
     });
+
+    /* Team Lead, Presentation Maker and Researcher must all be covered. */
+    if (!bad.length) {
+      var filled = {};
+      members.forEach(function (m) { filled[m.role] = true; });
+      var missing = I.roles.filter(function (r) { return r.required && !filled[r.name]; })
+        .map(function (r) { return r.name; });
+      if (missing.length) {
+        setError('members', missing.length === 1
+          ? 'Your team has no ' + missing[0] + '. Every team needs one.'
+          : 'Your team still needs: ' + missing.join(', ') + '.');
+        bad.push(blocks()[0].querySelector('select.member-role'));
+      }
+    }
 
     return {
       bad: bad,
@@ -286,8 +332,7 @@
     var ul = el('ul', 'ticks');
     entry.members.forEach(function (m, i) {
       ul.appendChild(el('li', null,
-        m.name + ' — ' + m.branch + ' — ' + m.phone +
-        (i === 0 && entry.members.length > 1 ? ' (team lead)' : '')));
+        m.name + ' — ' + m.role + ' — ' + m.branch + ' — ' + m.phone));
     });
     detail.appendChild(ul);
 

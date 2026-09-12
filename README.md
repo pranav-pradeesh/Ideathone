@@ -43,26 +43,30 @@ dependency in the whole project is the Postgres driver used by the API.
 ## What registration collects
 
 1. **Team name**
-2. **Number of team members** — 1 to 3
-3. **For each member: full name, branch of study, 10-digit mobile number** — blocks appear to
-   match the count
+2. **Number of team members** — 3 or 4 (the fourth is optional)
+3. **For each member: full name, role, branch of study, 10-digit mobile number** — blocks
+   appear to match the count
 
-Branch belongs to the **member**, not the team: a team can mix branches freely
-(Mechatronics, Mechanical Engineering, CSE A, CSE B, CSE AI/ML, EEE, ECE).
+Both role and branch belong to the **member**, not the team. A team can mix branches freely
+(Mechatronics, Mechanical Engineering, CSE A, CSE B, CSE AI/ML, EEE, ECE), and picks roles
+from five: **Team Lead**, **Presentation Maker**, **Researcher**, Innovation Lead, Problem
+Analyst. The first three are compulsory in every team; beyond that any role may be repeated.
+Three required roles is also why a team cannot be smaller than three.
 
-One team is one row, thirteen columns:
+One team is one row, twenty columns:
 
-| Reference | Registered at | Team name | Members | Member 1 name | Member 1 branch | Member 1 phone | … |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| ID60-NIG-6536 | 2026-09-12 10:51 | Night Owls | 2 | Asha Menon | CSE AI/ML | 9876543210 | … |
+| Reference | Registered at | Team name | Members | Member 1 name | Member 1 role | Member 1 branch | Member 1 phone | … |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ID60-NIG-6536 | 2026-09-12 10:51 | Night Owls | 3 | Asha Menon | Team Lead | CSE AI/ML | 9876543210 | … |
 
 Phone numbers are normalised to ten digits — `+91 98765 43210`, `098765 43210` and
 `9876543210` all store identically — and written to the sheet as text so Excel cannot eat a
 leading zero.
 
-Rejected on both the client and the server: a blank name, a member with no branch, two
-members sharing a name or a number, a phone that is not ten digits, an unknown branch, more
-than three members, and a team name somebody has already used. The browser checks are a courtesy; `api/_lib/validate.js`
+Rejected on both the client and the server: a blank name, a member with no role or branch,
+two members sharing a name or a number, a phone that is not ten digits, an unknown branch or
+role, fewer than three or more than four members, a team missing any of the three compulsory
+roles, and a team name somebody has already used. The browser checks are a courtesy; `api/_lib/validate.js`
 is the gate, because anything can POST to the endpoint.
 
 There is a honeypot field for bots, and a limit of 12 registrations per hour per client.
@@ -146,9 +150,10 @@ console.log(window.IDEATHON.schedule.reduce((a,p)=>a+p.minutes,0))"   # should p
 - **The pitch block is the capacity limit.** Twelve minutes at 2 min pitch + 1 min Q&A fits
   four teams. Beyond that you need parallel pods with a judge each — the planner on the
   schedule section, and the counter on the organiser page, both work it out.
-- **The cap of three is load-bearing.** The five-minute Decide block does not survive a
-  fourth opinion. If you raise `maxTeamSize`, lengthen that block and add a `Member 4`
-  column to `COLUMNS`.
+- **Team size is 3–4, and the floor is a consequence.** Three compulsory roles means a
+  team cannot be smaller than three, so solo and pair entries are impossible by
+  construction. Raising `maxTeamSize` also needs `MAX_MEMBERS` in the server validator —
+  the sync suite fails if they drift.
 - **You are holding personal data.** Names and phone numbers of students. Collect it for
   the event, download what you need, and drop the database afterwards.
 - **One shared admin password, no individual accounts.** Anyone who has it can see and
@@ -192,7 +197,8 @@ is what was run against this code:
 
 | Suite | Covers |
 | --- | --- |
-| Sync | The client and server branch lists are identical, the team caps match, the schedule is contiguous and sums to 60, and the judging marks sum to 100 |
+| Roles grid | The five role cards split 3 required + 2 optional with no orphan row, at four widths |
+| Sync | The client and server branch and role lists are identical, the compulsory roles fit inside the minimum team size, the team caps match, the schedule is contiguous and sums to 60, and the judging marks sum to 100 |
 | Env pick | The live deployment's exact variable set: every Neon variable carries a `storage_` prefix, so the connection is chosen by ranking — pooled over unpooled, never the `_NO_SSL` variant — and an empty or placeholder `DATABASE_URL` does not shadow a real one |
 | Mixed branch | A team of three from three different branches registers end to end; a member left without a branch is blocked; the admin breakdown counts people rather than teams |
 | Migrate | The guarded migration on a database created before branch moved to the member: a new insert fails against the old NOT NULL column, the migration frees it, existing rows survive, and it is a no-op on a fresh database |

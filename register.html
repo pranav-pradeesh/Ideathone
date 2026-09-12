@@ -40,8 +40,8 @@
       <span class="eyebrow">Registration</span>
       <h1>Register your team</h1>
       <p class="lede">
-        Team name, and each member's name, branch and mobile number.
-        Maximum <span data-bind="max-team">3</span> members &mdash; they can be from different branches.
+        Team name, then each member's name, role, branch and mobile number.
+        Three members minimum, four maximum &mdash; branches can differ.
       </p>
     </div>
   </section>
@@ -74,12 +74,12 @@
         <div class="field">
           <label for="memberCount">Number of team members <span class="req">*</span></label>
           <select id="memberCount" name="memberCount"></select>
-          <span class="hint">Boxes appear below to match.</span>
+          <span class="hint">Three or four. The fourth is optional.</span>
         </div>
 
         <div class="field">
           <span class="label">Members <span class="req">*</span></span>
-          <span class="hint hint-top">Each member has their own branch. The first member is the team lead.</span>
+          <span class="hint hint-top">Every team needs a Team Lead, a Presentation Maker and a Researcher. Two members may share a role.</span>
           <div id="memberNames"></div>
           <div class="error-text" id="err-members"></div>
         </div>
