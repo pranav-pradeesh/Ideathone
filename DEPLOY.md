@@ -6,8 +6,8 @@ Three steps. Budget ten minutes for the first one.
 
 ## 1. Import the repository
 
-[vercel.com/new](https://vercel.com/new) → **Import Git Repository** → select
-`pranav-pradeesh/Ideathone`.
+[vercel.com/new](https://vercel.com/new) → **Import Git Repository** → select this
+repository.
 
 ### Every setting on the import screen
 
@@ -220,6 +220,27 @@ The free tier covers this comfortably. A 200-team event is roughly 200 rows and 
 thousand function invocations — orders of magnitude inside the free allowances for both
 Vercel and Neon. Neon's free databases suspend when idle and wake on the next query; the
 first registration after a quiet period may take a second or two longer.
+
+---
+
+## Changing the URL
+
+Vercel derives the production domain from the **project name**, not the repository name, so
+a misspelt project name is fixed without touching the repo or the git history.
+
+Project → **Settings** → **General** → **Project Name** → set it to `ideathon` → Save. The
+site moves to `ideathon.vercel.app` within a few seconds; no redeploy is needed.
+
+If that name is already taken by someone else's project — `*.vercel.app` names are global,
+not per-account — Vercel will say so, and you can instead go to **Settings → Domains → Add**
+and claim a different free subdomain such as `ideathon-ncerc.vercel.app`.
+
+Two things to know:
+
+- **The old URL stops working immediately.** Anything already shared — a QR code, a poster,
+  a WhatsApp message — breaks. Rename before you circulate the link, not after.
+- **The repository name does not matter.** Nothing in the code refers to it, and renaming
+  the GitHub repo is not required to fix the URL.
 
 ---
 
