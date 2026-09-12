@@ -15,7 +15,14 @@ export default async function handler(req, res) {
       ok: true,
       authed: isAuthed(req),
       configured: Boolean(adminPassword()),
-      database: isConfigured()
+      database: isConfigured(),
+      /* Which build is actually serving. Twice now, a change has looked
+         "not applied" when the deployment simply predated it. */
+      build: {
+        commit: (process.env.VERCEL_GIT_COMMIT_SHA || '').slice(0, 7) || null,
+        branch: process.env.VERCEL_GIT_COMMIT_REF || null,
+        env: process.env.VERCEL_ENV || null
+      }
     });
   }
 

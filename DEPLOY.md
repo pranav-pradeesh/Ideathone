@@ -132,6 +132,30 @@ common reason "it still says no password is set".
 
 ---
 
+## Which build is live?
+
+Open this in a browser — no sign-in needed:
+
+```
+https://<your-site>.vercel.app/api/admin/login
+```
+
+```json
+{"ok":true,"authed":false,"configured":true,"database":true,
+ "build":{"commit":"00b59f1","branch":"main","env":"production"}}
+```
+
+- `build.commit` is the commit currently serving. Compare it with the newest commit on
+  `main`; if it is behind, the site is showing old content and old behaviour.
+- `database` says whether the running build can see a database.
+- `configured` says whether `ADMIN_PASSWORD` is set.
+
+A change that "did not apply" — the rule book still saying something you removed, the admin
+page reporting no database — is almost always this: the deployment predates the change.
+**Redeploy**, then check the commit again.
+
+---
+
 ## Check it worked
 
 1. Open `/register` and register a test team.
