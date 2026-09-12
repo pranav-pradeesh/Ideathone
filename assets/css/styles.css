@@ -922,3 +922,23 @@ code {
   /* five role cards split 3 + 2 by requirement, never 4 + 1 */
   .grid-3 { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* members 1-3 hold a fixed role, shown rather than chosen */
+.member-role-fixed {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.role-fixed-label {
+  font-family: var(--mono);
+  font-size: .78rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.member-role-fixed strong { font-weight: 650; }

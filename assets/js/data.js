@@ -85,12 +85,15 @@ window.IDEATHON = (function () {
 
   /* ---- team roles (rule 1.5) --------------------------------------------- */
 
-  /* Five roles. Every member takes exactly one; a team must cover Team Lead,
-     Presentation Maker and Researcher. Two members may share a role. */
+  /* Five roles, fixed by position. Member 1 is the Team Lead, member 2 the
+     Presentation Maker, member 3 the Researcher. A fourth member, if there is
+     one, picks Innovation Lead or Problem Analyst. Nobody chooses the first
+     three, so the three compulsory roles cannot be missing. */
 
   var roles = [
     {
       id: 'lead',
+      position: 1,
       name: 'Team Lead',
       required: true,
       short: 'Owns the clock and the pitch.',
@@ -125,6 +128,7 @@ window.IDEATHON = (function () {
     },
     {
       id: 'presenter',
+      position: 2,
       name: 'Presentation Maker',
       required: true,
       short: 'Owns the five slides and the submission.',
@@ -159,6 +163,7 @@ window.IDEATHON = (function () {
     },
     {
       id: 'researcher',
+      position: 3,
       name: 'Researcher',
       required: true,
       short: 'Owns the facts and the sources.',
@@ -193,6 +198,7 @@ window.IDEATHON = (function () {
     },
     {
       id: 'innovation',
+      position: 4,
       name: 'Innovation Lead',
       required: false,
       short: 'Pushes the team past its first idea.',
@@ -227,6 +233,7 @@ window.IDEATHON = (function () {
     },
     {
       id: 'analyst',
+      position: 4,
       name: 'Problem Analyst',
       required: false,
       short: 'Owns who hurts, and how much.',
@@ -269,12 +276,12 @@ window.IDEATHON = (function () {
     {
       size: 3,
       label: 'Three members (minimum)',
-      how: 'One Team Lead, one Presentation Maker, one Researcher. All three must be filled.'
+      how: 'Team Lead, Presentation Maker, Researcher — in that order.'
     },
     {
       size: 4,
       label: 'Four members (maximum)',
-      how: 'The same three, plus an Innovation Lead or a Problem Analyst — or a second person in any role you want doubled.'
+      how: 'The same three, plus a fourth who is either the Innovation Lead or the Problem Analyst.'
     }
   ];
 
@@ -298,7 +305,7 @@ window.IDEATHON = (function () {
         'One person belongs to exactly one team. You cannot move between teams once registered.',
         'Register before the deadline. Walk-ins are admitted only if slots remain.',
         'Bring a laptop or a mobile phone — whichever you prefer. At least one working device per team, ideally one each. There is no guarantee of a power socket, so arrive charged.',
-        'Every member takes one of the five roles below, named at registration. A team must include a Team Lead, a Presentation Maker and a Researcher; beyond that choose freely, and two members may share a role.'
+        'Roles are fixed by position. Member 1 is the Team Lead, member 2 the Presentation Maker, member 3 the Researcher. A fourth member chooses Innovation Lead or Problem Analyst. Decide who sits where before you register.'
       ]
     },
     {

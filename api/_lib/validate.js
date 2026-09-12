@@ -7,8 +7,10 @@
 export const MAX_MEMBERS = 4;
 export const MIN_MEMBERS = 3;
 
-/* Five roles. Every member takes one; a team must cover the three required
-   ones. Two members may share a role. */
+/* Roles are fixed by position: members 1-3 are always the Team Lead, the
+   Presentation Maker and the Researcher, in that order. A fourth member picks
+   one of the last two. Nothing is free-choice, so the three compulsory roles
+   cannot be missing. */
 export const ROLES = [
   'Team Lead',
   'Presentation Maker',
@@ -17,6 +19,12 @@ export const ROLES = [
   'Problem Analyst'
 ];
 export const REQUIRED_ROLES = ['Team Lead', 'Presentation Maker', 'Researcher'];
+export const FOURTH_ROLES = ['Innovation Lead', 'Problem Analyst'];
+
+/* The role a member at this index must hold, or null when it is a choice. */
+export function roleForPosition(i) {
+  return i < REQUIRED_ROLES.length ? REQUIRED_ROLES[i] : null;
+}
 export const BRANCHES = [
   'Mechatronics',
   'Mechanical Engineering',
@@ -89,10 +97,30 @@ export function validate(body) {
       return { error: `Member ${i + 1}'s branch is not on the list.`, field: `member${i + 1}Branch` };
     }
 
-    const role = text(raw[i] && raw[i].role);
-    if (!role) return { error: `Member ${i + 1} needs a role.`, field: `member${i + 1}Role` };
-    if (!ROLES.includes(role)) {
-      return { error: `Member ${i + 1}'s role is not on the list.`, field: `member${i + 1}Role` };
+    /* Members 1-3 hold a fixed role; accept it if sent, fill it in if not. */
+    const fixed = roleForPosition(i);
+    let role = text(raw[i] && raw[i].role);
+    if (fixed) {
+      if (role && role !== fixed) {
+        return {
+          error: `Member ${i + 1} is the ${fixed}. That position is not a choice.`,
+          field: `member${i + 1}Role`
+        };
+      }
+      role = fixed;
+    } else {
+      if (!role) {
+        return {
+          error: `Member ${i + 1} must be the Innovation Lead or the Problem Analyst.`,
+          field: `member${i + 1}Role`
+        };
+      }
+      if (!FOURTH_ROLES.includes(role)) {
+        return {
+          error: `Member ${i + 1} can only be the Innovation Lead or the Problem Analyst.`,
+          field: `member${i + 1}Role`
+        };
+      }
     }
 
     const phone = normalisePhone(raw[i] && raw[i].phone);
@@ -105,18 +133,6 @@ export function validate(body) {
     seenPhone.add(phone);
 
     members.push({ name, branch, role, phone });
-  }
-
-  /* The three required roles must all be present. Duplicates are fine. */
-  const filled = new Set(members.map((m) => m.role));
-  const missing = REQUIRED_ROLES.filter((r) => !filled.has(r));
-  if (missing.length) {
-    return {
-      error: missing.length === 1
-        ? `Your team has no ${missing[0]}. Every team needs one.`
-        : `Your team still needs: ${missing.join(', ')}.`,
-      field: 'members'
-    };
   }
 
   return { entry: { ref: makeRef(teamName), teamName, members } };

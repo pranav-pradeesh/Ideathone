@@ -89,7 +89,8 @@
       return only === undefined || Boolean(r.required) === only;
     }).forEach(function (r, i) {
       var c = el('div', 'card');
-      c.appendChild(el('div', 'role-no', r.required ? 'Required' : 'Optional'));
+      c.appendChild(el('div', 'role-no',
+        r.required ? 'Member ' + r.position : 'Member 4 · one of two'));
       c.appendChild(el('h3', null, r.name));
       c.appendChild(el('p', null, r.short));
       var ul = el('ul', 'ticks');
@@ -248,7 +249,7 @@
       td1.setAttribute('data-label', 'Role');
       td1.appendChild(el('span', 'role-name', r.name));
       td1.appendChild(el('span', 'role-flag' + (r.required ? ' is-required' : ''),
-        r.required ? 'Required' : 'Optional'));
+        r.required ? 'Member ' + r.position : 'Member 4 · choice'));
       tr.appendChild(td1);
       var td2 = el('td', null, r.short);
       td2.setAttribute('data-label', 'Owns');

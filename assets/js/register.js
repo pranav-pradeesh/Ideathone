@@ -81,8 +81,9 @@
 
     var head = el('div', 'member-block-head');
     head.appendChild(el('span', 'name-num', String(n)));
+    var fixedName = roleForPosition(i);
     head.appendChild(el('span', 'member-block-title',
-      i >= (I.config.minTeamSize || 3) ? 'Member ' + n + ' (optional)' : 'Member ' + n));
+      fixedName ? 'Member ' + n + ' · ' + fixedName : 'Member ' + n + ' (optional)'));
     block.appendChild(head);
 
     var grid = el('div', 'member-grid');
@@ -105,15 +106,32 @@
     }));
     block.appendChild(grid);
 
-    /* Each member carries their own role and branch — a team may mix both. */
+    /* Roles are fixed by position, so only a fourth member has a choice. */
     var picks = el('div', 'member-grid member-picks');
-    picks.appendChild(picker({
-      id: 'member' + n + 'Role',
-      cls: 'member-role',
-      label: 'Member ' + n + ' role',
-      blank: 'Role…',
-      options: I.roles.map(function (r) { return r.name; })
-    }));
+    var fixedRole = roleForPosition(i);
+
+    if (fixedRole) {
+      var shown = el('div', 'member-role-fixed');
+      shown.appendChild(el('span', 'role-fixed-label', 'Role'));
+      shown.appendChild(el('strong', null, fixedRole));
+      var hidden = document.createElement('input');
+      hidden.type = 'hidden';
+      hidden.id = 'member' + n + 'Role';
+      hidden.className = 'member-role';
+      hidden.value = fixedRole;
+      shown.appendChild(hidden);
+      picks.appendChild(shown);
+    } else {
+      picks.appendChild(picker({
+        id: 'member' + n + 'Role',
+        cls: 'member-role',
+        label: 'Member ' + n + ' role',
+        blank: 'Innovation Lead or Problem Analyst…',
+        options: I.roles.filter(function (r) { return !r.required; })
+          .map(function (r) { return r.name; })
+      }));
+    }
+
     picks.appendChild(picker({
       id: 'member' + n + 'Branch',
       cls: 'member-branch',
@@ -124,6 +142,12 @@
     block.appendChild(picks);
     block.appendChild(el('div', 'error-text member-error'));
     return block;
+  }
+
+  /* Members 1-3 hold a fixed role; a fourth member chooses. */
+  function roleForPosition(i) {
+    var fixed = I.roles.filter(function (r) { return r.required; });
+    return i < fixed.length ? fixed[i].name : null;
   }
 
   function picker(opts) {
@@ -221,7 +245,9 @@
       }
 
       if (!roleSel.value) {
-        problem = problem ? problem + ' Role required.' : 'Choose a role.';
+        problem = problem
+          ? problem + ' Choose Innovation Lead or Problem Analyst.'
+          : 'Choose Innovation Lead or Problem Analyst.';
         roleSel.setAttribute('aria-invalid', 'true');
         bad.push(roleSel);
       }
@@ -243,20 +269,6 @@
         });
       }
     });
-
-    /* Team Lead, Presentation Maker and Researcher must all be covered. */
-    if (!bad.length) {
-      var filled = {};
-      members.forEach(function (m) { filled[m.role] = true; });
-      var missing = I.roles.filter(function (r) { return r.required && !filled[r.name]; })
-        .map(function (r) { return r.name; });
-      if (missing.length) {
-        setError('members', missing.length === 1
-          ? 'Your team has no ' + missing[0] + '. Every team needs one.'
-          : 'Your team still needs: ' + missing.join(', ') + '.');
-        bad.push(blocks()[0].querySelector('select.member-role'));
-      }
-    }
 
     return {
       bad: bad,
