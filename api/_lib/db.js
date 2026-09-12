@@ -15,21 +15,61 @@ let ready = null;
 
 const POSTGRES_URL_RE = /^postgres(ql)?:\/\/\S+/i;
 
-export function connectionString() {
-  for (const name of URL_VARS) {
-    const v = process.env[name];
-    if (v && v.trim()) return v.trim();
-  }
-  /* Vercel's storage integrations let you choose a variable prefix, which
-     turns DATABASE_URL into something like NEON_DATABASE_URL and would make
-     the fixed list above miss a perfectly good database. Fall back to any
-     variable whose value is a postgres connection string. */
+/* Rank candidate variables. Vercel's storage integrations let you choose a
+   name prefix, so DATABASE_URL can arrive as storage_DATABASE_URL — and they
+   set a dozen variants alongside it, several of which are the wrong choice:
+   _NO_SSL fails against Neon, and the unpooled/direct URLs are not what a
+   serverless function should hold open. Higher score wins. */
+function score(name) {
+  const n = name.toUpperCase();
+  if (/NO_SSL/.test(n)) return -1;                 // never: Neon requires SSL
+  if (/(^|_)DATABASE_URL$/.test(n)) return 100;    // pooled, the one we want
+  if (/(^|_)POSTGRES_URL$/.test(n)) return 90;
+  if (/PRISMA/.test(n)) return 40;                 // works, but shaped for Prisma
+  if (/UNPOOLED|NON_POOLING/.test(n)) return 30;   // direct connection
+  return 50;
+}
+
+/* Returns { name, value } for the best candidate, or null. The name comes from
+   the selection itself: several variables hold the identical URL, so looking
+   one up by value afterwards reports whichever happened to come first. */
+function selectConnection() {
+  const usable = [];
+
   for (const [name, value] of Object.entries(process.env)) {
-    if (typeof value === 'string' && POSTGRES_URL_RE.test(value.trim())) {
-      return value.trim();
-    }
+    if (typeof value !== 'string') continue;
+    const v = value.trim();
+    /* A name being set is not enough — a DATABASE_URL left empty or holding a
+       placeholder must not shadow a real connection string elsewhere. */
+    if (!POSTGRES_URL_RE.test(v)) continue;
+    const s = score(name);
+    if (s >= 0) usable.push({ name, value: v, score: s });
   }
-  return null;
+
+  if (!usable.length) return null;
+
+  usable.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    /* Tie-break on the exact names we document, then alphabetically so the
+       choice is stable across cold starts. */
+    const ai = URL_VARS.indexOf(a.name), bi = URL_VARS.indexOf(b.name);
+    const an = ai < 0 ? 99 : ai, bn = bi < 0 ? 99 : bi;
+    if (an !== bn) return an - bn;
+    return a.name.localeCompare(b.name);
+  });
+
+  return usable[0];
+}
+
+export function connectionString() {
+  const chosen = selectConnection();
+  return chosen ? chosen.value : null;
+}
+
+/* Which variable was chosen — name only, for diagnostics. */
+export function connectionVarName() {
+  const chosen = selectConnection();
+  return chosen ? chosen.name : null;
 }
 
 export function isConfigured() {
@@ -50,7 +90,8 @@ export function envDiagnostics() {
   return {
     checkedNames: URL_VARS,
     databaseLikeVars: present,
-    varsHoldingAPostgresUrl: withUrl
+    varsHoldingAPostgresUrl: withUrl,
+    usingVar: connectionVarName()
   };
 }
 

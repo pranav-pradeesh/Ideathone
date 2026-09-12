@@ -193,6 +193,7 @@ is what was run against this code:
 | Suite | Covers |
 | --- | --- |
 | Sync | The client and server branch lists are identical, the team caps match, the schedule is contiguous and sums to 60, and the judging marks sum to 100 |
+| Env pick | The live deployment's exact variable set: every Neon variable carries a `storage_` prefix, so the connection is chosen by ranking — pooled over unpooled, never the `_NO_SSL` variant — and an empty or placeholder `DATABASE_URL` does not shadow a real one |
 | Mixed branch | A team of three from three different branches registers end to end; a member left without a branch is blocked; the admin breakdown counts people rather than teams |
 | Migrate | The guarded migration on a database created before branch moved to the member: a new insert fails against the old NOT NULL column, the migration frees it, existing rows survive, and it is a no-op on a fresh database |
 | Schema | The exact DDL and every query, executed on a real Postgres engine: idempotent DDL, the unique index rejecting `  night owls  ` against `Night Owls`, jsonb round-trip, rate-window arithmetic |

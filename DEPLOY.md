@@ -64,10 +64,12 @@ use, so there is no migration to run.
 
 Two things that catch people out here:
 
-- **If the connect dialog offers an "environment variables prefix", leaving it blank is
-  simplest.** Setting one produces `NEON_DATABASE_URL` instead of `DATABASE_URL`. The code
-  handles that — it accepts any variable holding a `postgres://` URL — but only after a
-  redeploy.
+- **A variable prefix is fine.** The connect dialog offers one; setting it to `storage`
+  produces `storage_DATABASE_URL` instead of `DATABASE_URL`. The code handles any prefix —
+  it ranks every variable holding a `postgres://` URL and takes the pooled one, ignoring
+  the `_NO_SSL` and unpooled variants Neon also sets — but only after a redeploy.
+- **Do not hand-create `DATABASE_URL` as a placeholder.** An empty or dummy value is
+  ignored rather than shadowing the real one, but it makes the variable list confusing.
 - **Redeploy after connecting.** An existing deployment does not pick up new variables.
 
 If `/admin` still says no database is configured, sign in: the page lists exactly which
