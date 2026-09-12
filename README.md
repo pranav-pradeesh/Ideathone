@@ -147,6 +147,17 @@ console.log(window.IDEATHON.schedule.reduce((a,p)=>a+p.minutes,0))"   # should p
 - **AI is allowed in Discover, Design and Deck; closed in Decide and the pitch.** That split
   is the only reason the judging means anything.
 
+## Branding
+
+The site carries NCERC and Nehru Group branding: the college crest in the header and hero,
+the group lockup in the footer (`assets/img/`), and a palette taken from the marks
+themselves — navy `#202080`, cyan `#00a0e0`, gold `#c0a060`.
+
+Of those, only the navy passes WCAG AA as text, so it carries the buttons, links and
+accents; the cyan and gold appear as fills, markers and the hairline under the header, never
+as small type. Dark mode swaps the navy for the cyan, which navy cannot do on a dark ground.
+Host names live in `config` in `data.js`.
+
 ## Responsive and accessible
 
 Verified at 320, 360, 390, 768, 1024 and 1440 px across all five pages: no page scrolls
@@ -156,6 +167,9 @@ genuinely does scroll. All form controls are at least 40 px tall on a phone.
 
 Semantic landmarks, labelled inputs, `aria-invalid` with inline error text, a skip link,
 visible focus rings, `aria-live` status messages, and a `prefers-reduced-motion` opt-out.
+An audit script checks every text/background pair on every page against WCAG AA — including
+translucent panels, which it composites — and flags any text under 12px. It currently
+reports zero.
 Plain ES5, so anything from the last decade renders it.
 
 ## Tests

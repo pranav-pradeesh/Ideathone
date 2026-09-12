@@ -9,6 +9,9 @@ window.IDEATHON = (function () {
   var config = {
     name: 'Ideathon 60',
     tagline: 'One hour. One idea. Three people.',
+    host: 'Nehru College of Engineering and Research Centre',
+    hostShort: 'NCERC',
+    hostGroup: 'Nehru Group of Institutions',
     date: 'TBA',            // e.g. '12 October 2026'
     venue: 'TBA',           // e.g. 'Seminar Hall, Block C'
     contactEmail: '',       // shown in the footer when set
@@ -31,43 +34,43 @@ window.IDEATHON = (function () {
     {
       start: 0, minutes: 5, name: 'Check-in & Brief',
       ai: 'n/a',
-      what: 'Teams seated, roles confirmed, problem statement revealed. Timer starts and does not stop.',
+      what: 'Problem statement revealed. The timer starts and does not stop.',
       owner: 'Organisers'
     },
     {
       start: 5, minutes: 10, name: 'Discover',
       ai: 'yes',
-      what: 'Understand the problem and who hurts from it. Gather facts, numbers and existing solutions. Breadth over depth — you get ten minutes, not ten hours.',
+      what: 'Understand the problem and who it hurts. Facts, numbers, prior art. Breadth over depth.',
       owner: 'Researcher leads · Lead times the box'
     },
     {
       start: 15, minutes: 5, name: 'Decide',
       ai: 'no',
-      what: 'Put the laptops down. Pick ONE idea out loud, as a team, and write it as a single sentence. This block is judged, so it has to be yours.',
+      what: 'Laptops down. Pick one idea out loud and write it as a single sentence.',
       owner: 'Whole team · Lead writes the sentence'
     },
     {
       start: 20, minutes: 10, name: 'Design',
       ai: 'yes',
-      what: 'Shape the solution: how it works, who pays, why it is feasible in the real world. Sketch the one diagram the deck will need.',
+      what: 'How it works, who pays, why it is feasible. Sketch the one diagram the deck needs.',
       owner: 'Researcher + Lead'
     },
     {
       start: 30, minutes: 15, name: 'Deck',
       ai: 'yes',
-      what: 'Build exactly five slides: Problem · Idea · How it works · Impact · Ask. Storyteller drives the file while the Lead rehearses out loud.',
+      what: 'Five slides: Problem · Idea · How it works · Impact · Ask. The Lead rehearses out loud.',
       owner: 'Storyteller owns the file'
     },
     {
       start: 45, minutes: 3, name: 'Submit',
       ai: 'n/a',
-      what: 'Hard cutoff. Upload the deck and the AI disclosure line. Late files are not judged — no exceptions, the clock is the clock.',
+      what: 'Hard cutoff. Upload the deck. Late files are not judged.',
       owner: 'Storyteller submits · Lead confirms'
     },
     {
       start: 48, minutes: 12, name: 'Pitch & Q&A',
       ai: 'no',
-      what: '2 minutes to pitch, 1 minute of questions from the judges. Slides on screen, notes off. Answer from what you built, not from a model.',
+      what: '2 minutes to pitch, 1 minute of questions. Notes off.',
       owner: 'Lead pitches · all three take questions'
     }
   ];
@@ -182,17 +185,17 @@ window.IDEATHON = (function () {
     {
       size: 3,
       label: 'Three members (recommended)',
-      how: 'One person per role, exactly as written in rule 1.5.'
+      how: 'One person per role.'
     },
     {
       size: 2,
       label: 'Two members',
-      how: 'One takes Team Lead & Pitcher, the other takes Storyteller & Deck Builder. Split the Researcher duties: the Lead takes problem evidence, the Storyteller takes the how-it-works flow. Cut to four slides if you are behind at minute 40.'
+      how: 'Lead and Storyteller. Split the Researcher\'s job between you: Lead takes the evidence, Storyteller takes the how.'
     },
     {
       size: 1,
       label: 'Solo',
-      how: 'You are the Lead. Run the same clock, but cut Design to five minutes and build three slides — Problem, Idea, Impact. Prioritise a clean pitch over a full deck.'
+      how: 'Run the same clock. Cut Design to five minutes and build three slides: Problem, Idea, Impact.'
     }
   ];
 
@@ -293,18 +296,18 @@ window.IDEATHON = (function () {
 
   var aiPolicy = {
     allowed: [
-      'Research during Discover (05–15) and Design (20–30): background, prior art, definitions, summarising sources.',
-      'Presentation-making during Deck (30–45): slide copy, layout, restructuring notes, generated or edited imagery.',
-      'Spelling, grammar and translation at any point in the working phases.'
+      'Research during Discover and Design — background, prior art, summarising sources.',
+      'Presentation-making during Deck — slide copy, layout, imagery.',
+      'Spelling, grammar and translation, any working phase.'
     ],
     notAllowed: [
-      'The Decide block (15–20). Laptops down — idea selection is judged as the team\'s own work.',
-      'The Pitch and Q&A (48–60). No live prompting, no reading generated answers, no earpieces.',
-      'Submitting a slide containing a fact, figure or quote nobody on the team has verified.',
-      'Presenting AI-generated work as a working prototype or as original research.'
+      'Decide (15–20). Laptops down — choosing the idea is judged as your own work.',
+      'Pitch and Q&A (48–60). No live prompting, no generated answers, no earpieces.',
+      'Any fact, figure or quote nobody on the team has verified.',
+      'AI output presented as a working prototype or original research.'
     ],
     disclosure:
-      'Every team names the AI tools they used on their last slide. Disclosure costs you nothing. An undisclosed tool discovered in Q&A disqualifies the pitch.'
+      'Name every AI tool you used on your last slide. Disclosure costs nothing. An undisclosed tool found in Q&A disqualifies the pitch.'
   };
 
   /* Branches of study offered in the registration dropdown.

@@ -13,12 +13,15 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span><span data-bind="event-name">Ideathon 60</span></a>
+    <a class="brand" href="index.html">
+      <img class="mark" src="assets/img/ncerc.jpg" alt="" width="30" height="30">
+      <span class="brand-text">
+        <span data-bind="event-name">Ideathon 60</span>
+        <small data-bind="host-short">NCERC</small>
+      </span>
+    </a>
     <nav class="site-nav" aria-label="Primary">
-      <a href="#format">Format</a>
       <a href="#schedule">The 60 minutes</a>
-      <a href="#roles">Roles</a>
-      <a href="#ai">AI policy</a>
       <a href="rulebook.html">Rule book</a>
       <a href="register.html" class="btn btn-primary btn-sm">Register</a>
     </nav>
@@ -29,13 +32,15 @@
 
   <section class="hero">
     <div class="wrap">
+      <div class="host-line">
+        <img src="assets/img/ncerc.jpg" alt="" width="52" height="52">
+        <span data-bind="host-full">Nehru College of Engineering and Research Centre</span>
+      </div>
       <span class="eyebrow">60 minutes · teams of 3 · AI allowed, with limits</span>
       <h1><span data-bind="event-name">Ideathon 60</span></h1>
       <p class="lede">
-        One hour, start to finish. Your team gets a problem statement at minute zero and
-        pitches a solution at minute forty-eight. Up to three people per team, one published
-        role each, and a schedule that tells you exactly what you should be doing at any
-        given minute.
+        You get the problem at minute zero and pitch at minute forty-eight.
+        Teams of up to three.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="register.html">Register your team</a>
@@ -57,39 +62,29 @@
     <div class="wrap">
       <div class="section-head">
         <p class="kicker">How it works</p>
-        <h2>An hour is not a hackathon. It is a decision drill.</h2>
+        <h2>An hour is a decision drill, not a hackathon.</h2>
         <p>
-          You will not build a product in sixty minutes, and you are not being asked to.
-          You are being judged on whether you can read a problem, choose one idea over
-          three others, and defend that choice under questioning. Everything in the format
-          below exists to protect those three things from the clock.
+          You are judged on choosing one idea over three others and defending it &mdash;
+          not on what you can build in sixty minutes.
         </p>
       </div>
 
-      <div class="grid grid-3">
+      <div class="grid grid-2">
         <div class="card">
-          <h3>Maximum three members</h3>
-          <p>Three is the cap, and it is a hard one. Four people cannot reach agreement inside a five-minute decision block — the format breaks before the idea does. One and two-person teams are welcome and have their own role fallbacks.</p>
+          <h3>Three people, maximum</h3>
+          <p>Four cannot agree inside a five-minute decision block.</p>
         </div>
         <div class="card">
-          <h3>Every member has one named role</h3>
-          <p>Agree your roles before you walk in, not in the first ten minutes. Each role has a defined job for each phase, so nobody spends the opening block deciding who does what.</p>
+          <h3>One role each</h3>
+          <p>Agreed before you arrive, so nobody spends the first ten minutes deciding who does what.</p>
         </div>
         <div class="card">
-          <h3>Five slides, hard cutoff</h3>
-          <p>Problem, Idea, How it works, Impact, Ask. Submission closes at minute 48 and late decks are not judged. The cutoff is enforced by a clock, not by a person you can negotiate with.</p>
+          <h3>Five slides, cutoff at 48:00</h3>
+          <p>Problem · Idea · How it works · Impact · Ask. Late decks are not judged.</p>
         </div>
         <div class="card">
           <h3>AI for research and slides</h3>
-          <p>Permitted, openly, in the phases where it saves real time. Closed in the two blocks that are actually being judged — the decision and the pitch. Full policy below.</p>
-        </div>
-        <div class="card">
-          <h3>Judged on four things</h3>
-          <p>Clarity of the problem, originality of the idea, feasibility of the how, and the quality of your answers under questioning. Slide polish is worth nothing on its own.</p>
-        </div>
-        <div class="card">
-          <h3>No prior preparation</h3>
-          <p>The problem statement is revealed at minute zero. Bringing a pre-built deck is the one thing that gets a team removed rather than marked down.</p>
+          <p>Closed when you choose the idea, and when you pitch.</p>
         </div>
       </div>
     </div>
@@ -100,11 +95,7 @@
       <div class="section-head">
         <p class="kicker">Minute by minute</p>
         <h2>Splitting the hour</h2>
-        <p>
-          Seven blocks, sixty minutes, no slack. The purple blocks are where AI tools are
-          permitted; the red blocks are where they are closed. Your team's timer starts at
-          the brief and does not stop.
-        </p>
+        <p>Seven blocks, no slack. Orange means AI is allowed; red means it is closed.</p>
       </div>
 
       <div class="timeline" id="timeline" data-render="timeline">
@@ -114,10 +105,8 @@
       <div class="callout warn">
         <h3>Organisers: the pitch block is the constraint</h3>
         <p>
-          Twelve minutes of pitching at three minutes per team fits
-          <strong data-bind="pitch-capacity">4</strong> teams. That is the real capacity of a
-          single room &mdash; every team beyond that either overruns the hour or does not pitch.
-          Run parallel pods with a judge each, then a shortlist round afterwards if you need one.
+          Twelve minutes of pitching fits <strong data-bind="pitch-capacity">4</strong> teams.
+          Beyond that, run parallel pods with a judge each.
         </p>
         <div class="planner">
           <div>
@@ -131,9 +120,8 @@
           <div><span>Rooms / corners</span><strong id="roomCount">3</strong></div>
           <div><span>Teams per pod</span><strong id="perPod">4</strong></div>
         </div>
-        <p class="hint" style="color:var(--text-faint);font-size:.85rem;margin-bottom:0">
-          Each pod runs the same sixty-minute clock in parallel. Only the pitch block needs
-          separating &mdash; the first 48 minutes can happen in one hall.
+        <p class="fine-print" style="margin-bottom:0">
+          Only the pitch block needs separating &mdash; the first 48 minutes fit in one hall.
         </p>
       </div>
     </div>
@@ -144,11 +132,7 @@
       <div class="section-head">
         <p class="kicker">Rule 1.5</p>
         <h2>Three roles, chosen before you arrive</h2>
-        <p>
-          Each member takes exactly one role, and no two members of a team hold the same
-          one. Settle it before you arrive. Short-handed teams merge roles using the
-          published fallbacks &mdash; there is no improvising on the day.
-        </p>
+        <p>One role each, no duplicates, settled before you arrive.</p>
       </div>
 
       <div class="grid grid-3" id="roleCards" data-render="role-cards"></div>
@@ -161,9 +145,8 @@
             <tbody data-render="team-shapes"></tbody>
           </table>
         </div>
-        <p style="margin-top:16px;margin-bottom:0">
-          <a href="rulebook.html">Read the full rule book</a> &mdash; eight sections covering the
-          clock, preparation, AI use, submission, judging and conduct.
+        <p style="margin-top:14px;margin-bottom:0">
+          <a href="rulebook.html">Read the full rule book →</a>
         </p>
       </div>
     </div>
@@ -175,9 +158,8 @@
         <p class="kicker">AI policy</p>
         <h2>AI is a tool here, not a contestant</h2>
         <p>
-          Use it for research and for making the presentation &mdash; that is what it is good at,
-          and pretending otherwise would just push it under the table. The two blocks that
-          decide the winner are AI-free, because those are the blocks that are actually you.
+          Use it for research and slides. The two blocks that decide the winner &mdash;
+          choosing the idea, and the pitch &mdash; are AI-free.
         </p>
       </div>
 
@@ -197,25 +179,14 @@
         <p data-bind="ai-disclosure"></p>
       </div>
 
-      <div class="callout">
-        <h3>Why the Decide block is AI-free</h3>
-        <p style="margin-bottom:0">
-          If a model picks the idea, the judges are marking the model. The five minutes
-          between 15:00 and 20:00 are the one part of the hour where the team has to back
-          its own judgement &mdash; so laptops close, the team argues out loud, and the Lead
-          writes one sentence down. Judges will ask in Q&amp;A why you chose this idea over
-          the alternatives. Answer that well and the rest of the pitch gets easier.
-        </p>
-      </div>
     </div>
   </section>
 
   <section class="band" style="border-bottom:none">
     <div class="wrap" style="text-align:center">
       <h2>Registration is open</h2>
-      <p style="color:var(--text-dim);max-width:52ch;margin:0 auto 26px">
-        Your branch, a team name, and who is on the team. That is the whole entry
-        requirement &mdash; it takes under a minute.
+      <p class="lede" style="margin:0 auto 22px">
+        Your branch, a team name, and who is on the team. Under a minute.
       </p>
       <a class="btn btn-primary" href="register.html">Register your team</a>
     </div>
@@ -225,7 +196,10 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <span data-bind="footer-name">Ideathon 60</span>
+    <div class="footer-brand">
+      <img src="assets/img/nehru-group.jpg" alt="Nehru Group of Institutions" width="220" height="114" loading="lazy">
+      <span data-bind="footer-name">Ideathon 60</span>
+    </div>
     <span data-bind="footer-contact"></span>
   </div>
 </footer>

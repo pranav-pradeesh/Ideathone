@@ -14,7 +14,13 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span><span data-bind="event-name">Ideathon 60</span></a>
+    <a class="brand" href="index.html">
+      <img class="mark" src="assets/img/ncerc.jpg" alt="" width="30" height="30">
+      <span class="brand-text">
+        <span data-bind="event-name">Ideathon 60</span>
+        <small data-bind="host-short">NCERC</small>
+      </span>
+    </a>
     <nav class="site-nav" aria-label="Primary">
       <span class="nav-tag">Admin</span>
       <button class="btn btn-ghost btn-sm" type="button" id="logoutBtn" hidden>Sign out</button>
@@ -31,8 +37,7 @@
         <span class="eyebrow">Restricted</span>
         <h1>Admin sign-in</h1>
         <p class="lede lede-sm">
-          Every team that has registered, in one sheet. The password is checked on the
-          server &mdash; this page holds nothing until you are signed in.
+          Every registered team, in one sheet.
         </p>
 
         <form id="loginForm" class="form-shell">
@@ -58,7 +63,7 @@
       <div class="section-head" style="margin-bottom:24px">
         <p class="kicker">Admin</p>
         <h1>All registrations</h1>
-        <p>Live from the database. Every team that has registered anywhere, on any device.</p>
+        <p>Live from the database &mdash; every team, from any device.</p>
       </div>
 
       <dl class="facts facts-tight">
@@ -106,8 +111,7 @@
       </div>
 
       <p class="fine-print">
-        This page holds participants' names and phone numbers. Download what you need, and
-        sign out when you are done &mdash; the session expires on its own after eight hours.
+        Holds names and phone numbers. Sign out when you are done; the session expires after eight hours.
       </p>
     </div>
   </section>
@@ -116,7 +120,11 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <span data-bind="footer-name">Ideathon 60</span>
+    <div class="footer-brand">
+      <img src="assets/img/nehru-group.jpg" alt="Nehru Group of Institutions" width="220" height="114" loading="lazy">
+      <span data-bind="footer-name">Ideathon 60</span>
+    </div>
+    <span data-bind="footer-contact"></span>
   </div>
 </footer>
 

@@ -13,7 +13,13 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span><span data-bind="event-name">Ideathon 60</span></a>
+    <a class="brand" href="index.html">
+      <img class="mark" src="assets/img/ncerc.jpg" alt="" width="30" height="30">
+      <span class="brand-text">
+        <span data-bind="event-name">Ideathon 60</span>
+        <small data-bind="host-short">NCERC</small>
+      </span>
+    </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="index.html#schedule">The 60 minutes</a>
       <a href="rulebook.html" aria-current="page">Rule book</a>
@@ -29,9 +35,7 @@
       <span class="eyebrow">Rule book</span>
       <h1>The rules</h1>
       <p class="lede">
-        Eight sections, numbered so anyone can point at one. Read it before you
-        register &mdash; entering means you accept it. Anything not covered here is the
-        organisers' call on the day.
+        Eight sections, numbered. Entering means you accept them.
       </p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="register.html">Register your team</a>
@@ -51,7 +55,7 @@
 
       <div class="callout" id="roles">
         <h3>The three roles (rule 1.5)</h3>
-        <p>Every member takes one, and no two members of a team take the same one. Agree them before you arrive.</p>
+        <p>One each, no duplicates, agreed before you arrive.</p>
         <div class="table-scroll">
           <table class="stack-table">
             <thead><tr><th>Role</th><th>Owns</th><th>Delivers</th></tr></thead>
@@ -86,7 +90,10 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <span data-bind="footer-name">Ideathon 60</span>
+    <div class="footer-brand">
+      <img src="assets/img/nehru-group.jpg" alt="Nehru Group of Institutions" width="220" height="114" loading="lazy">
+      <span data-bind="footer-name">Ideathon 60</span>
+    </div>
     <span data-bind="footer-contact"></span>
   </div>
 </footer>

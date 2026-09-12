@@ -22,6 +22,8 @@
 
   function bindText() {
     all('[data-bind="event-name"]').forEach(function (n) { n.textContent = cfg.name; });
+    all('[data-bind="host-short"]').forEach(function (n) { n.textContent = cfg.hostShort || ''; });
+    all('[data-bind="host-full"]').forEach(function (n) { n.textContent = cfg.host || ''; });
     all('[data-bind="event-date"]').forEach(function (n) { n.textContent = cfg.date || 'TBA'; });
     all('[data-bind="event-venue"]').forEach(function (n) { n.textContent = cfg.venue || 'TBA'; });
     all('[data-bind="max-team"]').forEach(function (n) { n.textContent = String(cfg.maxTeamSize); });
@@ -30,6 +32,7 @@
 
     all('[data-bind="footer-name"]').forEach(function (n) {
       n.textContent = cfg.name + ' · ' + cfg.tagline;
+      n.title = cfg.host || '';
     });
     all('[data-bind="footer-contact"]').forEach(function (n) {
       n.textContent = '';

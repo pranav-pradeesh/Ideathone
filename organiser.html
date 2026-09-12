@@ -14,11 +14,16 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="index.html"><span class="dot" aria-hidden="true"></span><span data-bind="event-name">Ideathon 60</span></a>
+    <a class="brand" href="index.html">
+      <img class="mark" src="assets/img/ncerc.jpg" alt="" width="30" height="30">
+      <span class="brand-text">
+        <span data-bind="event-name">Ideathon 60</span>
+        <small data-bind="host-short">NCERC</small>
+      </span>
+    </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="index.html#schedule">The 60 minutes</a>
       <a href="rulebook.html">Rule book</a>
-      <a href="register.html">Register</a>
       <a href="organiser.html" aria-current="page">Organiser</a>
     </nav>
   </div>
@@ -31,8 +36,7 @@
       <span class="eyebrow">Organisers</span>
       <h1>Master sheet</h1>
       <p class="lede">
-        Everything registered on <em>this device</em>, plus any team files you import.
-        Download it as one spreadsheet when you are done.
+        Teams held on <em>this device</em>, plus any files you import.
       </p>
     </div>
   </section>
@@ -49,11 +53,7 @@
 
       <div class="callout">
         <h3>Import the files teams sent you</h3>
-        <p>
-          Drop in the <code>.xlsx</code> or <code>.csv</code> files teams downloaded when they
-          registered. Duplicates are skipped on reference and on team name, so importing the
-          same file twice is safe.
-        </p>
+        <p>Drop in the files teams sent you. Duplicates are skipped, so importing twice is safe.</p>
         <div class="btn-row">
           <label class="btn btn-primary" for="importInput">
             Import team files
@@ -95,11 +95,11 @@
       </div>
 
       <div class="callout warn">
-        <h3>Read this before you rely on it</h3>
+        <h3>Before you rely on this</h3>
         <ul class="ticks" style="margin-bottom:0">
-          <li>This list lives in <strong>this browser on this device</strong>. Clearing site data wipes it. Download the master sheet after every import.</li>
-          <li>A team registering on their own phone is stored on <em>their</em> phone — you only get it when they send you the file. For a single registration desk, register everyone on one laptop and this page is the whole system.</li>
-          <li>A re-saved <code>.xlsx</code> (opened and saved again in Excel) cannot be imported. Export it to CSV and import that.</li>
+          <li>This list lives in <strong>this browser only</strong>. Clearing site data wipes it &mdash; download after every import.</li>
+          <li>It does not read the database. For everything registered online, use the admin page.</li>
+          <li>An <code>.xlsx</code> re-saved by Excel cannot be imported. Export it to CSV instead.</li>
         </ul>
       </div>
 
@@ -110,7 +110,10 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <span data-bind="footer-name">Ideathon 60</span>
+    <div class="footer-brand">
+      <img src="assets/img/nehru-group.jpg" alt="Nehru Group of Institutions" width="220" height="114" loading="lazy">
+      <span data-bind="footer-name">Ideathon 60</span>
+    </div>
     <span data-bind="footer-contact"></span>
   </div>
 </footer>
