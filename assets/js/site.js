@@ -32,13 +32,18 @@
       n.textContent = cfg.name + ' · ' + cfg.tagline;
     });
     all('[data-bind="footer-contact"]').forEach(function (n) {
+      n.textContent = '';
       if (cfg.contactEmail) {
         var a = el('a', null, cfg.contactEmail);
         a.href = 'mailto:' + cfg.contactEmail;
         n.appendChild(a);
       } else {
-        n.textContent = 'Questions? Ask an organiser.';
+        n.appendChild(document.createTextNode('Questions? Ask an organiser.'));
       }
+      n.appendChild(document.createTextNode(' · '));
+      var org = el('a', null, 'Organiser');
+      org.href = 'organiser.html';
+      n.appendChild(org);
     });
 
     document.title = document.title.replace(/^Ideathon 60/, cfg.name);
@@ -94,9 +99,12 @@
     I.teamShapes.forEach(function (s) {
       var tr = el('tr');
       var td1 = el('td');
+      td1.setAttribute('data-label', 'Team size');
       td1.appendChild(el('span', 'role-name', s.label));
       tr.appendChild(td1);
-      tr.appendChild(el('td', null, s.how));
+      var td2 = el('td', null, s.how);
+      td2.setAttribute('data-label', 'Roles');
+      tr.appendChild(td2);
       host.appendChild(tr);
     });
   }

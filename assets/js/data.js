@@ -16,11 +16,6 @@ window.IDEATHON = (function () {
     minTeamSize: 1,
     totalMinutes: 60,
 
-    // Where the registration form POSTs its JSON payload.
-    // Leave empty to run in local mode: submissions are kept in this browser's
-    // localStorage and the team can download their own copy. See README.md.
-    endpoint: '',
-
     // Pitch block maths — used by the pod planner on the schedule.
     pitchBlockMinutes: 12,
     pitchMinutesPerTeam: 2,
@@ -216,23 +211,19 @@ window.IDEATHON = (function () {
       'Presenting AI-generated work as a working prototype or as original research.'
     ],
     disclosure:
-      'Every team names the AI tools they used, on the last slide and on the registration form. Disclosure costs you nothing. An undisclosed tool discovered in Q&A disqualifies the pitch.'
+      'Every team names the AI tools they used on their last slide. Disclosure costs you nothing. An undisclosed tool discovered in Q&A disqualifies the pitch.'
   };
 
-  var aiTools = [
-    'Claude', 'ChatGPT', 'Gemini', 'Copilot', 'Perplexity',
-    'Canva AI', 'Gamma', 'Midjourney / image generation'
-  ];
+  /* Branches of study offered in the registration dropdown.
+     Add or rename freely — the form rebuilds itself from this list. */
 
-  var themes = [
-    'Campus & student life',
-    'Sustainability & climate',
-    'Healthcare access',
-    'Education & skilling',
-    'Fintech & inclusion',
-    'Agriculture & food systems',
-    'Accessibility',
-    'Open theme'
+  var branches = [
+    'Mechatronics',
+    'Mechanical Engineering',
+    'CSE A',
+    'CSE B',
+    'EEE',
+    'ECE'
   ];
 
   /* ---- helpers ----------------------------------------------------------- */
@@ -253,8 +244,7 @@ window.IDEATHON = (function () {
     roles: roles,
     teamShapes: teamShapes,
     aiPolicy: aiPolicy,
-    aiTools: aiTools,
-    themes: themes,
+    branches: branches,
     clock: clock,
     pitchCapacity: pitchCapacity
   };

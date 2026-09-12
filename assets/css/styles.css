@@ -591,3 +591,99 @@ td .role-name { font-weight: 600; color: var(--text); }
   .role-block { break-inside: avoid; border-color: #bbb; }
   a { color: #000; }
 }
+
+/* ---------- registration & organiser additions ---------- */
+
+.hero-tight { padding-bottom: clamp(28px, 4vw, 40px); }
+.band-last { border-bottom: none; }
+.wrap-narrow { max-width: 760px; }
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+.btn-row .btn { flex: 0 1 auto; }
+
+/* a file input wearing a button */
+label.btn { position: relative; overflow: hidden; }
+label.btn:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* numbered member-name rows */
+.name-row {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.name-row:last-child { margin-bottom: 0; }
+.name-num {
+  font-family: var(--mono);
+  font-size: .85rem;
+  color: var(--text-faint);
+  text-align: center;
+  background: var(--bg-input);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  padding: 10px 0;
+  line-height: 1.2;
+}
+
+.fine-print {
+  color: var(--text-faint);
+  font-size: .84rem;
+  margin-top: 18px;
+}
+
+.facts-tight { margin-top: 0; margin-bottom: 28px; }
+
+.table-title {
+  font-size: 1.05rem;
+  margin: 30px 0 12px;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: .88em;
+  background: var(--bg-input);
+  border: 1px solid var(--line-soft);
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+/* Tables collapse into labelled cards rather than scrolling sideways. */
+@media (max-width: 720px) {
+  .stack-table { min-width: 0; }
+  .stack-table thead { display: none; }
+  .stack-table tr {
+    display: block;
+    border-bottom: 1px solid var(--line-soft);
+    padding: 6px 0;
+  }
+  .stack-table tr:last-child { border-bottom: none; }
+  .stack-table td {
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    gap: 10px;
+    border-bottom: none;
+    padding: 6px 16px;
+  }
+  .stack-table td::before {
+    content: attr(data-label);
+    font-family: var(--mono);
+    font-size: .68rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    align-self: center;
+  }
+  .stack-table td:empty { display: none; }
+}
+
+@media (max-width: 420px) {
+  .name-row { grid-template-columns: 28px 1fr; gap: 8px; }
+  .btn-row .btn { width: 100%; }
+  .facts { grid-template-columns: 1fr 1fr; }
+}
