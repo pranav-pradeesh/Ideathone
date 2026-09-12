@@ -147,12 +147,17 @@
 
   function render() {
     var people = entries.reduce(function (a, e) { return a + e.members.length; }, 0);
+    /* A team may mix branches, so count members and note which teams each
+       branch appears in rather than assigning a team to one branch. */
     var branches = {};
     entries.forEach(function (e) {
-      var b = e.branch || 'Not stated';
-      if (!branches[b]) branches[b] = { teams: 0, people: 0 };
-      branches[b].teams++;
-      branches[b].people += e.members.length;
+      var seen = {};
+      e.members.forEach(function (m) {
+        var b = m.branch || 'Not stated';
+        if (!branches[b]) branches[b] = { people: 0, teams: 0 };
+        branches[b].people++;
+        if (!seen[b]) { branches[b].teams++; seen[b] = true; }
+      });
     });
 
     document.getElementById('statTeams').textContent = entries.length;
@@ -189,7 +194,7 @@
       td.setAttribute('data-label', 'Branch of study');
       td.appendChild(el('span', 'role-name', name));
       tr.appendChild(td);
-      [['Teams', branches[name].teams], ['Participants', branches[name].people]].forEach(function (pair) {
+      [['Participants', branches[name].people], ['Teams with a member', branches[name].teams]].forEach(function (pair) {
         var c = el('td', null, String(pair[1]));
         c.setAttribute('data-label', pair[0]);
         tr.appendChild(c);

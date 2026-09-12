@@ -40,10 +40,6 @@ export function validate(body) {
   /* Bots fill in every field they find; a human never sees this one. */
   if (text(body.website)) return { error: 'Rejected.', field: 'website' };
 
-  const branch = text(body.branch);
-  if (!branch) return { error: 'Choose a branch of study.', field: 'branch' };
-  if (!BRANCHES.includes(branch)) return { error: 'Unknown branch of study.', field: 'branch' };
-
   const teamName = text(body.teamName);
   if (!teamName) return { error: 'Give your team a name.', field: 'teamName' };
   if (teamName.length > LIMITS.teamName) {
@@ -71,6 +67,14 @@ export function validate(body) {
     }
     seenName.add(name.toLowerCase());
 
+    const branch = text(raw[i] && raw[i].branch);
+    if (!branch) {
+      return { error: `Member ${i + 1} needs a branch of study.`, field: `member${i + 1}Branch` };
+    }
+    if (!BRANCHES.includes(branch)) {
+      return { error: `Member ${i + 1}'s branch is not on the list.`, field: `member${i + 1}Branch` };
+    }
+
     const phone = normalisePhone(raw[i] && raw[i].phone);
     if (!phone) {
       return { error: `Member ${i + 1} needs a valid 10-digit phone number.`, field: `member${i + 1}Phone` };
@@ -80,8 +84,8 @@ export function validate(body) {
     }
     seenPhone.add(phone);
 
-    members.push({ name, phone });
+    members.push({ name, branch, phone });
   }
 
-  return { entry: { ref: makeRef(teamName), branch, teamName, members } };
+  return { entry: { ref: makeRef(teamName), teamName, members } };
 }

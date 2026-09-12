@@ -878,3 +878,6 @@ code {
   .perks { flex-direction: column; }
   .perks li { border-radius: var(--radius-sm); }
 }
+
+/* per-member branch picker, under the name/phone row */
+.member-branch { margin-top: 9px; }

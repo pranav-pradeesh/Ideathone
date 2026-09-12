@@ -15,16 +15,17 @@ window.Registry = (function () {
 
   var MAX_MEMBERS = (I && I.config.maxTeamSize) || 3;
 
+  /* A team may mix branches, so the branch belongs to the member, not the team. */
   var COLUMNS = (function () {
     var cols = [
       { key: 'ref', label: 'Reference', width: 16 },
       { key: 'registeredAt', label: 'Registered at', width: 18 },
-      { key: 'branch', label: 'Branch of study', width: 24 },
       { key: 'teamName', label: 'Team name', width: 24 },
       { key: 'memberCount', label: 'Members', width: 9 }
     ];
     for (var n = 1; n <= MAX_MEMBERS; n++) {
       cols.push({ key: 'member' + n + 'Name', label: 'Member ' + n + ' name', width: 22 });
+      cols.push({ key: 'member' + n + 'Branch', label: 'Member ' + n + ' branch', width: 22 });
       cols.push({ key: 'member' + n + 'Phone', label: 'Member ' + n + ' phone', width: 15 });
     }
     return cols;
@@ -38,12 +39,14 @@ window.Registry = (function () {
     var members = entry.members || [];
     return COLUMNS.map(function (c) {
       if (c.key === 'memberCount') return members.length;
-      var m = /^member(\d+)(Name|Phone)$/.exec(c.key);
+      var m = /^member(\d+)(Name|Branch|Phone)$/.exec(c.key);
       if (m) {
         var member = members[parseInt(m[1], 10) - 1];
         if (!member) return '';
         /* A phone stays text: leading zeros and a + prefix must survive Excel. */
-        return (m[2] === 'Name' ? member.name : member.phone) || '';
+        if (m[2] === 'Name') return member.name || '';
+        if (m[2] === 'Branch') return member.branch || '';
+        return member.phone || '';
       }
       return entry[c.key] == null ? '' : entry[c.key];
     });
@@ -63,14 +66,18 @@ window.Registry = (function () {
     var members = [];
     for (var n = 1; n <= MAX; n++) {
       var name = get('member' + n + 'Name');
-      var phone = get('member' + n + 'Phone');
-      if (name) members.push({ name: name, phone: phone });
+      if (name) {
+        members.push({
+          name: name,
+          branch: get('member' + n + 'Branch'),
+          phone: get('member' + n + 'Phone')
+        });
+      }
     }
     if (!get('teamName') || !members.length) return null;
     return {
       ref: get('ref') || makeRef(get('teamName')),
       registeredAt: get('registeredAt'),
-      branch: get('branch'),
       teamName: get('teamName'),
       members: members
     };
@@ -328,7 +335,7 @@ window.Registry = (function () {
       return res.json().catch(function () { return {}; }).then(function (body) {
         if (res.ok && body.ok) {
           add({ ref: body.ref || entry.ref, registeredAt: body.registeredAt || entry.registeredAt,
-                branch: entry.branch, teamName: entry.teamName, members: entry.members });
+                teamName: entry.teamName, members: entry.members });
           return { mode: 'server', ref: body.ref || entry.ref, entry: entry };
         }
         if (res.status === 409) {

@@ -44,11 +44,23 @@ export async function db() {
         CREATE TABLE IF NOT EXISTS registrations (
           ref           TEXT PRIMARY KEY,
           registered_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-          branch        TEXT NOT NULL,
           team_name     TEXT NOT NULL,
           members       JSONB NOT NULL,
           source_hash   TEXT
         )`;
+      /* Branch moved from the team to the member, so a team can mix branches.
+         A database created before that change still has a NOT NULL team-level
+         column, which would reject every new insert. */
+      await sql`
+        DO $$
+        BEGIN
+          IF EXISTS (
+            SELECT 1 FROM information_schema.columns
+            WHERE table_name = 'registrations' AND column_name = 'branch'
+          ) THEN
+            ALTER TABLE registrations ALTER COLUMN branch DROP NOT NULL;
+          END IF;
+        END $$`;
       /* The real duplicate guard: two people submitting the same team name at
          the same moment cannot both win. */
       await sql`
@@ -75,7 +87,6 @@ export function rowToEntry(row) {
   return {
     ref: row.ref,
     registeredAt: stamp(row.registered_at),
-    branch: row.branch,
     teamName: row.team_name,
     members: Array.isArray(row.members) ? row.members : []
   };

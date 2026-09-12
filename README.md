@@ -42,24 +42,27 @@ dependency in the whole project is the Postgres driver used by the API.
 
 ## What registration collects
 
-1. **Branch of study** — Mechatronics, Mechanical Engineering, CSE A, CSE B, CSE AI/ML, EEE, ECE
-2. **Team name**
-3. **Number of team members** — 1 to 3
-4. **Each member's full name and 10-digit mobile number** — boxes appear to match the count
+1. **Team name**
+2. **Number of team members** — 1 to 3
+3. **For each member: full name, branch of study, 10-digit mobile number** — blocks appear to
+   match the count
 
-One team is one row, eleven columns:
+Branch belongs to the **member**, not the team: a team can mix branches freely
+(Mechatronics, Mechanical Engineering, CSE A, CSE B, CSE AI/ML, EEE, ECE).
 
-| Reference | Registered at | Branch of study | Team name | Members | Member 1 name | Member 1 phone | … |
+One team is one row, thirteen columns:
+
+| Reference | Registered at | Team name | Members | Member 1 name | Member 1 branch | Member 1 phone | … |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| ID60-NIG-6536 | 2026-09-12 10:51 | CSE B | Night Owls | 2 | Asha Menon | 9876543210 | … |
+| ID60-NIG-6536 | 2026-09-12 10:51 | Night Owls | 2 | Asha Menon | CSE AI/ML | 9876543210 | … |
 
 Phone numbers are normalised to ten digits — `+91 98765 43210`, `098765 43210` and
 `9876543210` all store identically — and written to the sheet as text so Excel cannot eat a
 leading zero.
 
-Rejected on both the client and the server: a blank name, two members sharing a name or a
-number, a phone that is not ten digits, an unknown branch, more than three members, and a
-team name somebody has already used. The browser checks are a courtesy; `api/_lib/validate.js`
+Rejected on both the client and the server: a blank name, a member with no branch, two
+members sharing a name or a number, a phone that is not ten digits, an unknown branch, more
+than three members, and a team name somebody has already used. The browser checks are a courtesy; `api/_lib/validate.js`
 is the gate, because anything can POST to the endpoint.
 
 There is a honeypot field for bots, and a limit of 12 registrations per hour per client.
@@ -187,6 +190,8 @@ is what was run against this code:
 | Suite | Covers |
 | --- | --- |
 | Sync | The client and server branch lists are identical, the team caps match, the schedule is contiguous and sums to 60, and the judging marks sum to 100 |
+| Mixed branch | A team of three from three different branches registers end to end; a member left without a branch is blocked; the admin breakdown counts people rather than teams |
+| Migrate | The guarded migration on a database created before branch moved to the member: a new insert fails against the old NOT NULL column, the migration frees it, existing rows survive, and it is a no-op on a fresh database |
 | Schema | The exact DDL and every query, executed on a real Postgres engine: idempotent DDL, the unique index rejecting `  night owls  ` against `Night Owls`, jsonb round-trip, rate-window arithmetic |
 | Auth | Password check, token signing and verification, tampered/expired/forged tokens, the guard's 401 and 503 paths, cookie flags, password rotation invalidating sessions, opaque client hashing |
 | API | The real handlers end to end: 201/400/409/429/405 paths, honeypot, server-side cap and branch enforcement, admin endpoints refusing forged cookies, login lockout, logout |

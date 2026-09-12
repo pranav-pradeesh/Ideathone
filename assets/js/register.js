@@ -17,7 +17,6 @@
   var form = document.getElementById('regForm');
   if (!form) return;
 
-  var branchSel = document.getElementById('branch');
   var teamNameInput = document.getElementById('teamName');
   var countSel = document.getElementById('memberCount');
   var namesHost = document.getElementById('memberNames');
@@ -42,7 +41,7 @@
   }
 
   function clearErrors() {
-    ['branch', 'teamName', 'members'].forEach(function (id) { setError(id, ''); });
+    ['teamName', 'members'].forEach(function (id) { setError(id, ''); });
     Array.prototype.slice.call(namesHost.querySelectorAll('.member-error'))
       .forEach(function (n) { n.textContent = ''; n.classList.remove('show'); });
     Array.prototype.slice.call(form.querySelectorAll('[aria-invalid="true"]'))
@@ -52,15 +51,6 @@
   }
 
   /* ---- build the fields -------------------------------------------------- */
-
-  function fillBranches() {
-    I.branches.forEach(function (b) {
-      var o = document.createElement('option');
-      o.value = b;
-      o.textContent = b;
-      branchSel.appendChild(o);
-    });
-  }
 
   function fillCounts() {
     for (var n = MIN; n <= MAX; n++) {
@@ -113,6 +103,23 @@
       inputmode: 'numeric'
     }));
     block.appendChild(grid);
+
+    /* Each member carries their own branch — a team may mix them. */
+    var sel = document.createElement('select');
+    sel.id = 'member' + n + 'Branch';
+    sel.className = 'member-branch';
+    sel.setAttribute('aria-label', 'Member ' + n + ' branch of study');
+    var blank = document.createElement('option');
+    blank.value = '';
+    blank.textContent = 'Branch of study…';
+    sel.appendChild(blank);
+    I.branches.forEach(function (b) {
+      var o = document.createElement('option');
+      o.value = b;
+      o.textContent = b;
+      sel.appendChild(o);
+    });
+    block.appendChild(sel);
     block.appendChild(el('div', 'error-text member-error'));
     return block;
   }
@@ -144,12 +151,6 @@
   function collect() {
     var bad = [];
 
-    if (!branchSel.value) {
-      setError('branch', 'Choose your branch of study.');
-      branchSel.setAttribute('aria-invalid', 'true');
-      bad.push(branchSel);
-    }
-
     var teamName = teamNameInput.value.trim();
     if (!teamName) {
       setError('teamName', 'Give your team a name.');
@@ -168,6 +169,7 @@
     blocks().forEach(function (block, i) {
       var nameInput = block.querySelector('input[type="text"]');
       var phoneInput = block.querySelector('input[type="tel"]');
+      var branchSel = block.querySelector('select.member-branch');
       var name = nameInput.value.trim().replace(/\s+/g, ' ');
       var phone = R.normalisePhone(phoneInput.value);
       var problem = '';
@@ -197,10 +199,16 @@
         seenPhone[phone] = i + 1;
       }
 
+      if (!branchSel.value) {
+        problem = problem ? problem + ' Branch required.' : 'Choose a branch of study.';
+        branchSel.setAttribute('aria-invalid', 'true');
+        bad.push(branchSel);
+      }
+
       if (problem) {
         blockError(block, problem);
       } else {
-        members.push({ name: name, phone: phone });
+        members.push({ name: name, branch: branchSel.value, phone: phone });
       }
     });
 
@@ -209,7 +217,6 @@
       entry: {
         ref: R.makeRef(teamName),
         registeredAt: R.stamp(),
-        branch: branchSel.value,
         teamName: teamName,
         members: members,
         website: document.getElementById('website') ? document.getElementById('website').value : ''
@@ -274,12 +281,13 @@
 
     var detail = document.getElementById('successDetail');
     detail.textContent = '';
-    detail.appendChild(el('p', null, entry.teamName + ' · ' + entry.branch));
+    detail.appendChild(el('p', null, entry.teamName));
 
     var ul = el('ul', 'ticks');
     entry.members.forEach(function (m, i) {
       ul.appendChild(el('li', null,
-        m.name + ' — ' + m.phone + (i === 0 && entry.members.length > 1 ? ' (team lead)' : '')));
+        m.name + ' — ' + m.branch + ' — ' + m.phone +
+        (i === 0 && entry.members.length > 1 ? ' (team lead)' : '')));
     });
     detail.appendChild(ul);
 
@@ -307,12 +315,11 @@
     successPanel.hidden = true;
     form.hidden = false;
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    branchSel.focus();
+    teamNameInput.focus();
   }
 
   /* ---- boot -------------------------------------------------------------- */
 
-  fillBranches();
   fillCounts();
   syncNames();
 

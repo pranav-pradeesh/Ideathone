@@ -20,7 +20,7 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
       const rows = await sql`
-        SELECT ref, registered_at, branch, team_name, members
+        SELECT ref, registered_at, team_name, members
         FROM registrations ORDER BY registered_at ASC`;
       return res.status(200).json({ ok: true, entries: rows.map(rowToEntry) });
     }

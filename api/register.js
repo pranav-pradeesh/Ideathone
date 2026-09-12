@@ -41,8 +41,8 @@ export default async function handler(req, res) {
     }
 
     const rows = await sql`
-      INSERT INTO registrations (ref, branch, team_name, members, source_hash)
-      VALUES (${entry.ref}, ${entry.branch}, ${entry.teamName},
+      INSERT INTO registrations (ref, team_name, members, source_hash)
+      VALUES (${entry.ref}, ${entry.teamName},
               ${JSON.stringify(entry.members)}::jsonb, ${who})
       RETURNING ref, registered_at`;
 
