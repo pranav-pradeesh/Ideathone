@@ -13,16 +13,45 @@ const URL_VARS = [
 let client = null;
 let ready = null;
 
+const POSTGRES_URL_RE = /^postgres(ql)?:\/\/\S+/i;
+
 export function connectionString() {
   for (const name of URL_VARS) {
     const v = process.env[name];
     if (v && v.trim()) return v.trim();
+  }
+  /* Vercel's storage integrations let you choose a variable prefix, which
+     turns DATABASE_URL into something like NEON_DATABASE_URL and would make
+     the fixed list above miss a perfectly good database. Fall back to any
+     variable whose value is a postgres connection string. */
+  for (const [name, value] of Object.entries(process.env)) {
+    if (typeof value === 'string' && POSTGRES_URL_RE.test(value.trim())) {
+      return value.trim();
+    }
   }
   return null;
 }
 
 export function isConfigured() {
   return connectionString() !== null;
+}
+
+/* Names only, never values — enough for an organiser to see whether the
+   integration landed and under what prefix. Admin-only. */
+export function envDiagnostics() {
+  /* Match whole words, not substrings: a bare /PG/ also matches RIPGREP. */
+  const looksRelevant = (n) =>
+    /(^|_)(DATABASE|POSTGRES|NEON|SUPABASE)(_|$)/i.test(n) ||
+    /^PG(HOST|USER|PASSWORD|DATABASE|PORT|SSLMODE)$/i.test(n);
+  const present = Object.keys(process.env).filter(looksRelevant).sort();
+  const withUrl = Object.entries(process.env)
+    .filter(([, v]) => typeof v === 'string' && POSTGRES_URL_RE.test(v.trim()))
+    .map(([n]) => n).sort();
+  return {
+    checkedNames: URL_VARS,
+    databaseLikeVars: present,
+    varsHoldingAPostgresUrl: withUrl
+  };
 }
 
 function sqlClient() {

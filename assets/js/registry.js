@@ -1,4 +1,4 @@
-/* Ideathon 60 — the registration record.
+/* Ideathon 2026 — the registration record.
  *
  * One team is one row. The same column layout is used everywhere: the
  * spreadsheet a team downloads, the CSV, the organiser's master sheet and the

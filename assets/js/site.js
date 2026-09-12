@@ -1,4 +1,4 @@
-/* Ideathon 60 — shared rendering for the home page, rule book and footer. */
+/* Ideathon 2026 — shared rendering for the home page, rule book and footer. */
 
 (function () {
   'use strict';
@@ -26,6 +26,8 @@
     all('[data-bind="host-full"]').forEach(function (n) { n.textContent = cfg.host || ''; });
     all('[data-bind="event-date"]').forEach(function (n) { n.textContent = cfg.date || 'TBA'; });
     all('[data-bind="event-date-short"]').forEach(function (n) { n.textContent = cfg.dateShort || cfg.date || 'TBA'; });
+    all('[data-bind="event-time"]').forEach(function (n) { n.textContent = cfg.timeRange || ''; });
+    all('[data-bind="total-minutes"]').forEach(function (n) { n.textContent = String(cfg.totalMinutes); });
     all('[data-bind="event-full-name"]').forEach(function (n) { n.textContent = cfg.fullName || cfg.name; });
     all('[data-bind="tagline"]').forEach(function (n) { n.textContent = cfg.tagline || ''; });
     all('[data-bind="max-team"]').forEach(function (n) { n.textContent = String(cfg.maxTeamSize); });
@@ -48,7 +50,6 @@
       }
     });
 
-    document.title = document.title.replace(/^Ideathon 60/, cfg.name);
   }
 
   /* ---- schedule timeline ------------------------------------------------- */
@@ -59,9 +60,12 @@
       var row = el('div', 'phase');
       row.setAttribute('data-ai', p.ai);
 
+      /* Real clock first — the event runs at a fixed time, so "3:13 pm" is
+         more use in the room than "43:00 elapsed". */
       var time = el('div', 'clock');
-      time.appendChild(document.createTextNode(I.clock(p.start) + '–' + I.clock(p.start + p.minutes)));
-      time.appendChild(el('span', 'dur', p.minutes + ' min'));
+      time.appendChild(document.createTextNode(I.wallRange(p.start, p.start + p.minutes)));
+      time.appendChild(el('span', 'dur', p.minutes + ' min · ' + I.clock(p.start).slice(0, 2) + '–' +
+        I.clock(p.start + p.minutes).slice(0, 2)));
       row.appendChild(time);
 
       var body = el('div');

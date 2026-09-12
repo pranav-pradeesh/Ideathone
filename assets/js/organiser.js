@@ -1,4 +1,4 @@
-/* Ideathon 60 — organiser view: merge team files, export one master sheet. */
+/* Ideathon 2026 — organiser view: merge team files, export one master sheet. */
 
 (function () {
   'use strict';

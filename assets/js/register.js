@@ -1,4 +1,4 @@
-/* Ideathon 60 — registration form.
+/* Ideathon 2026 — registration form.
  *
  * Four fields: branch, team name, member count, member names. On submit the
  * team is stored on this device and a spreadsheet of the entry downloads.

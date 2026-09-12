@@ -1,4 +1,4 @@
-/* Ideathon 60 — admin view.
+/* Ideathon 2026 — admin view.
  *
  * Nothing here is a security boundary: hiding the table until "signed in" is a
  * convenience. The data only ever arrives if the API accepts the session
@@ -136,13 +136,43 @@
     say(adminStatus, 'Loading…');
     api('/api/admin/registrations').then(function (r) {
       if (r.status === 401) { showLogin('Your session expired. Sign in again.', true); return; }
-      if (!r.ok || !r.body.ok) { say(adminStatus, r.body.error || 'Could not load.', true); return; }
+      if (!r.ok || !r.body.ok) {
+        say(adminStatus, r.body.error || 'Could not load.', true);
+        showDiagnostics(r.body.diagnostics);
+        return;
+      }
       entries = r.body.entries || [];
       render();
       say(adminStatus, entries.length + ' team' + (entries.length === 1 ? '' : 's') + ' loaded.');
     }).catch(function () {
       say(adminStatus, 'Could not reach the server.', true);
     });
+  }
+
+  /* When the database is missing, say what the server actually looked for —
+     an organiser can then see whether the integration used a variable prefix. */
+  function showDiagnostics(d) {
+    var host = document.getElementById('adminEmpty');
+    if (!host || !d) return;
+    host.hidden = false;
+    document.getElementById('adminTables').hidden = true;
+    host.textContent = '';
+    host.appendChild(el('h3', null, 'No database connected'));
+    host.appendChild(el('p', null,
+      'Registrations are not being stored. Add a Postgres store in Vercel → Storage, ' +
+      'then redeploy so the new variables are picked up.'));
+
+    var ul = el('ul', 'ticks');
+    ul.appendChild(el('li', null, 'Looked for: ' + d.checkedNames.join(', ') +
+      ', or any variable holding a postgres:// URL.'));
+    ul.appendChild(el('li', null, d.databaseLikeVars.length
+      ? 'Database-ish variables on this deployment: ' + d.databaseLikeVars.join(', ')
+      : 'No database-related variables are set on this deployment at all.'));
+    if (d.varsHoldingAPostgresUrl.length) {
+      ul.appendChild(el('li', null, 'Holding a postgres URL: ' + d.varsHoldingAPostgresUrl.join(', ')));
+    }
+    host.appendChild(ul);
+    host.appendChild(el('p', null, 'Variable names only — no values are shown.'));
   }
 
   function render() {

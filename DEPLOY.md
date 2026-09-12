@@ -62,6 +62,18 @@ plan → **Connect** to this project.
 Vercel injects `DATABASE_URL` and friends automatically. The tables are created on first
 use, so there is no migration to run.
 
+Two things that catch people out here:
+
+- **If the connect dialog offers an "environment variables prefix", leaving it blank is
+  simplest.** Setting one produces `NEON_DATABASE_URL` instead of `DATABASE_URL`. The code
+  handles that — it accepts any variable holding a `postgres://` URL — but only after a
+  redeploy.
+- **Redeploy after connecting.** An existing deployment does not pick up new variables.
+
+If `/admin` still says no database is configured, sign in: the page lists exactly which
+variable names the server checked and which database-related variables are present on the
+deployment. Names only — no values are ever shown.
+
 > Any Postgres connection string works. The code reads the first of `DATABASE_URL`,
 > `POSTGRES_URL`, `POSTGRES_PRISMA_URL`, `DATABASE_URL_UNPOOLED`, `POSTGRES_URL_NON_POOLING`.
 
@@ -220,6 +232,7 @@ first registration after a quiet period may take a second or two longer.
 | Admin page: "No database is connected" | `ADMIN_PASSWORD` is set but the store is not connected | Step 2, then redeploy |
 | "Too many failed attempts" | Eight wrong passwords in fifteen minutes | Wait it out — it is doing its job |
 | 404 on `/api/register` | `api/` not deployed, or Root Directory is wrong | Root Directory `./`; check the Functions list on the deployment |
+| Admin says "No database is configured" after connecting a store | The store was connected with an **environment-variable prefix**, so the variable is `NEON_DATABASE_URL` rather than `DATABASE_URL` — or it was connected after the last deploy | The code now accepts any variable holding a `postgres://` URL, so **redeploy** first. Sign in to `/admin`: when no database is found it lists the variable names it checked and which database-related variables exist on the deployment (names only, never values) |
 | Visitors are asked to log in to Vercel | Deployment Protection is on | Settings → Deployment Protection → off for Production |
 | First registration after a quiet period is slow | Neon free databases suspend when idle | Normal. It wakes in a second or two |
 | Build fails on Node version | `engines.node` conflicts with the dashboard setting | Leave the dashboard on the default; `package.json` pins `22.x` |

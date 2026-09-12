@@ -1,4 +1,4 @@
-/* Ideathon 60 — site styles.
+/* Ideathon 2026 — site styles.
  *
  * Light only. Every foreground/background pair in the palette is checked
  * against WCAG AA, and no text is set below 12px.
@@ -234,7 +234,7 @@ section.band { padding: clamp(38px, 5.5vw, 62px) 0; border-bottom: 1px solid var
 .timeline { display: grid; gap: 8px; }
 .phase {
   display: grid;
-  grid-template-columns: 128px 1fr;
+  grid-template-columns: 150px 1fr;
   gap: 18px;
   background: var(--surface);
   border: 1px solid var(--line);

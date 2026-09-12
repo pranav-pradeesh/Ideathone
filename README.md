@@ -131,7 +131,10 @@ Adding a column to the spreadsheet (a contact email, say) means adding one entry
 `COLUMNS` in `registry.js` and one field in `register.html` — the CSV, the `.xlsx`, the
 organiser table and the importer all follow from that list.
 
-If you change the schedule, keep the phases contiguous and summing to `totalMinutes`:
+The programme runs to a wall clock (`startsAt` / `endsAt`), and the timeline shows real
+times alongside elapsed minutes. If you change the schedule, keep the phases contiguous and
+summing to `totalMinutes`, and keep `totalMinutes` equal to the gap between `startsAt` and
+`endsAt` — the sync suite checks all three:
 
 ```bash
 node -e "global.window={};require('./assets/js/data.js');

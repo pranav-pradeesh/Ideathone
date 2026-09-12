@@ -2,7 +2,7 @@
    DELETE /api/admin/registrations?ref=…  — remove one team
    Both require a valid admin session. */
 
-import { db, isConfigured, rowToEntry } from '../_lib/db.js';
+import { db, isConfigured, rowToEntry, envDiagnostics } from '../_lib/db.js';
 import { requireAdmin } from '../_lib/auth.js';
 
 export default async function handler(req, res) {
@@ -11,7 +11,8 @@ export default async function handler(req, res) {
   if (!isConfigured()) {
     return res.status(503).json({
       ok: false,
-      error: 'No database is configured for this deployment, so there is nothing to collect.'
+      error: 'No database is configured for this deployment, so there is nothing to collect.',
+      diagnostics: envDiagnostics()
     });
   }
 
