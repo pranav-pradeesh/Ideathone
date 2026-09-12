@@ -142,7 +142,8 @@ console.log(window.IDEATHON.schedule.reduce((a,p)=>a+p.minutes,0))"   # should p
 - **You are holding personal data.** Names and phone numbers of students. Collect it for
   the event, download what you need, and drop the database afterwards.
 - **One shared admin password, no individual accounts.** Anyone who has it can see and
-  export every participant's contact details. Don't put it in a group chat.
+  export every participant's contact details. Don't put it in a group chat, and never
+  commit it — this repository is public, and a committed secret stays in the history.
 - **AI is allowed in Discover, Design and Deck; closed in Decide and the pitch.** That split
   is the only reason the judging means anything.
 

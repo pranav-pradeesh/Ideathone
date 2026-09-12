@@ -78,7 +78,35 @@ Project → **Settings** → **Environment Variables**.
 | `ADMIN_SESSION_SECRET` | 32+ random characters | all | No. Signs sessions with a key separate from the password, so changing the password does not sign everyone out. |
 | `EVENT_TIMEZONE` | e.g. `Asia/Kolkata` | all | No. Timezone for the timestamps in the sheet. Defaults to `Asia/Kolkata`. |
 
-Generate the password properly:
+### Setting it from the dashboard
+
+1. Project → **Settings** → **Environment Variables**
+2. Key: `ADMIN_PASSWORD`
+3. Value: your password
+4. Tick **Production**, **Preview** and **Development**
+5. **Save**
+
+### Or from the CLI
+
+```bash
+vercel link                       # once, in the project directory
+vercel env add ADMIN_PASSWORD production    # paste the password when prompted
+vercel env add ADMIN_PASSWORD preview
+vercel env add ADMIN_PASSWORD development
+vercel --prod                     # redeploy so the variable takes effect
+```
+
+### The password never goes in this repository
+
+It lives only in Vercel's environment variables. This repository is public: anything
+committed to it — including a password in a config file, a comment, or a commit message —
+is readable by anyone, forever, even after it is deleted in a later commit. `.env` and
+`.env.local` are gitignored for the same reason. `.env.example` holds placeholders only.
+
+If a password does end up committed, rotating it in Vercel is the fix; deleting the file is
+not, because the old commit still has it.
+
+Generating a stronger one, if you want:
 
 ```bash
 openssl rand -base64 24
