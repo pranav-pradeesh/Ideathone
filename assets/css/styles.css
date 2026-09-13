@@ -942,3 +942,7 @@ code {
   color: var(--ink-faint);
 }
 .member-role-fixed strong { font-weight: 650; }
+
+/* bridge rule book: the marks total stands out from the criteria above it */
+.total-row td { border-top: 2px solid var(--line-strong); }
+.total-row strong { color: var(--ink); }

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rule book — Ideathon 2026</title>
-<meta name="description" content="The rules of the NCERC Engineering Day Ideathon: teams, the clock, preparation, AI use, submission, judging, conduct and disqualification.">
+<title>Bridge Building Challenge — rule book | NCERC</title>
+<meta name="description" content="Rule book for the NCERC Bridge Building Challenge: 50 ice-cream sticks, a 50-minute build, load testing, and 50 marks.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23fbfbf9'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23202080' stroke-width='2.5'/%3E%3Cpath d='M16 10v6l4 2' stroke='%23202080' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -27,8 +27,8 @@
       </button>
     <nav class="site-nav" id="siteNav" aria-label="Primary">
       <a href="index.html#schedule">Schedule</a>
-      <a href="rulebook.html" aria-current="page">Ideathon rules</a>
-      <a href="bridge.html">Bridge rules</a>
+      <a href="rulebook.html">Ideathon rules</a>
+      <a href="bridge.html" aria-current="page">Bridge rules</a>
       <a href="register.html" class="btn btn-primary btn-sm">Register</a>
     </nav>
   </div>
@@ -38,14 +38,26 @@
 
   <section class="hero hero-tight">
     <div class="wrap wrap-reading">
-      <span class="eyebrow">Rule book</span>
-      <h1>The rules</h1>
+      <span class="eyebrow" data-bind="bridge-date">Monday, 14 September 2026</span>
+      <span class="eyebrow" data-bind="bridge-time">1:30 – 2:30 pm</span>
+      <h1><span aria-hidden="true">🏗️</span> Bridge Building Challenge</h1>
+      <p class="tagline">Fifty sticks. Forty minutes. One load test.</p>
       <p class="lede">
-        Eight sections, numbered. Entering means you accept them.
+        Design and build a bridge from the materials provided, then watch it take load.
+        Twelve sections, numbered — entering means you accept them.
       </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="register.html">Register your team</a>
+
+      <dl class="facts">
+        <div class="fact"><dt>Build time</dt><dd data-bind="bridge-build">40 min</dd></div>
+        <div class="fact"><dt>Sticks</dt><dd data-bind="bridge-sticks">50</dd></div>
+        <div class="fact"><dt>Total marks</dt><dd data-bind="bridge-marks">50</dd></div>
+        <div class="fact"><dt>Team size</dt><dd data-bind="bridge-team">2 – 4</dd></div>
+        <div class="fact"><dt>Tie-break</dt><dd>Load score</dd></div>
+      </dl>
+
+      <div class="hero-actions" style="margin-top:24px">
         <button class="btn btn-ghost" type="button" onclick="window.print()">Print</button>
+        <a class="btn btn-ghost" href="rulebook.html">Ideathon rule book</a>
       </div>
     </div>
   </section>
@@ -53,39 +65,20 @@
   <section class="band band-last">
     <div class="wrap wrap-reading">
 
-      <nav class="toc" data-render="rule-toc" aria-label="Rule sections"></nav>
+      <nav class="toc" data-render="bridge-toc" aria-label="Rule sections"></nav>
 
-      <div data-render="rules">
+      <div data-render="bridge-rules">
         <noscript><p>Enable JavaScript to read the rule book.</p></noscript>
       </div>
 
-      <div class="callout" id="roles">
-        <h3>The three roles (rule 1.5)</h3>
-        <p>Fixed by the order you register in. Only a fourth member chooses.</p>
-        <div class="table-scroll">
-          <table class="stack-table">
-            <thead><tr><th>Role</th><th>Owns</th><th>Delivers</th></tr></thead>
-            <tbody data-render="role-table"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="callout">
-        <h3>Teams smaller than three</h3>
-        <div class="table-scroll">
-          <table class="stack-table">
-            <thead><tr><th>Team size</th><th>How the roles split</th></tr></thead>
-            <tbody data-render="team-shapes"></tbody>
-          </table>
-        </div>
-      </div>
+      <div class="callout warn" data-render="bridge-gap"></div>
 
       <div class="callout warn">
         <h3>If you remember only three things</h3>
         <ul class="ticks" style="margin-bottom:0">
-          <li><strong>Nothing prepared in advance.</strong> It is the one thing that removes a team rather than costing it marks.</li>
-          <li><strong>Submission closes at minute 48.</strong> The clock is the clock.</li>
-          <li><strong>Declare your AI tools on the last slide.</strong> Using them is fine. Hiding them is not.</li>
+          <li><strong>Fifty sticks, not fifty-one.</strong> Going over is a disqualification, not a deduction.</li>
+          <li><strong>Hands off at 2:15 pm.</strong> Construction after that disqualifies the team.</li>
+          <li><strong>It has to survive the test.</strong> Twenty of the fifty marks are load-bearing; a beautiful bridge that folds scores nothing there.</li>
         </ul>
       </div>
 
@@ -106,5 +99,6 @@
 
 <script src="assets/js/data.js"></script>
 <script src="assets/js/site.js"></script>
+<script src="assets/js/bridge.js"></script>
 </body>
 </html>
