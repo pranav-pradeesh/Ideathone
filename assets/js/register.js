@@ -214,7 +214,8 @@
       var nameInput = block.querySelector('input[type="text"]');
       var phoneInput = block.querySelector('input[type="tel"]');
       var branchSel = block.querySelector('select.member-branch');
-      var roleSel = block.querySelector('select.member-role');
+      /* Members 1-3 carry a hidden input, member 4 a select — match either. */
+      var roleSel = block.querySelector('.member-role');
       var name = nameInput.value.trim().replace(/\s+/g, ' ');
       var phone = R.normalisePhone(phoneInput.value);
       var problem = '';
