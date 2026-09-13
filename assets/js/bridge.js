@@ -16,7 +16,10 @@ window.BRIDGE = (function () {
     totalMinutes: 60,
     maxSticks: 50,
     minTeam: 2,
-    maxTeam: 4
+    maxTeam: 4,
+    /* The bridge takes its own entries. Until a form exists this stays null and
+       the page says so, rather than pointing teams at the Ideathon form. */
+    registrationUrl: null
   };
 
   /* Section 4. Wall-clock times are the ones that matter on the day, so they
@@ -70,6 +73,7 @@ window.BRIDGE = (function () {
     {
       id: 'registration',
       title: 'Registration rules',
+      lead: 'Registration for this event is separate from the Ideathon. Entering the Ideathon does not enter you here, and the two run with different teams.',
       items: [
         'All teams must complete registration before the event.',
         'Each team must give a team name and the names of all members.',
@@ -348,6 +352,14 @@ window.BRIDGE = (function () {
   if (time) time.textContent = B.config.timeRange;
   var team = document.querySelector('[data-bind="bridge-team"]');
   if (team) team.textContent = B.config.minTeam + ' – ' + B.config.maxTeam;
+
+  /* site.js rewrites every register.html link to the Ideathon form. This page
+     must not do that, so its button is wired here instead. */
+  var reg = document.querySelector('[data-bridge-register]');
+  if (reg && B.config.registrationUrl) {
+    reg.href = B.config.registrationUrl;
+    reg.rel = 'noopener';
+  }
 
   /* the stated total and the listed blocks disagree — say so rather than hide it */
   var gap = document.querySelector('[data-render="bridge-gap"]');
