@@ -19,8 +19,8 @@ window.IDEATHON = (function () {
        back to the built-in form at register.html. */
     registrationUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSeY4YYJUSAiQGr3_nyuRsarTzhUD1V4W2BIgDprQHytgmF_pg/viewform',
 
-    minSlides: 3,
-    maxSlides: 4,
+    minSlides: 2,
+    maxSlides: 3,
 
     startsAt: '15:00',      // 24-hour; the wall clock shown on the timeline
     endsAt: '16:00',
@@ -76,7 +76,7 @@ window.IDEATHON = (function () {
     {
       start: 27, minutes: 9, name: 'Pitch preparation',
       ai: 'yes',
-      what: 'Three or four slides, and a 90-second pitch rehearsed out loud against a clock. Start the deck during development, not here.',
+      what: 'Two or three slides, and a 90-second pitch rehearsed out loud against a clock. Start the deck during development, not here.',
       owner: 'Presentation Maker owns the deck · Lead rehearses'
     },
     {
@@ -142,7 +142,7 @@ window.IDEATHON = (function () {
       required: true,
       short: 'Owns the slides and the submission.',
       summary:
-        'The Presentation Maker turns a decided idea into three or four slides a judge can read from the back row. They are the only person with the file open after minute 30, and the one who presses submit before the cutoff at 3:44 pm.',
+        'The Presentation Maker turns a decided idea into two or three slides a judge can read from the back row. They are the only person with the file open after minute 30, and the one who presses submit before the cutoff at 3:38 pm.',
       owns: [
         'The deck file and its structure',
         'Visual clarity: one message per slide, readable from 6 metres',
@@ -150,21 +150,21 @@ window.IDEATHON = (function () {
         'The AI disclosure line in the deck'
       ],
       delivers: [
-        'Five slides: Problem · Idea · How it works · Impact · Ask',
-        'The deck submitted before 66:00',
+        'Three slides: Problem · Solution and innovation · Impact and feasibility',
+        'The deck submitted before 38:00',
         'A disclosure line naming every AI tool the team used'
       ],
       minutes: [
         { t: '00–03', do: 'Open a blank three-slide skeleton before the briefing ends. Title them now.' },
         { t: '03–13', do: 'Listen and capture. Drop raw notes straight into speaker notes.' },
         { t: '13–27', do: 'Draft the problem slide while the solution is still being argued.' },
-        { t: '27–36', do: 'Build. Three or four slides, nothing more. Stop building at 35:00.' },
+        { t: '27–36', do: 'Build. Two or three slides, nothing more. Stop building at 35:00.' },
         { t: '36–38', do: 'Submit. Then confirm the upload with the Lead.' },
         { t: '38–60', do: 'Drive the slides during the pitch.' }
       ],
       ai: 'AI is permitted for presentation-making: slide copy, layout, summarising notes and generating imagery — any app you like, on either device. Everything on the slide must be checked by you, and every tool used goes in the disclosure line.',
       avoid: [
-        'A fifth slide, or a wall of text on any of the four',
+        'A fourth slide, or a wall of text on any of the three',
         'Restyling the deck after 68:00 instead of submitting',
         'Using an image you cannot explain the origin of'
       ]
@@ -249,7 +249,7 @@ window.IDEATHON = (function () {
         'Who is affected, and how badly',
         'Root cause versus symptom',
         'Scoping: what this idea deliberately does not solve',
-        'The impact claim on slide 4'
+        'The impact claim on the last slide'
       ],
       delivers: [
         'A one-sentence problem statement naming a specific person or group',
@@ -321,6 +321,7 @@ window.IDEATHON = (function () {
         'The six phases are fixed. You may work ahead inside your own team, but no phase is extended.',
         'Submission closes at minute 38 — 3:38 pm. Every deck is loaded onto the one podium machine before pitching starts; a deck that arrives late is not judged.',
         'Each team presents for 90 seconds, with a hard stop. The judges score after each pitch.',
+        'Your full slot is 1 minute 41 seconds: 90 seconds of talking and about 11 seconds to swap the deck and get to the front. Rehearse against a clock — a pitch written for two minutes will be cut off mid-sentence.',
         'All thirteen teams pitch one after another on the same stage, to the same panel. The running order is announced at the briefing. Be at the front before the team ahead of you finishes — a slot missed is a slot forfeited.',
         'If your team is not present when called to pitch, your slot is forfeited.'
       ]
@@ -352,8 +353,8 @@ window.IDEATHON = (function () {
       id: 'submission',
       title: 'Submission',
       items: [
-        'A PowerPoint of three or four slides — no fewer, no more. Between them cover the problem, your solution, what makes it innovative, its impact and its feasibility.',
-        'Five things in four slides means combining them. A split that works: 1 Problem · 2 Solution · 3 Innovation and feasibility · 4 Impact. On three slides, fold impact into the solution.',
+        'A PowerPoint of two or three slides — no fewer, no more. Between them cover the problem, your solution, what makes it innovative, its impact and its feasibility.',
+        'Five things across three slides means combining them. A split that works: 1 Problem · 2 Solution and what makes it innovative · 3 Impact and feasibility. On two slides, fold impact into the problem and feasibility into the solution. At 90 seconds you have about thirty seconds a slide, so one message each.',
         'Submit the PowerPoint named with your team name. Phone or laptop, whichever you built it on.',
         'One submission per team. If you upload twice, the last file before the cutoff is the one judged.',
         'Check your upload went through before you sit down. "It did not upload" is not an appeal.'
@@ -460,15 +461,30 @@ window.IDEATHON = (function () {
     var slot = pitchSlotSeconds();
     var needed = teams * slot;
     var blockSeconds = config.pitchBlockMinutes * 60;
+    /* What a team actually occupies: their speaking time plus their share of
+       the block's slack, which is the walk-up and the deck change. This is the
+       number that decides whether the last team still pitches before 4:00. */
+    var perTeam = teams > 0 ? blockSeconds / teams : 0;
     return {
       teams: teams,
       capacity: pitchCapacity(),
       slotSeconds: slot,
+      /* Floored, not rounded: a slot rounded up multiplies into an overrun
+         across the running order, and the team that loses it is the last one. */
+      perTeamSeconds: Math.floor(perTeam),
+      changeoverSeconds: Math.floor(perTeam) - slot,
       neededMinutes: Math.round((needed / 60) * 10) / 10,
       blockMinutes: config.pitchBlockMinutes,
       spareSeconds: blockSeconds - needed,
       fits: needed <= blockSeconds
     };
+  }
+
+  /* "1:41" — seconds rendered as minutes and seconds. */
+  function mmss(totalSeconds) {
+    var t = Math.max(0, Math.round(totalSeconds));
+    var m = Math.floor(t / 60), sec = t % 60;
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
   }
 
   /* "3:00 – 3:03 pm" rather than "3:00 pm – 3:03 pm": drop the meridiem from the
@@ -493,6 +509,7 @@ window.IDEATHON = (function () {
     wallRange: wallRange,
     pitchCapacity: pitchCapacity,
     runningOrder: runningOrder,
-    pitchSlotSeconds: pitchSlotSeconds
+    pitchSlotSeconds: pitchSlotSeconds,
+    mmss: mmss
   };
 })();

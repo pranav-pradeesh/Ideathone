@@ -62,7 +62,7 @@
         <div class="fact"><dt>Time</dt><dd data-bind="event-time">3:00 – 4:00 pm</dd></div>
         <div class="fact"><dt>Duration</dt><dd><span data-bind="total-minutes">60</span> minutes</dd></div>
         <div class="fact"><dt>Team size</dt><dd>3&ndash;4 people</dd></div>
-        <div class="fact"><dt>Deck</dt><dd>3&ndash;4 slides</dd></div>
+        <div class="fact"><dt>Deck</dt><dd><span data-bind="min-slides">2</span>&ndash;<span data-bind="max-slides">3</span> slides</dd></div>
         <div class="fact"><dt>Pitch</dt><dd>90 seconds</dd></div>
         <div class="fact"><dt>Bring</dt><dd>Laptop or phone</dd></div>
       </dl>
@@ -90,8 +90,8 @@
           <p>Member 1 leads, 2 makes the deck, 3 researches. A fourth picks one of two more.</p>
         </div>
         <div class="card">
-          <h3>Three or four slides, cutoff at 3:40 pm</h3>
-          <p>Problem, solution, innovation, impact, feasibility. Late decks are not judged.</p>
+          <h3>Two or three slides, cutoff at 3:38 pm</h3>
+          <p>Problem, solution, innovation, impact, feasibility &mdash; combined across the slides. About <span data-bind="seconds-per-slide">30</span> seconds a slide when you pitch. Late decks are not judged.</p>
         </div>
         <div class="card">
           <h3>Laptop or phone</h3>
@@ -130,9 +130,15 @@
           <span data-bind="pitch-needed">19.5</span> minutes of pitching in a
           <span data-bind="pitch-block">22</span>-minute block &mdash;
           <span data-bind="pitch-spare">150</span> seconds spare for changeover across
-          the whole running order, which is about ten seconds a team.
-          That only holds if every deck is already loaded on the podium machine,
-          which is what the submission block at 3:36 is for.
+          the whole running order.
+        </p>
+        <p>
+          <strong>So each team gets <span data-bind="per-team-slot">1:41</span> of the
+          clock</strong> &mdash; <span data-bind="pitch-mmss">1:30</span> of talking plus
+          about <span data-bind="changeover">11</span> seconds to swap the deck and walk
+          up. That only holds if every file is already loaded on the podium machine,
+          which is what the submission block at 3:36 is for. Teams plugging in their own
+          laptops will cost thirty seconds each and the last team will not pitch.
         </p>
         <p>
           The pitch is 90 seconds rather than two minutes for the same reason: at two
@@ -148,7 +154,7 @@
         <div class="planner-out" id="plannerOut" aria-live="polite" data-fits="yes">
           <div><span>Pitching time</span><strong id="pitchNeeded">19.5 min</strong></div>
           <div><span>Spare in block</span><strong id="pitchSpare">+150 s</strong></div>
-          <div><span>Slots available</span><strong id="pitchSlots">14</strong></div>
+          <div><span>Per team</span><strong id="pitchPerTeam">1:41</strong></div>
           <div><span>Verdict</span><strong id="pitchVerdict">Fits</strong></div>
         </div>
         <p class="fine-print" style="margin-bottom:0">

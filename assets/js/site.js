@@ -43,6 +43,14 @@
     all('[data-bind="pitch-spare"]').forEach(function (n) { n.textContent = String(Math.round(order.spareSeconds)); });
     all('[data-bind="pitch-slots"]').forEach(function (n) { n.textContent = String(order.capacity); });
     all('[data-bind="two-min-total"]').forEach(function (n) { n.textContent = String(order.teams * 2); });
+    all('[data-bind="per-team-slot"]').forEach(function (n) { n.textContent = I.mmss(order.perTeamSeconds); });
+    all('[data-bind="changeover"]').forEach(function (n) { n.textContent = String(order.changeoverSeconds); });
+    all('[data-bind="pitch-mmss"]').forEach(function (n) { n.textContent = I.mmss(order.slotSeconds); });
+    all('[data-bind="min-slides"]').forEach(function (n) { n.textContent = String(cfg.minSlides); });
+    all('[data-bind="max-slides"]').forEach(function (n) { n.textContent = String(cfg.maxSlides); });
+    all('[data-bind="seconds-per-slide"]').forEach(function (n) {
+      n.textContent = String(Math.round(cfg.pitchSecondsPerTeam / cfg.maxSlides));
+    });
     all('[data-bind="ai-disclosure"]').forEach(function (n) { n.textContent = I.aiPolicy.disclosure; });
 
     all('[data-bind="footer-name"]').forEach(function (n) {
@@ -288,6 +296,7 @@
       setText('pitchNeeded', o.neededMinutes + ' min');
       setText('pitchSpare', (o.spareSeconds >= 0 ? '+' : '') + Math.round(o.spareSeconds) + ' s');
       setText('pitchSlots', o.capacity);
+      setText('pitchPerTeam', I.mmss(o.perTeamSeconds));
       setText('pitchVerdict', o.fits ? 'Fits' : 'Over');
       if (out) out.setAttribute('data-fits', o.fits ? 'yes' : 'no');
     }
