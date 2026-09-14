@@ -35,16 +35,14 @@
 
     /* The pitch block is the one place the arithmetic has to be visible, so
        every number in that callout is computed rather than typed. */
-    var plan = I.groupPlan();
-    all('[data-bind="team-count"]').forEach(function (n) { n.textContent = String(plan.teams); });
-    all('[data-bind="single-track"]').forEach(function (n) { n.textContent = String(plan.singleTrackMinutes); });
-    all('[data-bind="pitch-block"]').forEach(function (n) { n.textContent = String(cfg.pitchBlockMinutes); });
-    all('[data-bind="pod-count"]').forEach(function (n) { n.textContent = String(plan.groups); });
-    all('[data-bind="per-pod"]').forEach(function (n) { n.textContent = String(plan.perGroup); });
-    all('[data-bind="pod-minutes"]').forEach(function (n) { n.textContent = String(plan.groupMinutes); });
-    all('[data-bind="ninety-total"]').forEach(function (n) {
-      n.textContent = String(Math.ceil(plan.teams * 1.5));
-    });
+    var order = I.runningOrder();
+    all('[data-bind="team-count"]').forEach(function (n) { n.textContent = String(order.teams); });
+    all('[data-bind="pitch-seconds"]').forEach(function (n) { n.textContent = String(cfg.pitchSecondsPerTeam); });
+    all('[data-bind="pitch-needed"]').forEach(function (n) { n.textContent = String(order.neededMinutes); });
+    all('[data-bind="pitch-block"]').forEach(function (n) { n.textContent = String(order.blockMinutes); });
+    all('[data-bind="pitch-spare"]').forEach(function (n) { n.textContent = String(Math.round(order.spareSeconds)); });
+    all('[data-bind="pitch-slots"]').forEach(function (n) { n.textContent = String(order.capacity); });
+    all('[data-bind="two-min-total"]').forEach(function (n) { n.textContent = String(order.teams * 2); });
     all('[data-bind="ai-disclosure"]').forEach(function (n) { n.textContent = I.aiPolicy.disclosure; });
 
     all('[data-bind="footer-name"]').forEach(function (n) {
@@ -274,22 +272,24 @@
     });
   }
 
-  /* ---- group planner ----------------------------------------------------- */
+  /* ---- running-order check ---------------------------------------------- */
 
+  /* One stage, so the only question the organisers need answered is whether
+     the running order still fits the block, and by how much. */
   function initPlanner() {
     var input = document.getElementById('teamCount');
     if (!input) return;
-    var cap = I.pitchCapacity();
 
     function update() {
       var teams = parseInt(input.value, 10);
       if (isNaN(teams) || teams < 1) teams = 1;
-      var groups = Math.ceil(teams / cap);
-      var perGroup = Math.ceil(teams / groups);
-      setText('podCount', groups);
-      setText('judgeCount', groups);
-      setText('roomCount', groups);
-      setText('perPod', perGroup);
+      var o = I.runningOrder(teams);
+      var out = document.getElementById('plannerOut');
+      setText('pitchNeeded', o.neededMinutes + ' min');
+      setText('pitchSpare', (o.spareSeconds >= 0 ? '+' : '') + Math.round(o.spareSeconds) + ' s');
+      setText('pitchSlots', o.capacity);
+      setText('pitchVerdict', o.fits ? 'Fits' : 'Over');
+      if (out) out.setAttribute('data-fits', o.fits ? 'yes' : 'no');
     }
 
     function setText(id, v) {

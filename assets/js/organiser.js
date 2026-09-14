@@ -42,8 +42,14 @@
     document.getElementById('statTeams').textContent = entries.length;
     document.getElementById('statPeople').textContent = people;
     document.getElementById('statBranches').textContent = Object.keys(branches).length;
+    /* One stage, so what matters is whether the running order still fits. */
+    var order = I.runningOrder(entries.length);
     document.getElementById('statPods').textContent =
-      entries.length ? Math.ceil(entries.length / I.pitchCapacity()) : 0;
+      entries.length ? order.neededMinutes + ' / ' + order.blockMinutes + ' min' : '—';
+    document.getElementById('statPods').title =
+      entries.length && !order.fits
+        ? 'Over the block by ' + Math.abs(Math.round(order.spareSeconds)) + ' seconds'
+        : '';
 
     tableWrap.hidden = entries.length === 0;
     emptyState.hidden = entries.length !== 0;

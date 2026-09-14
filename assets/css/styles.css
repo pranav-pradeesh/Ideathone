@@ -1121,3 +1121,7 @@ code {
 @media print {
   .timer-controls, .timer-keys, .timer-back { display: none; }
 }
+
+/* The running-order check turns red when the pitches no longer fit the block. */
+.planner-out[data-fits="no"] strong { color: var(--danger); }
+.planner-out[data-fits="no"] { background: var(--danger-wash); }

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Engineering Day 2026 — Ideathon | NCERC</title>
-<meta name="description" content="Engineering Day 2026 Ideathon at NCERC — Monday 14 September, 3:00 to 4:00 pm. Teams of three or four identify a real-world problem, build a solution and pitch it in 2 minutes.">
+<meta name="description" content="Engineering Day 2026 Ideathon at NCERC — Monday 14 September, 3:00 to 4:00 pm. Teams of three or four identify a real-world problem, build a solution and pitch it in 90 seconds.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23fbfbf9'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23202080' stroke-width='2.5'/%3E%3Cpath d='M16 10v6l4 2' stroke='%23202080' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/css/styles.css">
 </head>
@@ -63,7 +63,7 @@
         <div class="fact"><dt>Duration</dt><dd><span data-bind="total-minutes">60</span> minutes</dd></div>
         <div class="fact"><dt>Team size</dt><dd>3&ndash;4 people</dd></div>
         <div class="fact"><dt>Deck</dt><dd>3&ndash;4 slides</dd></div>
-        <div class="fact"><dt>Pitch</dt><dd>2 minutes</dd></div>
+        <div class="fact"><dt>Pitch</dt><dd>90 seconds</dd></div>
         <div class="fact"><dt>Bring</dt><dd>Laptop or phone</dd></div>
       </dl>
     </div>
@@ -124,15 +124,20 @@
       <div class="callout warn">
         <h3>Organisers: the pitch block is the constraint</h3>
         <p>
-          <strong><span data-bind="team-count">13</span> teams at 2 minutes each is
-          <span data-bind="single-track">26</span> minutes of pitching, against a
-          <span data-bind="pitch-block">16</span>-minute block.</strong>
-          They cannot pitch one after another inside the hour. Split the room into
-          <span data-bind="pod-count">2</span> groups of
-          <span data-bind="per-pod">7</span> that present <em>at the same time</em> in
-          different corners of the hall, each with its own judges marking the same sheet.
-          That is <span data-bind="pod-minutes">14</span> minutes of pitching per group,
-          which fits with changeover to spare.
+          <strong>One stage, one panel, every team in turn.</strong>
+          <span data-bind="team-count">13</span> teams at
+          <span data-bind="pitch-seconds">90</span> seconds each is
+          <span data-bind="pitch-needed">19.5</span> minutes of pitching in a
+          <span data-bind="pitch-block">22</span>-minute block &mdash;
+          <span data-bind="pitch-spare">150</span> seconds spare for changeover across
+          the whole running order, which is about ten seconds a team.
+          That only holds if every deck is already loaded on the podium machine,
+          which is what the submission block at 3:36 is for.
+        </p>
+        <p>
+          The pitch is 90 seconds rather than two minutes for the same reason: at two
+          minutes these teams need <span data-bind="two-min-total">26</span> minutes of
+          the hour, and the blocks that produce the idea collapse to a scramble.
         </p>
         <div class="planner">
           <div>
@@ -140,17 +145,16 @@
             <input type="number" id="teamCount" min="1" max="500" value="13" inputmode="numeric">
           </div>
         </div>
-        <div class="planner-out" id="plannerOut" aria-live="polite">
-          <div><span>Groups needed</span><strong id="podCount">2</strong></div>
-          <div><span>Judging panels</span><strong id="judgeCount">2</strong></div>
-          <div><span>Rooms / corners</span><strong id="roomCount">2</strong></div>
-          <div><span>Teams per group</span><strong id="perPod">7</strong></div>
+        <div class="planner-out" id="plannerOut" aria-live="polite" data-fits="yes">
+          <div><span>Pitching time</span><strong id="pitchNeeded">19.5 min</strong></div>
+          <div><span>Spare in block</span><strong id="pitchSpare">+150 s</strong></div>
+          <div><span>Slots available</span><strong id="pitchSlots">14</strong></div>
+          <div><span>Verdict</span><strong id="pitchVerdict">Fits</strong></div>
         </div>
         <p class="fine-print" style="margin-bottom:0">
-          Only the pitch block splits &mdash; the first 44 minutes are one room, everyone together.
-          If you would rather keep a single stage, the alternatives are 90-second pitches
-          (<span data-bind="ninety-total">20</span> minutes, still over) or shortlisting on
-          the submitted decks &mdash; both change the format, so decide before the day.
+          One room the whole hour &mdash; nothing splits. If the count rises past
+          <span data-bind="pitch-slots">14</span>, something has to give: a shorter pitch,
+          a longer block taken from pitch preparation, or teams that do not present.
         </p>
       </div>
     </div>
