@@ -127,11 +127,12 @@
           <strong><span data-bind="team-count">13</span> teams at 2 minutes each is
           <span data-bind="single-track">26</span> minutes of pitching, against a
           <span data-bind="pitch-block">16</span>-minute block.</strong>
-          One after another does not fit in the hour. The pitches run as
-          <span data-bind="pod-count">2</span> parallel pods of
-          <span data-bind="per-pod">7</span>, each with its own judging panel scoring the
-          same rubric &mdash; <span data-bind="pod-minutes">14</span> minutes a pod, which
-          fits with changeover to spare.
+          They cannot pitch one after another inside the hour. Split the room into
+          <span data-bind="pod-count">2</span> groups of
+          <span data-bind="per-pod">7</span> that present <em>at the same time</em> in
+          different corners of the hall, each with its own judges marking the same sheet.
+          That is <span data-bind="pod-minutes">14</span> minutes of pitching per group,
+          which fits with changeover to spare.
         </p>
         <div class="planner">
           <div>
@@ -140,13 +141,13 @@
           </div>
         </div>
         <div class="planner-out" id="plannerOut" aria-live="polite">
-          <div><span>Pods needed</span><strong id="podCount">2</strong></div>
-          <div><span>Judges needed</span><strong id="judgeCount">2</strong></div>
+          <div><span>Groups needed</span><strong id="podCount">2</strong></div>
+          <div><span>Judging panels</span><strong id="judgeCount">2</strong></div>
           <div><span>Rooms / corners</span><strong id="roomCount">2</strong></div>
-          <div><span>Teams per pod</span><strong id="perPod">7</strong></div>
+          <div><span>Teams per group</span><strong id="perPod">7</strong></div>
         </div>
         <p class="fine-print" style="margin-bottom:0">
-          Only the pitch block needs separating &mdash; the first 44 minutes fit in one hall.
+          Only the pitch block splits &mdash; the first 44 minutes are one room, everyone together.
           If you would rather keep a single stage, the alternatives are 90-second pitches
           (<span data-bind="ninety-total">20</span> minutes, still over) or shortlisting on
           the submitted decks &mdash; both change the format, so decide before the day.

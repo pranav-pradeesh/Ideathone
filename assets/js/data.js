@@ -30,9 +30,9 @@ window.IDEATHON = (function () {
     minTeamSize: 3,
     totalMinutes: 60,
 
-    // Pitch block maths — used by the pod planner on the schedule.
+    // Pitch block maths — used by the group planner on the schedule.
     // 13 teams x 2 minutes is 26 minutes of pitching against a 16-minute
-    // block, so the pitches run in parallel pods. See podPlan() below.
+    // block, so the teams pitch in parallel groups. See groupPlan() below.
     teamCount: 13,
     pitchBlockMinutes: 16,
     pitchMinutesPerTeam: 2,
@@ -86,7 +86,7 @@ window.IDEATHON = (function () {
     {
       start: 44, minutes: 16, name: 'Presentations',
       ai: 'no',
-      what: '2 minutes per team, in two parallel pods judged on the same rubric. Notes off, no live prompting.',
+      what: '2 minutes per team. The room splits into two groups presenting at the same time, each with its own judges. Notes off, no live prompting.',
       owner: 'Lead pitches · whole team on stage'
     }
   ];
@@ -319,7 +319,7 @@ window.IDEATHON = (function () {
         'The six phases are fixed. You may work ahead inside your own team, but no phase is extended.',
         'Submission closes at minute 44 — 3:44 pm. A deck that arrives a minute later is not judged.',
         'Each team presents for 2 minutes, with a hard stop. The judges score after each pitch.',
-        'Pitches run in two parallel pods so that all thirteen teams present inside the block. Both pods score the same rubric; your pod is on the running order published at the briefing.',
+        'All thirteen teams pitch inside the same sixteen minutes, so the room splits into two groups that present at the same time in different corners. Each group has its own judges marking the same sheet. Your group and your slot are announced at the briefing.',
         'If your team is not present when called to pitch, your slot is forfeited.'
       ]
     },
@@ -449,19 +449,19 @@ window.IDEATHON = (function () {
 
   /* How the registered teams have to be split to fit the pitch block, and what
      that costs in judges and space. Single track if they fit; otherwise the
-     smallest number of parallel pods that does. */
-  function podPlan(teams) {
+     smallest number of simultaneous groups that does. */
+  function groupPlan(teams) {
     if (teams == null) teams = config.teamCount;
     var cap = pitchCapacity();
-    var pods = Math.max(1, Math.ceil(teams / cap));
-    var perPod = Math.ceil(teams / pods);
+    var groups = Math.max(1, Math.ceil(teams / cap));
+    var perGroup = Math.ceil(teams / groups);
     var per = config.pitchMinutesPerTeam + config.qaMinutesPerTeam;
     return {
       teams: teams,
-      pods: pods,
-      perPod: perPod,
+      groups: groups,
+      perGroup: perGroup,
       capacity: cap,
-      podMinutes: perPod * per,
+      groupMinutes: perGroup * per,
       singleTrackMinutes: teams * per,
       fitsSingleTrack: teams <= cap
     };
@@ -488,6 +488,6 @@ window.IDEATHON = (function () {
     wallClock: wallClock,
     wallRange: wallRange,
     pitchCapacity: pitchCapacity,
-    podPlan: podPlan
+    groupPlan: groupPlan
   };
 })();

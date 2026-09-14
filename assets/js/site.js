@@ -35,13 +35,13 @@
 
     /* The pitch block is the one place the arithmetic has to be visible, so
        every number in that callout is computed rather than typed. */
-    var plan = I.podPlan();
+    var plan = I.groupPlan();
     all('[data-bind="team-count"]').forEach(function (n) { n.textContent = String(plan.teams); });
     all('[data-bind="single-track"]').forEach(function (n) { n.textContent = String(plan.singleTrackMinutes); });
     all('[data-bind="pitch-block"]').forEach(function (n) { n.textContent = String(cfg.pitchBlockMinutes); });
-    all('[data-bind="pod-count"]').forEach(function (n) { n.textContent = String(plan.pods); });
-    all('[data-bind="per-pod"]').forEach(function (n) { n.textContent = String(plan.perPod); });
-    all('[data-bind="pod-minutes"]').forEach(function (n) { n.textContent = String(plan.podMinutes); });
+    all('[data-bind="pod-count"]').forEach(function (n) { n.textContent = String(plan.groups); });
+    all('[data-bind="per-pod"]').forEach(function (n) { n.textContent = String(plan.perGroup); });
+    all('[data-bind="pod-minutes"]').forEach(function (n) { n.textContent = String(plan.groupMinutes); });
     all('[data-bind="ninety-total"]').forEach(function (n) {
       n.textContent = String(Math.ceil(plan.teams * 1.5));
     });
@@ -274,7 +274,7 @@
     });
   }
 
-  /* ---- pod planner ------------------------------------------------------- */
+  /* ---- group planner ----------------------------------------------------- */
 
   function initPlanner() {
     var input = document.getElementById('teamCount');
@@ -284,12 +284,12 @@
     function update() {
       var teams = parseInt(input.value, 10);
       if (isNaN(teams) || teams < 1) teams = 1;
-      var pods = Math.ceil(teams / cap);
-      var perPod = Math.ceil(teams / pods);
-      setText('podCount', pods);
-      setText('judgeCount', pods);
-      setText('roomCount', pods);
-      setText('perPod', perPod);
+      var groups = Math.ceil(teams / cap);
+      var perGroup = Math.ceil(teams / groups);
+      setText('podCount', groups);
+      setText('judgeCount', groups);
+      setText('roomCount', groups);
+      setText('perPod', perGroup);
     }
 
     function setText(id, v) {
