@@ -22,60 +22,71 @@ window.IDEATHON = (function () {
     minSlides: 3,
     maxSlides: 4,
 
-    startsAt: '14:30',      // 24-hour; the wall clock shown on the timeline
+    startsAt: '15:00',      // 24-hour; the wall clock shown on the timeline
     endsAt: '16:00',
-    timeRange: '2:30 – 4:00 pm',
+    timeRange: '3:00 – 4:00 pm',
     contactEmail: '',       // shown in the footer when set
     maxTeamSize: 4,
     minTeamSize: 3,
-    totalMinutes: 90,
+    totalMinutes: 60,
 
     // Pitch block maths — used by the pod planner on the schedule.
-    pitchBlockMinutes: 18,
+    // 13 teams x 2 minutes is 26 minutes of pitching against a 16-minute
+    // block, so the pitches run in parallel pods. See podPlan() below.
+    teamCount: 13,
+    pitchBlockMinutes: 16,
     pitchMinutesPerTeam: 2,
     qaMinutesPerTeam: 0
   };
 
-  /* ---- the 90 minutes ---------------------------------------------------- */
+  /* ---- the 60 minutes ---------------------------------------------------- */
   /* ai: 'yes'  -> AI tools permitted in this phase
      ai: 'no'   -> AI tools must be closed
-     ai: 'n/a'  -> nothing to police                                          */
+     ai: 'n/a'  -> nothing to police
+
+     The split protects the two blocks that cannot compress. Presentations are
+     2 minutes a team, so every minute cut there is half a team that does not
+     get to pitch. Submission is a cutoff, not work. Everything else absorbs
+     the shorter hour: the briefing is short because the rules are published
+     in advance, and discovery takes the biggest proportional cut because
+     teams arrive with candidate problems and discovery is where they
+     overrun.                                                                */
 
   var schedule = [
     {
-      start: 0, minutes: 5, name: 'Challenge briefing',
+      start: 0, minutes: 3, name: 'Challenge briefing',
       ai: 'n/a',
-      what: 'Format, rules and timing. The timer starts and does not stop.',
+      what: 'Format, rules and timing — a reminder, not a first read. The timer starts and does not stop.',
       owner: 'Organisers'
     },
     {
-      start: 5, minutes: 20, name: 'Problem discovery & validation',
+      start: 3, minutes: 12, name: 'Problem discovery & validation',
       ai: 'yes',
-      what: 'Pick a real-world problem of your own. Establish who it affects and why it matters.',
+      what: 'Pick a real-world problem of your own. Establish who it affects and why it matters. Come with candidates; this block is for choosing, not searching.',
       owner: 'Problem Analyst leads · Researcher gathers evidence'
     },
     {
-      start: 25, minutes: 25, name: 'Solution development',
+      start: 15, minutes: 15, name: 'Solution development',
       ai: 'yes',
       what: 'Build the idea: how it works, what makes it innovative, whether it is feasible.',
       owner: 'Whole team · Innovation Lead pushes past the obvious'
     },
     {
-      start: 50, minutes: 20, name: 'Pitch preparation',
+      start: 30, minutes: 12, name: 'Pitch preparation',
       ai: 'yes',
-      what: 'Three or four slides, and a 2-minute pitch rehearsed out loud.',
+      what: 'Three or four slides, and a 2-minute pitch rehearsed out loud. Start the deck during development, not here.',
       owner: 'Presentation Maker owns the deck · Lead rehearses'
     },
     {
-      start: 70, minutes: 2, name: 'Submission',
+      start: 42, minutes: 2, name: 'Submission',
       ai: 'n/a',
-      what: 'Hard cutoff. Upload the deck. Late files are not judged.',
+      what: 'Hard cutoff. Upload the deck so every file is on the podium machine before pitching starts. Late files are not judged.',
       owner: 'Presentation Maker submits · Lead confirms'
     },
     {
-      start: 72, minutes: 18, name: 'Presentations',
+      start: 44, minutes: 16, name: 'Presentations',
       ai: 'no',
-      what: '2 minutes per team, then the judges score. Notes off, no live prompting.',
+      what: '2 minutes per team, in two parallel pods judged on the same rubric. Notes off, no live prompting.',
       owner: 'Lead pitches · whole team on stage'
     }
   ];
@@ -95,7 +106,7 @@ window.IDEATHON = (function () {
       required: true,
       short: 'Owns the clock and the pitch.',
       summary:
-        'The Lead makes sure the team ships something. They keep every phase inside its box, force the decision by minute 35, and deliver the pitch at the end. This is the role that fails a team most easily, because a team that overruns problem discovery has already lost.',
+        'The Lead makes sure the team ships something. They keep every phase inside its box, force the decision by minute 22, and deliver the pitch at the end. This is the role that fails a team most easily, because a team that overruns problem discovery has already lost.',
       owns: [
         'The running clock — calls each phase change out loud',
         'The one-sentence idea statement',
@@ -108,12 +119,12 @@ window.IDEATHON = (function () {
         'AI disclosure line agreed with the team'
       ],
       minutes: [
-        { t: '00–05', do: 'Confirm the running order. Set a visible timer for all six phases.' },
-        { t: '05–25', do: 'Keep the team on the problem, not on solutions. Call time at 24:00.' },
-        { t: '25–50', do: 'Force a decision by 35:00, then defend it. Kill anything unbuildable.' },
-        { t: '50–70', do: 'Rehearse the 2 minutes out loud, twice. Do not touch the deck file.' },
-        { t: '70–72', do: 'Confirm the submission actually went through before you sit down.' },
-        { t: '72–90', do: 'Pitch. Two minutes, hard stop — finish the sentence you are on.' }
+        { t: '00–03', do: 'Confirm the running order. Set a visible timer for all six phases.' },
+        { t: '03–15', do: 'Keep the team on the problem, not on solutions. Call time at 14:00.' },
+        { t: '15–30', do: 'Force a decision by 22:00, then defend it. Kill anything unbuildable.' },
+        { t: '30–42', do: 'Rehearse the 2 minutes out loud, twice. Do not touch the deck file.' },
+        { t: '42–44', do: 'Confirm the submission actually went through before you sit down.' },
+        { t: '44–60', do: 'Pitch. Two minutes, hard stop — finish the sentence you are on.' }
       ],
       ai: 'May use AI during Discover and Design for background, never to write the pitch. The words in the room have to be yours — judges will ask a follow-up and a memorised paragraph collapses.',
       avoid: [
@@ -129,7 +140,7 @@ window.IDEATHON = (function () {
       required: true,
       short: 'Owns the slides and the submission.',
       summary:
-        'The Presentation Maker turns a decided idea into three or four slides a judge can read from the back row. They are the only person with the file open after minute 50, and the one who presses submit before the cutoff at 3:40 pm.',
+        'The Presentation Maker turns a decided idea into three or four slides a judge can read from the back row. They are the only person with the file open after minute 30, and the one who presses submit before the cutoff at 3:44 pm.',
       owns: [
         'The deck file and its structure',
         'Visual clarity: one message per slide, readable from 6 metres',
@@ -142,12 +153,12 @@ window.IDEATHON = (function () {
         'A disclosure line naming every AI tool the team used'
       ],
       minutes: [
-        { t: '00–05', do: 'Open a blank three-slide skeleton before the briefing ends. Title them now.' },
-        { t: '05–25', do: 'Listen and capture. Drop raw notes straight into speaker notes.' },
-        { t: '25–50', do: 'Draft the problem slide while the solution is still being argued.' },
-        { t: '50–70', do: 'Build. Three or four slides, nothing more. Stop building at 68:00.' },
-        { t: '70–72', do: 'Submit. Then confirm the upload with the Lead.' },
-        { t: '72–90', do: 'Drive the slides during the pitch.' }
+        { t: '00–03', do: 'Open a blank three-slide skeleton before the briefing ends. Title them now.' },
+        { t: '03–15', do: 'Listen and capture. Drop raw notes straight into speaker notes.' },
+        { t: '15–30', do: 'Draft the problem slide while the solution is still being argued.' },
+        { t: '30–42', do: 'Build. Three or four slides, nothing more. Stop building at 41:00.' },
+        { t: '42–44', do: 'Submit. Then confirm the upload with the Lead.' },
+        { t: '44–60', do: 'Drive the slides during the pitch.' }
       ],
       ai: 'AI is permitted for presentation-making: slide copy, layout, summarising notes and generating imagery — any app you like, on either device. Everything on the slide must be checked by you, and every tool used goes in the disclosure line.',
       avoid: [
@@ -176,18 +187,18 @@ window.IDEATHON = (function () {
         'Verification of every number on the deck'
       ],
       minutes: [
-        { t: '00–05', do: 'Open your research apps and sign in before the timer starts.' },
-        { t: '05–25', do: 'Evidence for the problem: who is affected, how many, what it costs today.' },
-        { t: '25–50', do: 'Check the solution is feasible. Be honest about what would take longer than a week.' },
-        { t: '50–70', do: 'Verify every number that goes on a slide. Name the source.' },
-        { t: '70–72', do: 'Last check that the deck states its sources correctly.' },
-        { t: '72–90', do: 'Be ready if a judge asks where a figure came from.' }
+        { t: '00–03', do: 'Open your research apps and sign in before the timer starts.' },
+        { t: '03–15', do: 'Evidence for the problem: who is affected, how many, what it costs today.' },
+        { t: '15–30', do: 'Check the solution is feasible. Be honest about what would take longer than a week.' },
+        { t: '30–42', do: 'Verify every number that goes on a slide. Name the source.' },
+        { t: '42–44', do: 'Last check that the deck states its sources correctly.' },
+        { t: '44–60', do: 'Be ready if a judge asks where a figure came from.' }
       ],
       ai: 'AI is permitted for research throughout the working phases. Verify anything you put on a slide against a real source — a fabricated statistic ends the entry the moment it is caught. Record which apps you used for the disclosure.',
       avoid: [
         'Pasting AI output onto a slide unread',
         'Quoting a number you cannot name a source for',
-        'Still researching at minute 50'
+        'Still researching at minute 30'
       ]
     },
     {
@@ -205,23 +216,23 @@ window.IDEATHON = (function () {
         'The "what would make this fail?" question during Design'
       ],
       delivers: [
-        'Three or more real alternatives on the table by minute 35',
+        'Three or more real alternatives on the table by minute 22',
         'A one-line answer to "why is this different?"',
         'One deliberate stress-test of the chosen idea'
       ],
       minutes: [
-        { t: '00–05', do: 'Think about which problems the room will overlook.' },
-        { t: '05–25', do: 'Generate problem candidates while the Analyst frames them. Quantity first.' },
-        { t: '25–50', do: 'Put up three real alternatives, argue for the least obvious, then back the call.' },
-        { t: '50–70', do: 'Write the innovation line for the deck — what makes this different.' },
-        { t: '70–72', do: 'Quiet. The deck is the Presentation Maker\'s to submit.' },
-        { t: '72–90', do: 'Listen to the other pitches. Note what scored well.' }
+        { t: '00–03', do: 'Think about which problems the room will overlook.' },
+        { t: '03–15', do: 'Generate problem candidates while the Analyst frames them. Quantity first.' },
+        { t: '15–30', do: 'Put up three real alternatives, argue for the least obvious, then back the call.' },
+        { t: '30–42', do: 'Write the innovation line for the deck — what makes this different.' },
+        { t: '42–44', do: 'Quiet. The deck is the Presentation Maker\'s to submit.' },
+        { t: '44–60', do: 'Listen to the other pitches. Note what scored well.' }
       ],
       ai: 'AI is useful in Discover for surveying what already exists, so you know what "different" means. It is closed during Decide — that block is exactly the one you are here to run well, and it has to be the team\'s own thinking.',
       avoid: [
         'Falling in love with your own alternative after the team has decided',
         'Being different for its own sake — originality without feasibility scores nothing',
-        'Reopening the decision after minute 50'
+        'Reopening the decision after minute 30'
       ]
     },
     {
@@ -244,12 +255,12 @@ window.IDEATHON = (function () {
         'An impact number the team can defend'
       ],
       minutes: [
-        { t: '00–05', do: 'Have a way to write the problem down in one sentence.' },
-        { t: '05–25', do: 'Own this block. Who is affected, how badly, root cause rather than symptom.' },
-        { t: '25–50', do: 'Hold the team to the problem. Reject solutions that address a symptom.' },
-        { t: '50–70', do: 'Own the problem and impact slides. Keep the impact number defensible.' },
-        { t: '70–72', do: 'Last read of the problem slide. Would a stranger understand it?' },
-        { t: '72–90', do: 'Be ready if a judge asks how big the problem really is.' }
+        { t: '00–03', do: 'Have a way to write the problem down in one sentence.' },
+        { t: '03–15', do: 'Own this block. Who is affected, how badly, root cause rather than symptom.' },
+        { t: '15–30', do: 'Hold the team to the problem. Reject solutions that address a symptom.' },
+        { t: '30–42', do: 'Own the problem and impact slides. Keep the impact number defensible.' },
+        { t: '42–44', do: 'Last read of the problem slide. Would a stranger understand it?' },
+        { t: '44–60', do: 'Be ready if a judge asks how big the problem really is.' }
       ],
       ai: 'AI is permitted in Discover and Design for framing and for finding who is affected. Any figure it gives you is unverified until the Researcher has a source for it.',
       avoid: [
@@ -304,10 +315,11 @@ window.IDEATHON = (function () {
       id: 'clock',
       title: 'The clock',
       items: [
-        'The ninety minutes start at 2:30 pm, when the briefing begins, and do not stop for anything.',
+        'The hour starts at 3:00 pm, when the briefing begins, and does not stop for anything.',
         'The six phases are fixed. You may work ahead inside your own team, but no phase is extended.',
-        'Submission closes at minute 70 — 3:40 pm. A deck that arrives a minute later is not judged.',
+        'Submission closes at minute 44 — 3:44 pm. A deck that arrives a minute later is not judged.',
         'Each team presents for 2 minutes, with a hard stop. The judges score after each pitch.',
+        'Pitches run in two parallel pods so that all thirteen teams present inside the block. Both pods score the same rubric; your pod is on the running order published at the briefing.',
         'If your team is not present when called to pitch, your slot is forfeited.'
       ]
     },
@@ -319,15 +331,15 @@ window.IDEATHON = (function () {
         'No pre-built decks, no pre-chosen problems, no work started before the timer. This is the one rule that removes a team rather than costing it marks.',
         'An empty slide template is fine. A template with your content already in it is not.',
         'A phone is enough for all of it — research, slides and submission. A laptop is allowed, not required; bring whichever you work faster on.',
-        'Install and sign in to the apps you plan to use before you arrive — AI tools, slide apps, whatever you like. Downloading and logging in on the day comes out of your ninety minutes.'
+        'Install and sign in to the apps you plan to use before you arrive — AI tools, slide apps, whatever you like. Downloading and logging in on the day comes out of your sixty minutes.'
       ]
     },
     {
       id: 'ai',
       title: 'Using AI',
       items: [
-        'Any AI app you like, throughout problem discovery, solution development and pitch preparation (05–70): research, background, slide copy, layout and imagery.',
-        'AI is closed during the presentations (72–90). Screens down except the deck on the projector — no live prompting, no generated answers, no earpieces.',
+        'Any AI app you like, throughout problem discovery, solution development and pitch preparation (03–42): research, background, slide copy, layout and imagery.',
+        'AI is closed during the presentations (44–60). Screens down except the deck on the projector — no live prompting, no generated answers, no earpieces.',
         'The problem is yours to choose. A model may help you research it, but a team that cannot say why it picked its problem has not done the thinking the marks are for.',
         'Name every AI tool you used on your last slide. Disclosure costs nothing; an undisclosed tool found afterwards disqualifies the entry.',
         'Verify anything you put on a slide. A fabricated statistic ends the entry at the moment it is caught.',
@@ -390,7 +402,7 @@ window.IDEATHON = (function () {
       'Spelling, grammar and translation, any working phase.'
     ],
     notAllowed: [
-      'The presentations (72–90). No live prompting, no generated answers, no earpieces.',
+      'The presentations (44–60). No live prompting, no generated answers, no earpieces.',
       'Choosing the problem for you. A model may help you research it; the choice is the team\'s.',
       'Any fact, figure or quote nobody on the team has verified.',
       'AI output presented as a working prototype or original research.'
@@ -435,7 +447,27 @@ window.IDEATHON = (function () {
     return Math.floor(config.pitchBlockMinutes / per);
   }
 
-  /* "2:30 – 2:35 pm" rather than "2:30 pm – 2:35 pm": drop the meridiem from the
+  /* How the registered teams have to be split to fit the pitch block, and what
+     that costs in judges and space. Single track if they fit; otherwise the
+     smallest number of parallel pods that does. */
+  function podPlan(teams) {
+    if (teams == null) teams = config.teamCount;
+    var cap = pitchCapacity();
+    var pods = Math.max(1, Math.ceil(teams / cap));
+    var perPod = Math.ceil(teams / pods);
+    var per = config.pitchMinutesPerTeam + config.qaMinutesPerTeam;
+    return {
+      teams: teams,
+      pods: pods,
+      perPod: perPod,
+      capacity: cap,
+      podMinutes: perPod * per,
+      singleTrackMinutes: teams * per,
+      fitsSingleTrack: teams <= cap
+    };
+  }
+
+  /* "3:00 – 3:03 pm" rather than "3:00 pm – 3:03 pm": drop the meridiem from the
      start when both ends share it. */
   function wallRange(start, end) {
     var a = wallClock(start), b = wallClock(end);
@@ -455,6 +487,7 @@ window.IDEATHON = (function () {
     clock: clock,
     wallClock: wallClock,
     wallRange: wallRange,
-    pitchCapacity: pitchCapacity
+    pitchCapacity: pitchCapacity,
+    podPlan: podPlan
   };
 })();

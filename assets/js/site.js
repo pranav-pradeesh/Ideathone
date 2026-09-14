@@ -32,6 +32,19 @@
     all('[data-bind="tagline"]').forEach(function (n) { n.textContent = cfg.tagline || ''; });
     all('[data-bind="max-team"]').forEach(function (n) { n.textContent = String(cfg.maxTeamSize); });
     all('[data-bind="pitch-capacity"]').forEach(function (n) { n.textContent = String(I.pitchCapacity()); });
+
+    /* The pitch block is the one place the arithmetic has to be visible, so
+       every number in that callout is computed rather than typed. */
+    var plan = I.podPlan();
+    all('[data-bind="team-count"]').forEach(function (n) { n.textContent = String(plan.teams); });
+    all('[data-bind="single-track"]').forEach(function (n) { n.textContent = String(plan.singleTrackMinutes); });
+    all('[data-bind="pitch-block"]').forEach(function (n) { n.textContent = String(cfg.pitchBlockMinutes); });
+    all('[data-bind="pod-count"]').forEach(function (n) { n.textContent = String(plan.pods); });
+    all('[data-bind="per-pod"]').forEach(function (n) { n.textContent = String(plan.perPod); });
+    all('[data-bind="pod-minutes"]').forEach(function (n) { n.textContent = String(plan.podMinutes); });
+    all('[data-bind="ninety-total"]').forEach(function (n) {
+      n.textContent = String(Math.ceil(plan.teams * 1.5));
+    });
     all('[data-bind="ai-disclosure"]').forEach(function (n) { n.textContent = I.aiPolicy.disclosure; });
 
     all('[data-bind="footer-name"]').forEach(function (n) {
